@@ -27,8 +27,8 @@ Set in `shakacode/shaka-shakacode-com` → Settings → Secrets and variables �
 - `CLOUDFLARE_ACCOUNT_ID`
 
 Later, for hosted search: `ALGOLIA_APP_ID` and `ALGOLIA_SEARCH_API_KEY` secrets and the
-`ALGOLIA_INDEX_NAME` variable. Set all three together: with none, the site uses its bundled
-local search; with only some, the build fails on purpose.
+`ALGOLIA_INDEX_NAME` variable. The site uses its bundled local search until both secrets are
+set; once they are, the index variable is required and the build fails without it.
 
 ## Legacy hosts
 
