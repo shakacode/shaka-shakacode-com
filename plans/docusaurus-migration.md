@@ -99,7 +99,7 @@ PR 4 needs PR 2 and PR 3. PR 5 comes last.
   `.agents/trusted-github-actors.yml` and `AGENTS.md`, with merge policy ask.
   Until the Docusaurus copy lands, validation checks that every tracked text
   file ends with a newline, and tests that check. The seam itself is checked
-  locally with `shaka seam check --local`; CI does not install Shaka. PR 2
+  locally with `shaka seam check --root . --local`; CI does not install Shaka. PR 2
   expands the scripts to `npm ci`, `npm test` and `npm run build`.
 - Add this plan at `plans/docusaurus-migration.md`.
 
@@ -186,6 +186,9 @@ he approves.
 Justin (or Codex using desktop automation) sets these. Agents can't read or
 write secret values.
 
+0. **Branch protection on `main`** (right after PR 0 merges): require the
+   `validate` check and pull requests. Justin approved having the agent turn
+   this on with `gh api` after PR 0 adds the `validate` job.
 1. **`shakacode/shaka-shakacode-com` → Settings → Secrets → Actions** (before
    PR 2's first deploy):
    - `CLOUDFLARE_API_TOKEN` (a Pages-edit token; the same kind shakapacker.com
