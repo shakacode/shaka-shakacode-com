@@ -30,6 +30,9 @@ expect "files ending with a newline pass" pass "$dir"
 dir=$(fixture missing); printf 'a\n' >"$dir/a.md"; printf 'no newline' >"$dir/b.md"
 expect "a file without a final newline fails" fail "$dir"
 
+dir=$(fixture dash); printf 'no newline' >"$dir/-e.md"
+expect "a filename starting with a dash is checked" fail "$dir"
+
 dir=$(fixture spaced); printf 'no newline' >"$dir/with space.md"
 expect "a filename with a space is checked" fail "$dir"
 

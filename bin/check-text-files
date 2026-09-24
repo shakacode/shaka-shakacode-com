@@ -8,17 +8,22 @@ set -euo pipefail
 root=$(git -C "${1:-.}" rev-parse --show-toplevel)
 cd "$root"
 
+# Collect the list first so a git failure stops the script instead of passing.
+files=$(mktemp)
+trap 'rm -f "$files"' EXIT
+git ls-files -z >"$files"
+
 status=0
 while IFS= read -r -d '' file; do
   [ -f "$file" ] && [ -s "$file" ] || continue
   # C locale pins binary detection to NUL bytes, whatever the runner locale.
-  LC_ALL=C grep -Iq . "$file" || continue # skip binary files
+  LC_ALL=C grep -Iq -e . -- "$file" || continue # skip binary files
   # Command substitution strips a trailing newline, so output means none was there.
-  if [ -n "$(tail -c 1 "$file")" ]; then
+  if [ -n "$(tail -c 1 -- "$file")" ]; then
     echo "missing final newline: $file"
     status=1
   fi
-done < <(git ls-files -z)
+done <"$files"
 
 if [ "$status" -eq 0 ]; then
   echo "check-text-files: all text files end with a newline"
