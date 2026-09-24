@@ -94,7 +94,11 @@ function findBrokenRelativeMarkdownLinks(content, currentRelativePath, knownDocs
       continue;
     }
 
-    if (!knownDocs.has(`${normalized}.md`) && !knownDocs.has(`${normalized}.mdx`)) {
+    if (
+      !knownDocs.has(normalized) &&
+      !knownDocs.has(`${normalized}.md`) &&
+      !knownDocs.has(`${normalized}.mdx`)
+    ) {
       issues.push(`Unresolved relative target: ${targetOnly}`);
     }
   }
@@ -187,12 +191,13 @@ async function main() {
   const knownDocs = new Set();
 
   await walkFiles(docsRoot, async (absolutePath, relativePath) => {
+    const normalized = toPosix(relativePath);
+    // Every file counts as a link target, so images and downloads resolve.
+    knownDocs.add(normalized);
     if (!relativePath.endsWith(".md") && !relativePath.endsWith(".mdx")) {
       return;
     }
 
-    const normalized = toPosix(relativePath);
-    knownDocs.add(normalized);
     const content = await fs.readFile(absolutePath, "utf8");
     pages.push({ normalized, content });
   });
