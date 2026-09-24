@@ -1,18 +1,20 @@
 #!/usr/bin/env bash
-# Fails when a tracked or staged text file does not end with a newline.
+# Fails when a tracked text file does not end with a newline.
+# Usage: bin/check-text-files [DIR]   (DIR defaults to this repository)
 set -euo pipefail
 
-cd "$(git rev-parse --show-toplevel)"
+cd "$(git -C "${1:-.}" rev-parse --show-toplevel)"
 
 status=0
 while IFS= read -r -d '' file; do
   [ -f "$file" ] && [ -s "$file" ] || continue
   grep -Iq . "$file" || continue # skip binary files
-  if [ "$(tail -c 1 "$file" | od -An -c | tr -d ' ')" != '\n' ]; then
+  # Command substitution strips a trailing newline, so output means none was there.
+  if [ -n "$(tail -c 1 "$file")" ]; then
     echo "missing final newline: $file"
     status=1
   fi
-done < <(git ls-files -z --cached --others --exclude-standard)
+done < <(git ls-files -z)
 
 if [ "$status" -eq 0 ]; then
   echo "check-text-files: all text files end with a newline"

@@ -97,9 +97,10 @@ PR 4 needs PR 2 and PR 3. PR 5 comes last.
 - Configure it for Shaka: `.agents/agent-workflow.yml`, `.agents/bin/setup`,
   `.agents/bin/test`, `.agents/bin/validate`,
   `.agents/trusted-github-actors.yml` and `AGENTS.md`, with merge policy ask.
-  Until the Docusaurus copy lands, the scripts check only what exists (Markdown
-  files end with a newline, and the seam itself is valid). PR 2 expands them to
-  `npm ci`, `npm test` and `npm run build`.
+  Until the Docusaurus copy lands, validation checks that every tracked text
+  file ends with a newline, and tests that check. The seam itself is checked
+  locally with `shaka seam check --local`; CI does not install Shaka. PR 2
+  expands the scripts to `npm ci`, `npm test` and `npm run build`.
 - Add this plan at `plans/docusaurus-migration.md`.
 
 ### PR 1. Pointers on the old projects (small, any time)

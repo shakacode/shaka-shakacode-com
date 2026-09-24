@@ -1,0 +1,48 @@
+#!/usr/bin/env bash
+# Exercises bin/check-text-files against small fixture repositories.
+set -euo pipefail
+
+checker="$(cd "$(dirname "$0")" && pwd)/check-text-files"
+tmp=$(mktemp -d)
+trap 'rm -rf "$tmp"' EXIT
+failures=0
+
+fixture() {
+  local dir="$tmp/$1"
+  git init -q "$dir"
+  echo "$dir"
+}
+
+expect() {
+  local name=$1 want=$2 dir=$3 got=0
+  (cd "$dir" && git add -A) >/dev/null
+  "$checker" "$dir" >"$tmp/$name.out" 2>&1 || got=$?
+  if { [ "$want" = pass ] && [ "$got" -eq 0 ]; } || { [ "$want" = fail ] && [ "$got" -ne 0 ]; }; then
+    echo "ok: $name"
+  else
+    echo "FAIL: $name (expected $want, exit $got)"; cat "$tmp/$name.out"; failures=$((failures + 1))
+  fi
+}
+
+dir=$(fixture good); printf 'a\n' >"$dir/a.md"; printf 'b\n' >"$dir/with space.txt"
+expect "files ending with a newline pass" pass "$dir"
+
+dir=$(fixture missing); printf 'a\n' >"$dir/a.md"; printf 'no newline' >"$dir/b.md"
+expect "a file without a final newline fails" fail "$dir"
+
+dir=$(fixture spaced); printf 'no newline' >"$dir/with space.md"
+expect "a filename with a space is checked" fail "$dir"
+
+dir=$(fixture binary); printf '\x00\x01\x02' >"$dir/image.bin"
+expect "binary files are skipped" pass "$dir"
+
+dir=$(fixture untracked); printf 'a\n' >"$dir/a.md"; (cd "$dir" && git add -A)
+printf 'no newline' >"$dir/scratch.txt"
+if "$checker" "$dir" >/dev/null; then
+  echo "ok: untracked files are ignored"
+else
+  echo "FAIL: untracked files are ignored"; failures=$((failures + 1))
+fi
+
+[ "$failures" -eq 0 ] && echo "test-check-text-files: all passed"
+exit "$failures"

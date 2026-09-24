@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+# Full pre-PR checks. The Docusaurus copy (plan PR 2) adds the site build here.
+set -euo pipefail
+cd "$(dirname "$0")/.."
+bin/check-text-files
+bin/test-check-text-files
