@@ -1,27 +1,33 @@
-# Cloudflare Pages setup
+# Cloudflare setup
+
+The site deploys as a Cloudflare Worker with static assets (Cloudflare's current form of
+Pages), configured in [`wrangler.toml`](wrangler.toml).
 
 ## Target
 
-- Pages project: `shaka-shakacode-com`
-- Default hostname: `https://shaka-shakacode-com.pages.dev/`
-- Custom domain: `shaka.shakacode.com`
+- Worker: `shaka-shakacode-com`
+- workers.dev hostname: `https://shaka-shakacode-com.<account-subdomain>.workers.dev/`
+- Custom domain: `shaka.shakacode.com`, attached by the `routes` entry in `wrangler.toml`
+  when `main` deploys.
+
+## Deploys
+
+- Pushes to `main`, `docs-updated` dispatches from `shakacode/shaka`, and manual runs on
+  `main` run `wrangler deploy`.
+- Pull requests from this repository run `wrangler versions upload --preview-alias pr-N`,
+  which creates a preview URL without changing the live site.
+- Locally: `npm run cloudflare:deploy`.
 
 ## GitHub secrets (maintainer)
 
 Set in `shakacode/shaka-shakacode-com` → Settings → Secrets and variables → Actions:
 
-- `CLOUDFLARE_API_TOKEN` (Cloudflare Pages edit)
+- `CLOUDFLARE_API_TOKEN` (Workers Scripts edit, plus Workers Routes and DNS edit on
+  `shakacode.com` for the custom domain)
 - `CLOUDFLARE_ACCOUNT_ID`
-
-Optional repository variable: `CLOUDFLARE_PAGES_PROJECT` (defaults to `shaka-shakacode-com`).
 
 Later, for hosted search: `ALGOLIA_APP_ID` and `ALGOLIA_SEARCH_API_KEY` secrets and the
 `ALGOLIA_INDEX_NAME` variable. Until all three exist, the site uses its bundled local search.
-
-## Custom domain
-
-In the Cloudflare dashboard: Workers & Pages → `shaka-shakacode-com` → Custom domains →
-add `shaka.shakacode.com`. Cloudflare provisions TLS automatically.
 
 ## Legacy hosts
 

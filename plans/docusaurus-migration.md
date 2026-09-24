@@ -148,8 +148,9 @@ Repo: `shakacode/shaka-shakacode-com`.
   Keep items in this PR. The Maybes wait for Justin's answers.
 - No agent-coordination or dashboard content.
 - Update the seam scripts to the real `npm` commands.
-- Deploy to a new Cloudflare Pages project (`shaka-shakacode-com`) on its
-  preview URL only. No domain change.
+- Deploy as the Cloudflare Worker `shaka-shakacode-com` (static assets; Cloudflare's
+  current form of Pages). `wrangler.toml` attaches `shaka.shakacode.com` when `main`
+  deploys; pull requests get preview versions only.
 - Verify: `npm run build` and `npm run audit:docs` pass; the rendered site is
   checked on desktop and at 390px mobile width; there are no console errors.
 - The README describes who owns what, following reactonrails.com's rules.
@@ -194,8 +195,8 @@ handle secret values, per `AGENTS.md`.
    command after PR 0 adds the `validate` job.
 1. **`shakacode/shaka-shakacode-com` → Settings → Secrets → Actions** (before
    PR 2's first deploy):
-   - `CLOUDFLARE_API_TOKEN` (a Pages-edit token; the same kind shakapacker.com
-     uses)
+   - `CLOUDFLARE_API_TOKEN` (Workers Scripts edit, plus Workers Routes and DNS
+     edit on `shakacode.com` for the custom domain)
    - `CLOUDFLARE_ACCOUNT_ID`
 2. **The docs-dispatch GitHub App** (the one behind `DOCS_DISPATCH_APP_ID`):
    install it on `shakacode/shaka-shakacode-com`, so it can receive the event.
@@ -205,9 +206,8 @@ handle secret values, per `AGENTS.md`.
 
    Use the same values as in `shakacode/shakapacker`. They are repo secrets
    there, not org secrets.
-4. **Cloudflare dashboard** (PR 5): Workers & Pages → `shaka-shakacode-com` →
-   Custom domains → add `shaka.shakacode.com`. Then add the redirect rules for
-   `workflows.` and `agents.shakacode.com` in the shakacode.com zone.
+4. **Cloudflare** (PR 5): `shaka.shakacode.com` attaches automatically when `main`
+   deploys. Redirect `workflows.` and `agents.shakacode.com` to it.
 5. **Later (Algolia):** create the Algolia app. Then set the
    `ALGOLIA_APP_ID` and `ALGOLIA_SEARCH_API_KEY` secrets and the
    `ALGOLIA_INDEX_NAME` variable on the site repo. The workflow already switches

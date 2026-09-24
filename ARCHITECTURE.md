@@ -14,7 +14,7 @@ Docusaurus, under `prototypes/docusaurus`.
 ## Content flow
 
 ```text
-shaka/docs  -->  content/upstream/docs  -->  prototypes/docusaurus/docs  -->  build  -->  Cloudflare Pages
+shaka/docs  -->  content/upstream/docs  -->  prototypes/docusaurus/docs  -->  build  -->  Cloudflare
 ```
 
 1. `npm run sync:docs` copies `docs/` from Shaka into `content/upstream/docs`. It uses
@@ -24,7 +24,8 @@ shaka/docs  -->  content/upstream/docs  -->  prototypes/docusaurus/docs  -->  bu
    that leave `docs/` (for example into `skills/`) to GitHub URLs.
 3. `npm run build:site` builds static output at `prototypes/docusaurus/build`. Broken links
    fail the build.
-4. `site-build-deploy.yml` deploys the output to Cloudflare Pages.
+4. `site-build-deploy.yml` deploys the output to Cloudflare as a Worker with static assets
+   (see [CLOUDFLARE_SETUP.md](CLOUDFLARE_SETUP.md)).
 
 ## Rebuild triggers
 
@@ -34,6 +35,5 @@ shaka/docs  -->  content/upstream/docs  -->  prototypes/docusaurus/docs  -->  bu
 
 ## Deployment target
 
-- Cloudflare Pages project: `shaka-shakacode-com`
-- Default hostname: `https://shaka-shakacode-com.pages.dev/`
+- Cloudflare Worker: `shaka-shakacode-com` (static assets, `wrangler.toml`)
 - Custom domain: `https://shaka.shakacode.com/`
