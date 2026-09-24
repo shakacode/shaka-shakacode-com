@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+# Fails when a tracked text file does not end with a newline.
+# Usage: bin/check-text-files [DIR]   (checks the Git repository containing DIR;
+#                                     DIR defaults to the current directory)
+set -euo pipefail
+
+# Assign first so set -e stops on failure; `cd ""` succeeds silently in bash 3.2.
+root=$(git -C "${1:-.}" rev-parse --show-toplevel)
+cd "$root"
+
+# Collect the list first so a git failure stops the script instead of passing.
+files=$(mktemp)
+trap 'rm -f "$files"' EXIT
+git ls-files -z >"$files"
+
+status=0
+while IFS= read -r -d '' file; do
+  [ -f "$file" ] && [ -s "$file" ] || continue
+  # C locale pins binary detection to NUL bytes, whatever the runner locale.
+  LC_ALL=C grep -Iq -e . -- "$file" || continue # skip binary files
+  # Command substitution strips a trailing newline, so output means none was there.
+  if [ -n "$(tail -c 1 -- "$file")" ]; then
+    echo "missing final newline: $file"
+    status=1
+  fi
+done <"$files"
+
+if [ "$status" -eq 0 ]; then
+  echo "check-text-files: all text files end with a newline"
+fi
+exit "$status"
