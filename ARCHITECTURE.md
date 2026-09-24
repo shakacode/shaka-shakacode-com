@@ -29,7 +29,7 @@ shaka/docs  -->  content/upstream/docs  -->  prototypes/docusaurus/docs  -->  bu
 
 ## Rebuild triggers
 
-- Pushes to `main` here, pull requests (preview deploys), and manual runs.
+- Pushes to `main` here and manual runs on `main`. Pull requests build but do not deploy.
 - A `docs-updated` `repository_dispatch` event from `shakacode/shaka` when its `docs/`
   changes on `main` (`shaka/.github/workflows/trigger-docs-site.yml`).
 

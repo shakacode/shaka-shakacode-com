@@ -14,8 +14,9 @@ Pages), configured in [`wrangler.toml`](wrangler.toml).
 
 - Pushes to `main`, `docs-updated` dispatches from `shakacode/shaka`, and manual runs on
   `main` run `wrangler deploy`.
-- Pull requests from this repository run `wrangler versions upload --preview-alias pr-N`,
-  which creates a preview URL without changing the live site.
+- Pull requests build the site but do not deploy: only code merged to `main` runs with
+  Cloudflare credentials, because wrangler can run a build command from a candidate
+  `wrangler.toml`. Preview a branch locally with `npm run dev`.
 - Locally: `npm run cloudflare:deploy`.
 
 ## GitHub secrets (maintainer)

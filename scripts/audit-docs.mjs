@@ -131,8 +131,16 @@ function evaluatePage(relativePath, content, knownDocs) {
   const linkIssues = findBrokenRelativeMarkdownLinks(content, relativePath, knownDocs);
   comments.push(...linkIssues);
 
+  // Code examples may legitimately contain TODO markers, so skip fenced blocks
+  // and inline code when looking for placeholder prose.
+  let inFence = false;
   const placeholderLines = lines
-    .map((line, index) => ({ line, number: index + 1 }))
+    .map((line, index) => {
+      const fence = /^\s*(```|~~~)/.test(line);
+      const skip = inFence || fence;
+      if (fence) inFence = !inFence;
+      return { line: skip ? "" : line.replace(/`[^`]*`/g, ""), number: index + 1 };
+    })
     .filter(({ line }) => /\b(TODO|TBD|xxx|blah blah)\b/i.test(line))
     .map(({ number }) => number);
 

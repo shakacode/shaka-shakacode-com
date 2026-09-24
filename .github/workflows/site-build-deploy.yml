@@ -50,12 +50,13 @@ jobs:
           ALGOLIA_INDEX_NAME: ${{ secrets.ALGOLIA_APP_ID != '' && secrets.ALGOLIA_SEARCH_API_KEY != '' && vars.ALGOLIA_INDEX_NAME || '' }}
 
   deploy:
-    if: (github.event_name == 'push' && github.ref == 'refs/heads/main') || github.event_name == 'repository_dispatch' || (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main') || (github.event_name == 'pull_request' && github.event.pull_request.head.repo.fork == false)
+    # Only code merged to main runs with Cloudflare credentials. Pull requests build
+    # without deploying: wrangler can run a build command from a candidate wrangler.toml.
+    if: (github.event_name == 'push' && github.ref == 'refs/heads/main') || github.event_name == 'repository_dispatch' || (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main')
     needs: build
     runs-on: ubuntu-latest
     permissions:
       contents: read
-      pull-requests: write # preview URL comment
     environment:
       name: pages-deploy
       url: ${{ steps.deploy.outputs.deployment_url }}
@@ -94,15 +95,8 @@ jobs:
         id: deploy
         run: |
           set -euo pipefail
-          if [ "${{ github.event_name }}" = "pull_request" ]; then
-            # Preview version: does not change what shaka.shakacode.com serves.
-            npx wrangler@4 versions upload --preview-alias "pr-${{ github.event.pull_request.number }}" \
-              --message "PR #${{ github.event.pull_request.number }}" | tee /tmp/wrangler.log
-            DEPLOYMENT_URL="$(grep -Eo 'https://pr-[^ ]+\.workers\.dev' /tmp/wrangler.log | head -n 1 || true)"
-          else
-            npx wrangler@4 deploy | tee /tmp/wrangler.log
-            DEPLOYMENT_URL="https://shaka.shakacode.com"
-          fi
+          npx wrangler@4 deploy | tee /tmp/wrangler.log
+          DEPLOYMENT_URL="https://shaka.shakacode.com"
           echo "deployment_url=${DEPLOYMENT_URL:-unknown}" >> "$GITHUB_OUTPUT"
           {
             echo "### Cloudflare deployment"
@@ -113,44 +107,3 @@ jobs:
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-
-      - name: Comment preview URL
-        if: github.event_name == 'pull_request'
-        uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7.1.0
-        env:
-          DEPLOYMENT_URL: ${{ steps.deploy.outputs.deployment_url }}
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
-            const marker = "<!-- cf-pages-preview -->";
-            const body = `${marker}
-            Cloudflare preview deployed.
-
-            - URL: ${process.env.DEPLOYMENT_URL}`;
-
-            const { data: comments } = await github.rest.issues.listComments({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              issue_number: context.issue.number,
-              per_page: 100,
-            });
-
-            const existing = comments.find((comment) =>
-              comment.user?.type === "Bot" && comment.body?.includes(marker)
-            );
-
-            if (existing) {
-              await github.rest.issues.updateComment({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                comment_id: existing.id,
-                body,
-              });
-            } else {
-              await github.rest.issues.createComment({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                issue_number: context.issue.number,
-                body,
-              });
-            }

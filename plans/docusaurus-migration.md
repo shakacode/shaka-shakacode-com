@@ -150,7 +150,8 @@ Repo: `shakacode/shaka-shakacode-com`.
 - Update the seam scripts to the real `npm` commands.
 - Deploy as the Cloudflare Worker `shaka-shakacode-com` (static assets; Cloudflare's
   current form of Pages). `wrangler.toml` attaches `shaka.shakacode.com` when `main`
-  deploys; pull requests get preview versions only.
+  deploys; pull requests build without deploying, so only merged code gets
+  Cloudflare credentials.
 - Verify: `npm run build` and `npm run audit:docs` pass; the rendered site is
   checked on desktop and at 390px mobile width; there are no console errors.
 - The README describes who owns what, following reactonrails.com's rules.
