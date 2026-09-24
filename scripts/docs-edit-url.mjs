@@ -6,7 +6,7 @@
 // file. changelog.md would be generated from a repo-root CHANGELOG.md, so it
 // points there instead.
 const UPSTREAM_DOCS_TREE =
-  "https://github.com/shakacode/shaka/tree/main/docs/";
+  "https://github.com/shakacode/shaka/edit/main/docs/";
 const UPSTREAM_CHANGELOG =
   "https://github.com/shakacode/shaka/blob/main/CHANGELOG.md";
 

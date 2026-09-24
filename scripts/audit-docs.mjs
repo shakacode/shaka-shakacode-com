@@ -205,7 +205,12 @@ async function main() {
   await fs.writeFile(outputPath, report, "utf8");
   console.log(`Wrote docs report: ${outputPath}`);
   console.log(`Pages scanned: ${evaluated.length}`);
-  console.log(`Pages with findings: ${evaluated.filter((page) => page.hasFindings).length}`);
+  const findingCount = evaluated.filter((page) => page.hasFindings).length;
+  console.log(`Pages with findings: ${findingCount}`);
+  // --strict turns findings into a failing exit for validation; the default only reports.
+  if (process.argv.includes("--strict") && findingCount > 0) {
+    process.exitCode = 1;
+  }
 }
 
 main().catch((error) => {
