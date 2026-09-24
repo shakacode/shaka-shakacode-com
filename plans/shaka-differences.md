@@ -930,3 +930,8 @@ Items left out or flagged because I found no support in the Shaka files read:
    Reword it?
 10. **Principles page scope:** I dropped "Brief the task," "Execute independently; integrate
     deliberately" (kept one paragraph), and "Improve the limits from evidence." Bring any back?
+11. **Where product explanations live:** `/safety` and parts of `/glossary` explain how Shaka
+    enforces settings, trust, and merges. The repository rule is that product docs live in
+    `shakacode/shaka/docs/`, and these site copies will drift when Shaka changes. If you keep
+    them, move the product content into Shaka's docs (for example a `docs/safety.md`) and leave a
+    short introduction and link here. If you drop them, delete the pages.
