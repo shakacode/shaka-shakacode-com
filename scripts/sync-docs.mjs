@@ -22,17 +22,13 @@ async function exists(targetPath) {
   }
 }
 
+// Clones exactly the requested ref. A missing ref fails the sync rather than
+// publishing docs from a different branch.
 function cloneRepo(repoUrl, ref) {
   const tmpDir = mkdtempSync(path.join(os.tmpdir(), "shaka-docs-"));
-  try {
-    execFileSync("git", ["clone", "--depth", "1", "--branch", ref, repoUrl, tmpDir], {
-      stdio: "inherit"
-    });
-  } catch {
-    execFileSync("git", ["clone", "--depth", "1", repoUrl, tmpDir], {
-      stdio: "inherit"
-    });
-  }
+  execFileSync("git", ["clone", "--depth", "1", "--branch", ref, repoUrl, tmpDir], {
+    stdio: "inherit"
+  });
   return tmpDir;
 }
 
