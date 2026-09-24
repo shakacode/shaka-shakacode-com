@@ -1,6 +1,10 @@
 #!/usr/bin/env bash
-# Full pre-PR checks. The Docusaurus copy (plan PR 2) adds the site build here.
+# Full pre-PR checks: text files, script tests, a docs sync from shakacode/shaka,
+# the site build (broken links fail it), and the docs audit.
 set -euo pipefail
 cd "$(dirname "$0")/.."
 bin/check-text-files
 bin/test-check-text-files
+npm test
+npm run build
+npm run audit:docs -- --output "${TMPDIR:-/tmp}/shaka-docs-audit.md"

@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
-# No dependencies yet. The Docusaurus copy (plan PR 2) replaces this with `npm ci`.
+# Installs the Docusaurus site's dependencies.
 set -euo pipefail
-echo "setup: nothing to install yet"
+cd "$(dirname "$0")/.."
+npm --prefix prototypes/docusaurus ci --no-audit --no-fund
