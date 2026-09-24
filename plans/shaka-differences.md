@@ -3,9 +3,9 @@
 Recorded while carrying over the remaining old-site content (audit Keep K4–K13 and Maybe 1–6)
 on branch `justin808-claude/carry-over-remaining-content`, 2026-09-23.
 
-- Old site source: `/Users/justin/claude/awc-point-to-shaka` (Astro). Paths below are relative
+- Old site source: `shakacode/agent-workflows-com` at `ce5adf9` (Astro). Paths below are relative
   to it, for example `src/pages/methodology.md`.
-- Shaka source: `/Users/justin/claude/shaka` at `a419e92` (main). Paths below are relative to
+- Shaka source: `shakacode/shaka` at `a419e92` (main). Paths below are relative to
   it, for example `skills/shaka/config/workflow.yml`. Line numbers refer to that commit.
 - New site pages: `prototypes/docusaurus/src/pages/` in this repository.
 
