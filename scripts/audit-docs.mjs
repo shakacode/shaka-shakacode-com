@@ -118,6 +118,21 @@ function stripFrontmatter(lines) {
   return lines;
 }
 
+// Blanks fenced blocks and inline code, which may show example links and
+// placeholders on purpose, while keeping line numbers stable.
+function withoutCode(content) {
+  let inFence = false;
+  return content
+    .split(/\r?\n/)
+    .map((line) => {
+      const fence = /^\s*(```|~~~)/.test(line);
+      const skip = inFence || fence;
+      if (fence) inFence = !inFence;
+      return skip ? "" : line.replace(/`[^`]*`/g, "");
+    })
+    .join("\n");
+}
+
 function evaluatePage(relativePath, content, knownDocs) {
   const lines = content.split(/\r?\n/);
   const comments = [];
@@ -128,19 +143,12 @@ function evaluatePage(relativePath, content, knownDocs) {
     comments.push("Missing top-level `#` heading; normalize to a single H1.");
   }
 
-  const linkIssues = findBrokenRelativeMarkdownLinks(content, relativePath, knownDocs);
+  const linkIssues = findBrokenRelativeMarkdownLinks(withoutCode(content), relativePath, knownDocs);
   comments.push(...linkIssues);
 
-  // Code examples may legitimately contain TODO markers, so skip fenced blocks
-  // and inline code when looking for placeholder prose.
-  let inFence = false;
-  const placeholderLines = lines
-    .map((line, index) => {
-      const fence = /^\s*(```|~~~)/.test(line);
-      const skip = inFence || fence;
-      if (fence) inFence = !inFence;
-      return { line: skip ? "" : line.replace(/`[^`]*`/g, ""), number: index + 1 };
-    })
+  const placeholderLines = withoutCode(content)
+    .split("\n")
+    .map((line, index) => ({ line, number: index + 1 }))
     .filter(({ line }) => /\b(TODO|TBD|xxx|blah blah)\b/i.test(line))
     .map(({ number }) => number);
 
