@@ -3,7 +3,9 @@
 # Usage: bin/check-text-files [DIR]   (DIR defaults to this repository)
 set -euo pipefail
 
-cd "$(git -C "${1:-.}" rev-parse --show-toplevel)"
+# Assign first so set -e stops on failure; `cd ""` succeeds silently in bash 3.2.
+root=$(git -C "${1:-.}" rev-parse --show-toplevel)
+cd "$root"
 
 status=0
 while IFS= read -r -d '' file; do

@@ -44,5 +44,12 @@ else
   echo "FAIL: untracked files are ignored"; failures=$((failures + 1))
 fi
 
+mkdir "$tmp/not-a-repo"
+if "$checker" "$tmp/not-a-repo" >/dev/null 2>&1; then
+  echo "FAIL: a directory outside Git fails"; failures=$((failures + 1))
+else
+  echo "ok: a directory outside Git fails"
+fi
+
 [ "$failures" -eq 0 ] && echo "test-check-text-files: all passed"
 exit "$failures"

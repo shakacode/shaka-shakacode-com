@@ -15,5 +15,5 @@ The site is not built yet. See the [migration plan](plans/docusaurus-migration.m
 .agents/bin/validate
 ```
 
-Until the Docusaurus site lands, validation checks that every text file ends with a
-newline.
+Until the Docusaurus site lands, validation checks that every tracked text file ends
+with a newline.
