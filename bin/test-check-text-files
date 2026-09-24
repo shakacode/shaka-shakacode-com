@@ -36,6 +36,9 @@ expect "a filename with a space is checked" fail "$dir"
 dir=$(fixture binary); printf '\x00\x01\x02' >"$dir/image.bin"
 expect "binary files are skipped" pass "$dir"
 
+dir=$(fixture latin1); printf 'caf\xe9 no newline' >"$dir/latin1.md"
+expect "non-UTF-8 text is still checked" fail "$dir"
+
 dir=$(fixture untracked); printf 'a\n' >"$dir/a.md"; (cd "$dir" && git add -A)
 printf 'no newline' >"$dir/scratch.txt"
 if "$checker" "$dir" >/dev/null; then
