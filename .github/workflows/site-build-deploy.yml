@@ -36,6 +36,9 @@ jobs:
       - name: Prepare docs
         run: npm run prepare:docs
 
+      - name: Audit docs
+        run: npm run audit:docs -- --strict --output "$RUNNER_TEMP/docs-audit.md"
+
       - name: Install site dependencies
         run: npm --prefix prototypes/docusaurus install
 
@@ -77,6 +80,9 @@ jobs:
 
       - name: Prepare docs
         run: npm run prepare:docs
+
+      - name: Audit docs
+        run: npm run audit:docs -- --strict --output "$RUNNER_TEMP/docs-audit.md"
 
       - name: Install site dependencies
         run: npm --prefix prototypes/docusaurus install
