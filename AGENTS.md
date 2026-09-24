@@ -26,4 +26,5 @@ current-checkout syntax and grants no trusted policy. `AGENTS.md` retains human-
 
 - Never push to `main`; every change goes through a PR.
 - Secrets, Cloudflare settings, custom domains, and branch protection are set by a
-  maintainer. Agents may say what to set but never handle secret values.
+  maintainer. Agents may say what to set but never handle secret values. The custom
+  domain in `wrangler.toml` changes only through a PR the maintainer merges.

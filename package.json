@@ -1,0 +1,20 @@
+{
+  "name": "shaka-shakacode-com",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "sync:docs": "node scripts/sync-docs.mjs",
+    "prepare:docs": "node scripts/prepare-docs.mjs --target docusaurus",
+    "audit:docs": "node scripts/audit-docs.mjs",
+    "test": "node --test scripts/*.test.mjs",
+    "test:algolia-config": "node --test scripts/algolia-config.test.mjs",
+    "prepare": "npm run sync:docs && npm run prepare:docs",
+    "install:site": "npm --prefix prototypes/docusaurus install",
+    "dev": "npm --prefix prototypes/docusaurus run start",
+    "build:site": "[ -x prototypes/docusaurus/node_modules/.bin/docusaurus ] || npm --prefix prototypes/docusaurus install; npm --prefix prototypes/docusaurus run build",
+    "build": "npm run prepare && npm run build:site",
+    "build:full": "npm run build",
+    "cloudflare:deploy": "npm run build && npx wrangler@4 deploy"
+  }
+}
