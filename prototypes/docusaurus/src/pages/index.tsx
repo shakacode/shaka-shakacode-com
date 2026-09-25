@@ -151,6 +151,10 @@ export default function Home(): ReactNode {
                 </div>
               ))}
             </div>
+            <p id="consequences" className={styles.verificationLink}>
+              New to building with AI?{' '}
+              <Link to="/consequences">Choose checks that fit the consequences →</Link>
+            </p>
             <div className={styles.docLinks}>
               <Link to="/docs/configure-repository">Repository setup →</Link>
               <Link to="/docs/settings">Settings →</Link>

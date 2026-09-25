@@ -1,0 +1,122 @@
+.section {
+  padding: 3rem 0;
+}
+
+.sectionLead {
+  max-width: 68ch;
+  font-size: 1.15rem;
+}
+
+.eyebrow {
+  margin-bottom: 0.75rem;
+  color: var(--ifm-color-primary-darker);
+  font-family: var(--ifm-font-family-monospace);
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+[data-theme='dark'] .eyebrow {
+  color: var(--ifm-color-primary-lighter);
+}
+
+.direction {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin: 2rem 0 1.25rem;
+  color: var(--ifm-color-primary-darker);
+  font-family: var(--ifm-font-family-monospace);
+  font-size: 0.85rem;
+}
+
+[data-theme='dark'] .direction {
+  color: var(--ifm-color-primary-lighter);
+}
+
+.directionLine {
+  flex: 1;
+  border-bottom: 1px solid var(--ifm-color-primary);
+}
+
+.stages {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.stage {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  min-width: 0;
+  padding: 1.25rem;
+  border: 1px solid var(--ifm-color-emphasis-300);
+  border-radius: 0.75rem;
+}
+
+.stage h2 {
+  margin: 0.25rem 0 0;
+  font-size: 1.2rem;
+}
+
+.stage p {
+  margin: 0;
+}
+
+.meter {
+  display: flex;
+  gap: 5px;
+}
+
+.meter span {
+  flex: 1;
+  height: 5px;
+  border-radius: 2px;
+  background: var(--ifm-color-emphasis-300);
+}
+
+.meter .filled {
+  background: var(--ifm-color-primary);
+}
+
+.consequence {
+  color: var(--ifm-color-primary-darker);
+  font-weight: 600;
+}
+
+[data-theme='dark'] .consequence {
+  color: var(--ifm-color-primary-lighter);
+}
+
+.example {
+  font-size: 0.9rem;
+}
+
+.practice {
+  margin-top: auto !important;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--ifm-color-emphasis-300);
+}
+
+.caption {
+  max-width: 85ch;
+  margin-top: 1.25rem;
+  color: var(--ifm-color-emphasis-700);
+  font-size: 0.95rem;
+}
+
+@media (max-width: 996px) {
+  .stages {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 560px) {
+  .stages {
+    grid-template-columns: 1fr;
+  }
+}
