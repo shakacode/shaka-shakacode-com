@@ -1,6 +1,14 @@
 .hero {
-  padding: 5rem 0 4rem;
+  padding: 4rem 0;
+  background: var(--site-hero-background);
   border-bottom: 1px solid var(--ifm-toc-border-color);
+}
+
+.heroGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+  gap: 3rem;
+  align-items: center;
 }
 
 .eyebrow {
@@ -17,9 +25,10 @@
 }
 
 .heroTitle {
-  max-width: 22ch;
-  font-size: clamp(2.2rem, 5vw, 3.6rem);
-  line-height: 1.1;
+  font-size: clamp(2.2rem, 3.5vw, 3.25rem);
+  line-height: 1.12;
+  letter-spacing: -0.035em;
+  text-wrap: balance;
 }
 
 .accent {
@@ -29,151 +38,112 @@
 .heroLead,
 .sectionLead {
   max-width: 68ch;
-  font-size: 1.15rem;
+  font-size: 1.1rem;
 }
 
-.heroCode {
-  max-width: 44rem;
-  margin: 1.5rem 0;
-}
-
-.heroActions {
+.heroActions,
+.docLinks {
   display: flex;
   flex-wrap: wrap;
   gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.taskPanel {
+  min-width: 0;
+  padding: 1.75rem;
+  border: 1px solid var(--site-border-color);
+  border-radius: 0.75rem;
+  background: var(--site-surface-0);
+}
+
+.taskPanel pre {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.exampleLabel {
+  margin-top: 1.5rem;
+  font-weight: 600;
+}
+
+.caption {
+  color: var(--ifm-color-content-secondary);
+  font-size: 0.9rem;
 }
 
 .section {
-  padding: 4rem 0;
+  padding: 3.5rem 0;
 }
 
 .alt {
-  background: var(--ifm-color-emphasis-100);
+  background: var(--site-surface-1);
 }
 
+.benefits,
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
-  gap: 1.25rem;
+  gap: 1.5rem 3rem;
   margin-top: 2rem;
 }
 
-.card {
-  padding: 1.5rem;
-  border: 1px solid var(--ifm-color-emphasis-300);
-  border-radius: 0.75rem;
-  background: var(--ifm-background-color);
+.benefits {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
+.benefit {
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--site-border-color);
+}
+
+.benefit h3,
 .card h3 {
   font-size: 1.15rem;
 }
 
+.benefit p,
 .card p {
   margin-bottom: 0.75rem;
 }
 
-.direction {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  margin: 2rem 0 1.25rem;
-  color: var(--ifm-color-primary-darker);
-  font-family: var(--ifm-font-family-monospace);
-  font-size: 0.85rem;
+.grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
-[data-theme='dark'] .direction {
-  color: var(--ifm-color-primary-lighter);
-}
-
-.directionLine {
-  flex: 1;
-  border-bottom: 1px solid var(--ifm-color-primary);
-}
-
-.stages {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 1rem;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.stage {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  min-width: 0;
-  padding: 1.25rem;
-  border: 1px solid var(--ifm-color-emphasis-300);
+.card {
+  padding: 1.5rem;
+  border: 1px solid var(--site-border-color);
   border-radius: 0.75rem;
-}
-
-.stage h3 {
-  margin: 0.25rem 0 0;
-  font-size: 1.2rem;
-}
-
-.stage p {
-  margin: 0;
-}
-
-.meter {
-  display: flex;
-  gap: 5px;
-}
-
-.meter span {
-  flex: 1;
-  height: 5px;
-  border-radius: 2px;
-  background: var(--ifm-color-emphasis-300);
-}
-
-.meter .filled {
-  background: var(--ifm-color-primary);
-}
-
-.consequence {
-  color: var(--ifm-color-primary-darker);
-  font-weight: 600;
-}
-
-[data-theme='dark'] .consequence {
-  color: var(--ifm-color-primary-lighter);
-}
-
-.example {
-  font-size: 0.9rem;
-}
-
-.practice {
-  margin-top: auto !important;
-  padding-top: 0.75rem;
-  border-top: 1px solid var(--ifm-color-emphasis-300);
-}
-
-.caption {
-  max-width: 85ch;
-  margin-top: 1.25rem;
-  color: var(--ifm-color-emphasis-700);
-  font-size: 0.95rem;
+  background: var(--site-surface-0);
 }
 
 @media (max-width: 996px) {
-  .stages {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+  .heroGrid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .heroTitle {
+    max-width: 26ch;
+  }
+
+  .grid {
+    grid-template-columns: 1fr;
   }
 }
 
 @media (max-width: 560px) {
-  .hero {
-    padding: 3rem 0 2.5rem;
+  .hero,
+  .section {
+    padding: 2.5rem 0;
   }
 
-  .stages {
+  .taskPanel {
+    padding: 1.25rem;
+  }
+
+  .benefits {
     grid-template-columns: 1fr;
+    gap: 0.75rem;
   }
 }
