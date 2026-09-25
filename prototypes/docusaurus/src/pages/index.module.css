@@ -73,6 +73,33 @@
   margin-bottom: 0.75rem;
 }
 
+.examplePreview {
+  display: block;
+  max-width: 52rem;
+  overflow: hidden;
+  margin-top: 1.75rem;
+  border: 1px solid var(--ifm-color-emphasis-300);
+  border-radius: 0.75rem;
+  background: var(--ifm-background-color);
+  text-decoration: none;
+}
+
+.examplePreview img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.examplePreview span {
+  display: block;
+  padding: 1rem 1.25rem;
+  font-weight: 600;
+}
+
+.exampleFootnote {
+  margin-top: 1.25rem;
+}
+
 .direction {
   display: flex;
   align-items: center;
