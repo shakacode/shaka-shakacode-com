@@ -14,24 +14,24 @@ const benefits = [
     body: 'Describe the outcome. Shaka supplies the steps through testing, review, and PR delivery.',
   },
   {
-    title: 'Avoid unnecessary CI runs',
-    body: 'Tests and adversarial reviews run locally, with before-and-after screenshots for UI changes, so problems are fixed before the push.',
+    title: 'Catch problems before hitting CI',
+    body: 'Test and review locally, including adversarial reviews and before-and-after screenshots for UI changes. Fix problems before pushing.',
   },
   {
     title: 'Make review easier',
-    body: 'The PR leads with the result and evidence. A code walkthrough explains the implementation choices.',
+    body: 'Get a PR that’s easy to review with a clear description. Screenshots show visible changes; a code walkthrough explains implementation choices.',
   },
   {
     title: 'See what a PR cost',
-    body: 'Available token usage and estimated dollar cost, including local review, appear in the PR. Missing usage is marked unknown.',
+    body: 'See available token usage and estimated cost, including implementation and local review data. Missing usage is marked unknown.',
   },
   {
     title: 'Control merging',
-    body: 'Choose Ask to merge on GitHub yourself, or Auto to let the agent merge after checks and required approvals. Consequential changes still need explicit human review.',
+    body: 'Choose Ask to merge yourself or Auto to let the agent merge after required checks and approvals. Consequential changes need human review.',
   },
   {
-    title: 'Resume unfinished work',
-    body: 'WIP Details on the PR name the owning agent chat, where it stopped, and what comes next.',
+    title: 'Resume unfinished work easily',
+    body: 'WIP Details on the PR identify the owning agent chat, where it stopped, and what comes next. Supported chat links take you back to the owning conversation.',
   },
 ];
 
@@ -41,13 +41,13 @@ const steps = [
     body: 'One skill guides each task through planning, implementation, verification, review, and delivery. Your repository settings supply the commands and merge preference.',
   },
   {
-    title: 'Evidence before delivery',
-    body: 'Tests, independent review, and visual comparisons help you judge the result before you merge.',
+    title: 'Verification',
+    body: 'Tests, independent review, and visual comparisons show whether the work is ready. Shaka gives your agent explicit checkpoints for testing, review, and delivery.',
     link: {to: '/docs/pr-verification', label: 'PR verification'},
   },
   {
-    title: 'Explicit enforcement',
-    body: 'Ruby helpers check configuration, filter public comments, and enforce merge conditions alongside GitHub. The workflow reference shows which steps rely on the agent.',
+    title: 'Enforcement',
+    body: 'Ruby and GitHub check configuration, comment trust, and merge conditions. The enforcement reference identifies which steps rely on the agent.',
     link: {to: '/docs/workflow', label: 'What is enforced'},
   },
 ];
@@ -56,7 +56,7 @@ export default function Home(): ReactNode {
   return (
     <Layout
       title="Give your coding agent a task. Get a tested, reviewed PR."
-      description="Shaka guides your coding agent from the first question through local tests, independent review, and an explained pull request on GitHub.">
+      description="Shaka guides your coding agent through implementation, local testing, independent review, and delivery on GitHub.">
       <header className={styles.hero}>
         <div className={clsx('container', styles.heroGrid)}>
           <div>
@@ -66,9 +66,12 @@ export default function Home(): ReactNode {
               <span className={styles.accent}>Get a tested, reviewed PR</span> that's easy to understand.
             </h1>
             <p className={styles.heroLead}>
-              Shaka guides the work from the first question through implementation, local tests,
-              independent review, and delivery on GitHub. You spend less time directing the process
-              and checking whether the agent finished the job.
+              Shaka guides your agent through implementation, local testing, independent review,
+              and delivery on GitHub. You describe the outcome; Shaka supplies the workflow.
+            </p>
+            <p className={styles.heroLead}>
+              Shaka brings back a PR ready to merge, asks for a decision when needed, or merges
+              automatically when authorized and required checks and approvals pass.
             </p>
             <div className={styles.heroActions}>
               <Link className="button button--primary button--lg" to="/docs/getting-started">
@@ -89,8 +92,10 @@ export default function Home(): ReactNode {
             <p className={styles.exampleLabel}>Already know your model and effort?</p>
             <CodeBlock language="text">{`${EXAMPLE_TASK}\nUse Sol, medium effort. Go.`}</CodeBlock>
             <p className={styles.caption}>
-              Choose a model available in your coding agent. When those settings are active,
-              Shaka starts without another model-selection question. It still brings you
+              Choose a model available in your coding agent. You can also say <code>Go</code>{' '}
+              without restating model or effort: Shaka starts when its recommendation matches
+              the model and effort your agent reports as active. If they differ or the agent
+              cannot confirm them, Shaka asks you to choose or confirm. It still brings you
               decisions that need your input.
             </p>
             <Link to="/docs/working-with-shaka">Working with Shaka →</Link>
@@ -151,6 +156,10 @@ export default function Home(): ReactNode {
                 </div>
               ))}
             </div>
+            <p className={styles.verificationLink}>
+              <strong>Public review safety.</strong> Shaka reads feedback from trusted reviewers
+              and leaves other comments for maintainer triage.
+            </p>
             <p id="consequences" className={styles.verificationLink}>
               New to building with AI?{' '}
               <Link to="/consequences">Choose checks that fit the consequences →</Link>
