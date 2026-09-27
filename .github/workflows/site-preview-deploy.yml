@@ -1,0 +1,280 @@
+name: Site Preview Deploy
+
+on:
+  workflow_run:
+    workflows: [Site Build and Deploy]
+    types: [completed]
+  pull_request_target:
+    types: [closed, edited]
+
+permissions:
+  contents: read
+
+jobs:
+  check-preview:
+    # Resolve the exact source PR from a metadata artifact produced by the unprivileged build.
+    if: github.event.workflow_run.event == 'pull_request' && github.event.workflow_run.head_repository.full_name == github.repository && vars.ENABLE_WORKER_PREVIEWS == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      deploy: ${{ steps.current.outputs.deploy }}
+      pr_number: ${{ steps.current.outputs.pr_number }}
+    permissions:
+      actions: read
+      contents: read
+      pull-requests: read
+    steps:
+      - name: Checkout trusted metadata validator
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.event.repository.default_branch }}
+          persist-credentials: false
+
+      - name: Confirm the build artifacts exist
+        id: artifacts
+        run: |
+          set -euo pipefail
+          artifacts="$(gh api "repos/$GITHUB_REPOSITORY/actions/runs/$RUN_ID/artifacts")"
+          has_artifacts="$(printf '%s' "$artifacts" | jq -r '[.artifacts[] | select((.name == "site-build" or .name == "site-preview-metadata") and .expired == false)] | map(.name) | unique | length == 2')"
+          echo "available=$has_artifacts" >> "$GITHUB_OUTPUT"
+          if [[ "$has_artifacts" != true ]]; then
+            echo "Preview skipped because this run did not upload both required artifacts."
+          fi
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RUN_ID: ${{ github.event.workflow_run.id }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+
+      - name: Download Preview metadata
+        if: steps.artifacts.outputs.available == 'true'
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+        with:
+          name: site-preview-metadata
+          path: ${{ runner.temp }}/preview-metadata
+          repository: ${{ github.repository }}
+          run-id: ${{ github.event.workflow_run.id }}
+          github-token: ${{ github.token }}
+
+      - name: Confirm the pull request is still current
+        id: current
+        if: steps.artifacts.outputs.available == 'true'
+        run: |
+          set -euo pipefail
+          metadata_file="$RUNNER_TEMP/preview-metadata/preview-metadata.json"
+          if ! pr_number="$(bash .github/scripts/read-worker-preview-metadata.sh "$metadata_file" "$RUN_SHA")"; then
+            echo "deploy=false" >> "$GITHUB_OUTPUT"
+            echo "Preview skipped because the build artifact has invalid or stale PR metadata."
+            exit 0
+          fi
+          echo "pr_number=$pr_number" >> "$GITHUB_OUTPUT"
+          export PR_NUMBER="$pr_number"
+          pull_request="$(gh api "repos/$GITHUB_REPOSITORY/pulls/$pr_number")"
+          state="$(printf '%s' "$pull_request" | jq -r '.state')"
+          head_sha="$(printf '%s' "$pull_request" | jq -r '.head.sha')"
+          base_ref="$(printf '%s' "$pull_request" | jq -r '.base.ref')"
+          head_repo="$(printf '%s' "$pull_request" | jq -r '.head.repo.full_name')"
+          head_branch="$(printf '%s' "$pull_request" | jq -r '.head.ref')"
+          if [[ "$head_repo" != "$GITHUB_REPOSITORY" || "$head_branch" != "$RUN_BRANCH" ]]; then
+            echo "deploy=false" >> "$GITHUB_OUTPUT"
+            echo "Preview skipped because the PR no longer matches its build metadata."
+          elif [[ "$base_ref" != main ]]; then
+            echo "deploy=false" >> "$GITHUB_OUTPUT"
+            echo "Preview skipped because this PR no longer targets main; the cleanup job will remove any previous Preview."
+          elif [[ "$state" == closed ]]; then
+            echo "deploy=false" >> "$GITHUB_OUTPUT"
+            echo "The cleanup job will remove this closed PR's Preview."
+          elif [[ "$BUILD_CONCLUSION" != success ]]; then
+            echo "deploy=false" >> "$GITHUB_OUTPUT"
+            echo "Preview skipped because the PR build did not succeed."
+          elif [[ "$head_sha" != "$RUN_SHA" ]]; then
+            echo "deploy=false" >> "$GITHUB_OUTPUT"
+            echo "Preview skipped because this build is stale."
+          else
+            echo "deploy=true" >> "$GITHUB_OUTPUT"
+          fi
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RUN_SHA: ${{ github.event.workflow_run.head_sha }}
+          RUN_BRANCH: ${{ github.event.workflow_run.head_branch }}
+          RUN_ID: ${{ github.event.workflow_run.id }}
+          RUNNER_TEMP: ${{ runner.temp }}
+          BUILD_CONCLUSION: ${{ github.event.workflow_run.conclusion }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+
+  deploy-preview:
+    # This privileged workflow consumes only static output from a separate, unprivileged PR build.
+    needs: check-preview
+    if: needs.check-preview.outputs.deploy == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    concurrency:
+      group: site-preview-deploy-pr-${{ needs.check-preview.outputs.pr_number }}
+      cancel-in-progress: false
+    permissions:
+      actions: read
+      contents: read
+      issues: write
+      pull-requests: read
+    environment:
+      name: preview
+      url: ${{ steps.preview.outputs.preview_url }}
+    steps:
+      - name: Checkout trusted base configuration
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.event.repository.default_branch }}
+          persist-credentials: false
+
+      - name: Setup Node
+        uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5.0.0
+        with:
+          node-version: 20
+
+      - name: Download the completed PR build artifact
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+        with:
+          name: site-build
+          path: ${{ runner.temp }}/site-build
+          repository: ${{ github.repository }}
+          run-id: ${{ github.event.workflow_run.id }}
+          github-token: ${{ github.token }}
+
+      - name: Validate static preview assets
+        run: |
+          set -euo pipefail
+          test -f "$PREVIEW_ASSETS/index.html"
+        env:
+          PREVIEW_ASSETS: ${{ runner.temp }}/site-build
+
+      - name: Confirm the pull request is still current before deployment
+        id: deploy-ready
+        run: |
+          set -euo pipefail
+          pull_request="$(gh api "repos/$GITHUB_REPOSITORY/pulls/$PR_NUMBER")"
+          state="$(printf '%s' "$pull_request" | jq -r '.state')"
+          head_sha="$(printf '%s' "$pull_request" | jq -r '.head.sha')"
+          base_ref="$(printf '%s' "$pull_request" | jq -r '.base.ref')"
+          if [[ "$state" == open && "$base_ref" == main && "$head_sha" == "$RUN_SHA" ]]; then
+            echo "ready=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "ready=false" >> "$GITHUB_OUTPUT"
+            echo "Preview skipped because the PR changed while the deployment was queued."
+          fi
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          PR_NUMBER: ${{ needs.check-preview.outputs.pr_number }}
+          RUN_SHA: ${{ github.event.workflow_run.head_sha }}
+
+      - name: Create or update Cloudflare Preview
+        if: steps.deploy-ready.outputs.ready == 'true'
+        id: preview
+        run: |
+          set -euo pipefail
+          if [[ -z "${CLOUDFLARE_API_TOKEN:-}" || -z "${CLOUDFLARE_ACCOUNT_ID:-}" ]]; then
+            echo "Configure Cloudflare secrets in GitHub's preview environment before enabling previews." >&2
+            exit 1
+          fi
+          sed "s|directory = \"prototypes/docusaurus/build\"|directory = \"$PREVIEW_ASSETS\"|" wrangler.toml > "$PREVIEW_CONFIG"
+          mkdir -p "$WRANGLER_DIR"
+          cd "$WRANGLER_DIR"
+          output="$(NPM_CONFIG_CACHE="$WRANGLER_CACHE" npx --yes wrangler@4.141.0 preview --config "$PREVIEW_CONFIG" --name "pr-$PR_NUMBER" --json)"
+          printf '%s\n' "$output"
+          preview_url="$(printf '%s' "$output" | jq -er '.preview_urls[0]')"
+          echo "preview_url=$preview_url" >> "$GITHUB_OUTPUT"
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          PR_NUMBER: ${{ needs.check-preview.outputs.pr_number }}
+          PREVIEW_ASSETS: ${{ runner.temp }}/site-build
+          PREVIEW_CONFIG: ${{ runner.temp }}/wrangler-preview.toml
+          WRANGLER_DIR: ${{ runner.temp }}/wrangler-cli
+          WRANGLER_CACHE: ${{ runner.temp }}/wrangler-npm-cache
+
+      - name: Publish Preview URL for the current open PR
+        if: steps.deploy-ready.outputs.ready == 'true'
+        run: |
+          set -euo pipefail
+          pull_request="$(gh api "repos/$GITHUB_REPOSITORY/pulls/$PR_NUMBER")"
+          state="$(printf '%s' "$pull_request" | jq -r '.state')"
+          head_sha="$(printf '%s' "$pull_request" | jq -r '.head.sha')"
+          base_ref="$(printf '%s' "$pull_request" | jq -r '.base.ref')"
+          if [[ "$state" == closed ]]; then
+            PREVIEW_REMOVAL_REASON="Preview removed because this PR was closed." bash .github/scripts/cleanup-worker-preview.sh
+            echo "The PR closed while its Preview was deploying; the Preview was removed."
+          elif [[ "$base_ref" != main ]]; then
+            PREVIEW_REMOVAL_REASON="Preview removed because this PR was retargeted away from main." bash .github/scripts/cleanup-worker-preview.sh
+            echo "The PR no longer targets main; its Preview was removed."
+          elif [[ "$head_sha" != "$RUN_SHA" ]]; then
+            PREVIEW_REMOVAL_REASON="Preview removed because the PR head changed. A new Preview will be available after the latest build succeeds." bash .github/scripts/cleanup-worker-preview.sh
+            echo "The PR head changed while its Preview was deploying; the stale Preview was removed."
+          else
+            bash .github/scripts/manage-worker-preview-comment.sh publish
+            pull_request_after_publish="$(gh api "repos/$GITHUB_REPOSITORY/pulls/$PR_NUMBER")"
+            state_after_publish="$(printf '%s' "$pull_request_after_publish" | jq -r '.state')"
+            base_ref_after_publish="$(printf '%s' "$pull_request_after_publish" | jq -r '.base.ref')"
+            if [[ "$state_after_publish" != open ]]; then
+              PREVIEW_REMOVAL_REASON="Preview removed because this PR was closed." bash .github/scripts/cleanup-worker-preview.sh
+              echo "The PR closed while its Preview comment was published; the Preview was removed."
+            elif [[ "$base_ref_after_publish" != main ]]; then
+              PREVIEW_REMOVAL_REASON="Preview removed because this PR was retargeted away from main." bash .github/scripts/cleanup-worker-preview.sh
+              echo "The PR no longer targets main; its Preview was removed."
+            fi
+          fi
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          GH_TOKEN: ${{ github.token }}
+          PR_NUMBER: ${{ needs.check-preview.outputs.pr_number }}
+          RUN_SHA: ${{ github.event.workflow_run.head_sha }}
+          PREVIEW_URL: ${{ steps.preview.outputs.preview_url }}
+
+  cleanup-closed-main-preview:
+    if: github.event_name == 'pull_request_target' && github.event.action == 'closed' && github.event.pull_request.base.ref == 'main' && github.event.pull_request.head.repo.full_name == github.repository && vars.ENABLE_WORKER_PREVIEWS == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: read
+      issues: write
+    environment:
+      name: preview
+    steps:
+      - name: Checkout trusted base configuration
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.event.repository.default_branch }}
+          persist-credentials: false
+
+      - name: Remove closed pull request Preview
+        run: bash .github/scripts/cleanup-worker-preview.sh
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          GH_TOKEN: ${{ github.token }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          PREVIEW_REMOVAL_REASON: Preview removed because this PR was closed.
+
+  cleanup-retargeted-preview:
+    if: github.event_name == 'pull_request_target' && github.event.action == 'edited' && github.event.changes.base != null && github.event.pull_request.base.ref != 'main' && github.event.pull_request.head.repo.full_name == github.repository && vars.ENABLE_WORKER_PREVIEWS == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: read
+      issues: write
+    environment:
+      name: preview
+    steps:
+      - name: Checkout trusted base configuration
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.event.repository.default_branch }}
+          persist-credentials: false
+
+      - name: Remove Preview for a PR retargeted away from main
+        run: bash .github/scripts/cleanup-worker-preview.sh
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          GH_TOKEN: ${{ github.token }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          PREVIEW_REMOVAL_REASON: Preview removed because this PR was retargeted away from main.

@@ -150,8 +150,19 @@ Repo: `shakacode/shaka-shakacode-com`.
 - Update the seam scripts to the real `npm` commands.
 - Deploy as the Cloudflare Worker `shaka-shakacode-com` (static assets; Cloudflare's
   current form of Pages). `wrangler.toml` attaches `shaka.shakacode.com` when `main`
-  deploys; pull requests build without deploying, so only merged code gets
-  Cloudflare credentials.
+  deploys. Pull requests build without Cloudflare credentials; a separate trusted
+  workflow publishes the static build artifact to a Worker Preview using the base
+  branch's Wrangler configuration. Only `main` deploys production.
+- Before enabling previews, a maintainer must restrict the `pages-deploy` and
+  `preview` GitHub environments to `main`, move `CLOUDFLARE_API_TOKEN` and
+  `CLOUDFLARE_ACCOUNT_ID` from repository secrets into both environments, and
+  remove the repository-level copies. Then set the `ENABLE_WORKER_PREVIEWS`
+  repository variable to `true`; until then, preview and cleanup jobs stay off.
+  Preview and cleanup workflows use the `preview` environment; production deploys
+  use `pages-deploy`. Preview deployments run only for same-repository pull
+  requests targeting `main`. Cleanup also removes existing Previews for closed
+  PRs and open PRs retargeted away from `main`; the bot comment is updated to
+  explain why the Preview was removed.
 - Verify: `npm run build` and `npm run audit:docs` pass; the rendered site is
   checked on desktop and at 390px mobile width; there are no console errors.
 - The README describes who owns what, following reactonrails.com's rules.

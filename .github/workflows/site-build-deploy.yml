@@ -2,6 +2,7 @@ name: Site Build and Deploy
 
 on:
   pull_request:
+    types: [opened, synchronize, reopened, edited, closed]
   push:
     branches: [main]
   repository_dispatch:
@@ -12,11 +13,13 @@ permissions:
   contents: read
 
 concurrency:
+  # A close event joins the PR group to cancel a build that no longer needs to finish.
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 
 jobs:
   build:
+    if: github.event_name != 'pull_request' || github.event.action != 'closed'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -52,9 +55,44 @@ jobs:
           ALGOLIA_SEARCH_API_KEY: ${{ secrets.ALGOLIA_SEARCH_API_KEY }}
           ALGOLIA_INDEX_NAME: ${{ secrets.ALGOLIA_APP_ID != '' && secrets.ALGOLIA_SEARCH_API_KEY != '' && vars.ALGOLIA_INDEX_NAME || '' }}
 
+      - name: Upload site build for the trusted preview workflow
+        if: github.event_name == 'pull_request'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: site-build
+          path: prototypes/docusaurus/build
+          if-no-files-found: error
+          retention-days: 1
+
+  preview-metadata:
+    if: github.event_name == 'pull_request' && github.event.action != 'closed'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Write Preview metadata
+        run: |
+          set -euo pipefail
+          mkdir -p "$PREVIEW_METADATA_DIR"
+          jq -n --argjson pr_number "$PR_NUMBER" --arg head_sha "$PR_HEAD_SHA" \
+            '{pr_number: $pr_number, head_sha: $head_sha}' \
+            > "$PREVIEW_METADATA_DIR/preview-metadata.json"
+        env:
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          PR_HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+          PREVIEW_METADATA_DIR: ${{ runner.temp }}/preview-metadata
+
+      - name: Upload Preview metadata for the trusted workflow
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: site-preview-metadata
+          path: ${{ runner.temp }}/preview-metadata/preview-metadata.json
+          if-no-files-found: error
+          retention-days: 1
+
   deploy:
-    # Only code merged to main runs with Cloudflare credentials. Pull requests build
-    # without deploying: wrangler can run a build command from a candidate wrangler.toml.
+    # Only main deploys production. PR previews are published by a separate trusted
+    # workflow_run from static build artifacts and the base branch's Wrangler config.
     if: (github.event_name == 'push' && github.ref == 'refs/heads/main') || github.event_name == 'repository_dispatch' || (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main')
     needs: build
     runs-on: ubuntu-latest
@@ -107,9 +145,10 @@ jobs:
           {
             echo "### Cloudflare deployment"
             echo ""
-            echo "- Event: \`${{ github.event_name }}\`"
+            echo "- Event: \`$EVENT_NAME\`"
             echo "- URL: ${DEPLOYMENT_URL:-unknown}"
           } >> "$GITHUB_STEP_SUMMARY"
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          EVENT_NAME: ${{ github.event_name }}
