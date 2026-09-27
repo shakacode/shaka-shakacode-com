@@ -28,6 +28,10 @@ test('manual runs must come from main; deletion requires a closed PR', () => {
   const deletion = { ...request, operation: 'delete' };
   assert.equal(previewOperation(deletion, run, pullRequest, repository), 'skip');
   assert.equal(previewOperation(deletion, run, { ...pullRequest, state: 'closed' }, repository), 'delete');
+  assert.equal(previewOperation(request, run, { ...pullRequest, state: 'closed' }, repository, { reconcile: true }), 'delete');
+  assert.equal(previewOperation(request, run, {
+    ...pullRequest, state: 'closed', head: { ...pullRequest.head, sha: 'c'.repeat(40) },
+  }, repository, { reconcile: true }), 'delete');
   assert.equal(previewOperation(deletion, run, {
     ...pullRequest, state: 'closed', head: { ...pullRequest.head, sha: 'c'.repeat(40) },
   }, repository), 'skip');

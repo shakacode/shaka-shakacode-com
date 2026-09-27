@@ -87,6 +87,7 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
           PREVIEW_REQUEST_PATH: ${{ runner.temp }}/branch-preview-request/request.json
+          PREVIEW_RECONCILE: 'true'
           PREVIEW_RUN_EVENT: ${{ github.event.workflow_run.event }}
           PREVIEW_RUN_HEAD_BRANCH: ${{ github.event.workflow_run.head_branch }}
           PREVIEW_RUN_HEAD_REPOSITORY: ${{ github.event.workflow_run.head_repository.full_name }}
@@ -161,16 +162,8 @@ jobs:
           node scripts/branch-preview.mjs comment-publish
           echo "PR #$PREVIEW_PR_NUMBER preview: $PREVIEW_URL" >> "$GITHUB_STEP_SUMMARY"
 
-      - name: Check for an existing Preview
-        if: steps.recheck.outputs.operation == 'delete'
-        id: existing
-        env:
-          GH_TOKEN: ${{ github.token }}
-          PREVIEW_PR_NUMBER: ${{ steps.recheck.outputs.pr_number }}
-        run: node scripts/branch-preview.mjs has-comment
-
       - name: Delete closed PR Preview
-        if: steps.recheck.outputs.operation == 'delete' && steps.existing.outputs.has_comment == 'true'
+        if: steps.recheck.outputs.operation == 'delete'
         env:
           PREVIEW_PR_NUMBER: ${{ steps.recheck.outputs.pr_number }}
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
@@ -181,7 +174,7 @@ jobs:
             --skip-confirmation
 
       - name: Update PR comment after deletion
-        if: steps.recheck.outputs.operation == 'delete' && steps.existing.outputs.has_comment == 'true'
+        if: steps.recheck.outputs.operation == 'delete'
         env:
           GH_TOKEN: ${{ github.token }}
           PREVIEW_PR_NUMBER: ${{ steps.recheck.outputs.pr_number }}

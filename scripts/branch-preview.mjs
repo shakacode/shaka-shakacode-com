@@ -15,7 +15,7 @@ function validateRequest(request) {
   }
 }
 
-export function previewOperation(request, run, pullRequest, repository) {
+export function previewOperation(request, run, pullRequest, repository, { reconcile = false } = {}) {
   validateRequest(request);
   if (pullRequest.number !== request.pr_number || pullRequest.head?.repo?.full_name !== repository) {
     throw new Error('Preview request does not identify a pull request in this repository');
@@ -32,6 +32,10 @@ export function previewOperation(request, run, pullRequest, repository) {
   } else if (run.headBranch !== pullRequest.head.ref) {
     throw new Error('Preview build branch does not match the pull request');
   }
+
+  // The last pending job in a concurrency group survives. It must clean up a
+  // closed PR even when its original artifact asked to publish an older head.
+  if (reconcile && pullRequest.state === 'closed') return 'delete';
 
   if (request.operation === 'publish') {
     if (pullRequest.state !== 'open' || pullRequest.head.sha !== request.head_sha) {
@@ -120,7 +124,7 @@ async function main() {
       event: process.env.PREVIEW_RUN_EVENT,
       headBranch: process.env.PREVIEW_RUN_HEAD_BRANCH,
       headRepository: process.env.PREVIEW_RUN_HEAD_REPOSITORY,
-    }, pullRequest, repository);
+    }, pullRequest, repository, { reconcile: process.env.PREVIEW_RECONCILE === 'true' });
     output({ operation, pr_number: request.pr_number, head_sha: request.head_sha });
     console.log(`Preview request for PR #${request.pr_number}: ${operation}`);
     return;
@@ -130,16 +134,13 @@ async function main() {
   if (!Number.isSafeInteger(number) || number < 1) throw new Error('Invalid pull request number');
   const existing = await ownComment(repository, number);
 
-  if (command === 'has-comment') {
-    output({ has_comment: Boolean(existing && !existing.body.includes('Branch preview removed after PR')) });
-    return;
-  }
-
   if (command === 'comment-pending') {
     const sha = process.env.PREVIEW_HEAD_SHA;
     if (!/^[a-f0-9]{40}$/.test(sha ?? '')) throw new Error('Invalid preview head SHA');
+    const previousUrl = existing?.body.match(/https:\/\/[-\w.]+\.workers\.dev\//)?.[0];
+    const previousPreview = previousUrl ? `\n\nPrevious preview: ${previousUrl}` : '';
     await upsertComment(repository, number, existing,
-      `${marker}\nPublishing the branch preview for PR #${number} at \`${sha.slice(0, 7)}\`. The URL will appear here after the deployed site responds.`);
+      `${marker}\nPublishing the branch preview for PR #${number} at \`${sha.slice(0, 7)}\`. The URL will appear here after the deployed site responds.${previousPreview}`);
     return;
   }
 
