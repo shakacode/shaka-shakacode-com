@@ -62,7 +62,7 @@
   overflow-wrap: anywhere;
 }
 
-.verificationLink {
+.sectionNote {
   margin-top: 2rem;
   scroll-margin-top: calc(var(--ifm-navbar-height) + 1rem);
 }

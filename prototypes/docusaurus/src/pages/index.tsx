@@ -71,7 +71,8 @@ export default function Home(): ReactNode {
             </p>
             <p className={styles.heroLead}>
               Shaka brings back a PR ready to merge, asks for a decision when needed, or merges
-              automatically when authorized and required checks and approvals pass.
+              automatically when repository policy and the task permit it, after required checks
+              and approvals pass.
             </p>
             <div className={styles.heroActions}>
               <Link className="button button--primary button--lg" to="/docs/getting-started">
@@ -156,11 +157,11 @@ export default function Home(): ReactNode {
                 </div>
               ))}
             </div>
-            <p className={styles.verificationLink}>
+            <p className={styles.sectionNote}>
               <strong>Public review safety.</strong> Shaka reads feedback from trusted reviewers
               and leaves other comments for maintainer triage.
             </p>
-            <p id="consequences" className={styles.verificationLink}>
+            <p id="consequences" className={styles.sectionNote}>
               New to building with AI?{' '}
               <Link to="/consequences">Choose checks that fit the consequences →</Link>
             </p>
