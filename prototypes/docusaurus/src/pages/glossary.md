@@ -99,14 +99,9 @@ human review. See [choose a merge policy](/docs/working-with-shaka#choose-a-merg
 
 ### Independent review
 
-Review by a reviewer that did not write the change. For a Shaka task, it is satisfied at the
-current head by one of two things:
-
-- a published local review report, which ends with a line naming the commit and reviewer, such
-  as `REVIEWED <sha> BY anthropic/claude`;
-- a verified report from a GitHub review job the repository configured.
-
-A green check alone does not prove that a review happened.
+Review by someone who did not write the change. Shaka records review evidence for the commit
+under discussion; a green check alone does not describe the review. See
+[PR verification](/docs/pr-verification) for the current requirements.
 
 ### Adversarial review
 
@@ -127,7 +122,7 @@ reviews run again. The merge helper refuses to merge if the head moved since ver
 A code walkthrough is a review comment the agent publishes on the PR before merge. It explains
 the implementation for someone reading the code: the purpose, the old and new behavior, key
 choices, validation, risks, and rollback, with links to the exact lines. The PR description
-links to it. When the agent merges, the merge helper requires a walkthrough at the current head.
+links to it. See the [workflow](/docs/workflow) for the current merge requirements.
 
 ### PR description
 
@@ -149,10 +144,9 @@ See [resume unfinished work](/docs/working-with-shaka#resume-unfinished-work).
 
 ### Trusted GitHub actors
 
-The people, bots, and teams whose comments the agent may read in a public repository. People
-with verified write, maintain, or admin permission are also trusted. Comments from anyone else
-are withheld from the agent, with links kept for maintainers. Even a trusted comment cannot
-authorize merging or change policy. See [safety](/safety).
+The people, bots, and teams whose public comments the agent may read. The current trust rules
+are in the canonical [public-comment safety guide](https://github.com/shakacode/shaka/blob/main/skills/shaka/references/public-comments-safety.md).
+Even a trusted comment cannot authorize merging or change policy. See [safety](/safety).
 
 ### Control tower
 
