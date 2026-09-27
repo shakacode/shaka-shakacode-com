@@ -17,6 +17,9 @@ function validateRequest(request) {
 
 export function previewOperation(request, run, pullRequest, repository, { reconcile = false } = {}) {
   validateRequest(request);
+  if (run.title !== `Preview PR #${request.pr_number}`) {
+    throw new Error('Preview request does not match the workflow run title');
+  }
   if (pullRequest.number !== request.pr_number || pullRequest.head?.repo?.full_name !== repository) {
     throw new Error('Preview request does not identify a pull request in this repository');
   }
@@ -122,6 +125,7 @@ async function main() {
     const pullRequest = await github(`repos/${repository}/pulls/${request.pr_number}`);
     const operation = previewOperation(request, {
       event: process.env.PREVIEW_RUN_EVENT,
+      title: process.env.PREVIEW_RUN_TITLE,
       headBranch: process.env.PREVIEW_RUN_HEAD_BRANCH,
       headRepository: process.env.PREVIEW_RUN_HEAD_REPOSITORY,
     }, pullRequest, repository, { reconcile: process.env.PREVIEW_RECONCILE === 'true' });

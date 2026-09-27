@@ -5,7 +5,7 @@ import { previewOperation, previewUrl } from './branch-preview.mjs';
 const sha = 'a'.repeat(40);
 const repository = 'shakacode/shaka-shakacode-com';
 const request = { operation: 'publish', pr_number: 12, head_sha: sha };
-const run = { event: 'pull_request', headBranch: 'feature', headRepository: repository };
+const run = { event: 'pull_request', title: 'Preview PR #12', headBranch: 'feature', headRepository: repository };
 const pullRequest = { number: 12, state: 'open', head: { sha, ref: 'feature', repo: { full_name: repository } } };
 
 test('publishes only the current head of a same-repository PR', () => {
@@ -17,6 +17,7 @@ test('publishes only the current head of a same-repository PR', () => {
 });
 
 test('a PR run must come from the pull request branch', () => {
+  assert.throws(() => previewOperation(request, { ...run, title: 'Preview PR #13' }, pullRequest, repository), /title/);
   assert.throws(() => previewOperation(request, { ...run, headBranch: 'other' }, pullRequest, repository), /branch/);
   assert.throws(() => previewOperation(request, { ...run, headRepository: 'someone/fork' }, pullRequest, repository), /originate/);
 });

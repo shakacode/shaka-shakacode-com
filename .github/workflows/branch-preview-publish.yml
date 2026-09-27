@@ -8,7 +8,7 @@ on:
 permissions:
   contents: read
   actions: read
-  pull-requests: write
+  pull-requests: read
 
 jobs:
   verify:
@@ -50,12 +50,17 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           PREVIEW_REQUEST_PATH: ${{ runner.temp }}/branch-preview-request/request.json
           PREVIEW_RUN_EVENT: ${{ github.event.workflow_run.event }}
+          PREVIEW_RUN_TITLE: ${{ github.event.workflow_run.display_title }}
           PREVIEW_RUN_HEAD_BRANCH: ${{ github.event.workflow_run.head_branch }}
           PREVIEW_RUN_HEAD_REPOSITORY: ${{ github.event.workflow_run.head_repository.full_name }}
 
   preview:
     needs: verify
     if: needs.verify.outputs.operation != 'skip'
+    permissions:
+      contents: read
+      actions: write
+      pull-requests: write
     concurrency:
       group: branch-preview-${{ needs.verify.outputs.pr_number }}
       cancel-in-progress: false
@@ -89,8 +94,16 @@ jobs:
           PREVIEW_REQUEST_PATH: ${{ runner.temp }}/branch-preview-request/request.json
           PREVIEW_RECONCILE: 'true'
           PREVIEW_RUN_EVENT: ${{ github.event.workflow_run.event }}
+          PREVIEW_RUN_TITLE: ${{ github.event.workflow_run.display_title }}
           PREVIEW_RUN_HEAD_BRANCH: ${{ github.event.workflow_run.head_branch }}
           PREVIEW_RUN_HEAD_REPOSITORY: ${{ github.event.workflow_run.head_repository.full_name }}
+
+      - name: Request a fresh build after a stale run
+        if: steps.recheck.outputs.operation == 'skip'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PREVIEW_PR_NUMBER: ${{ steps.recheck.outputs.pr_number }}
+        run: gh workflow run branch-preview-build.yml --ref main -f pull_request="$PREVIEW_PR_NUMBER" -f operation=publish
 
       - name: Download built site
         if: steps.recheck.outputs.operation == 'publish'
