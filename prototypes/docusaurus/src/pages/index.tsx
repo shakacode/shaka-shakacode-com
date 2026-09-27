@@ -27,7 +27,7 @@ const benefits = [
   },
   {
     title: 'Control merging',
-    body: 'Choose Ask to merge yourself or Auto to let the agent merge within your configured limits after required checks, review, and approvals. Changes beyond those limits return to Ask.',
+    body: 'Choose Ask to merge yourself or Auto to let the agent merge within your configured limits after required checks, review, and approvals. Changes beyond those limits return to Ask. Consequential changes need human review.',
   },
   {
     title: 'Resume unfinished work easily',
