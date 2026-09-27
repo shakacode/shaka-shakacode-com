@@ -21,6 +21,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
 
       - name: Setup Node
         uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5.0.0
@@ -66,11 +68,13 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
 
       - name: Setup Node
         uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5.0.0
         with:
-          node-version: 20
+          node-version: 22
 
       - name: Sync docs
         run: npm run sync:docs
@@ -101,15 +105,16 @@ jobs:
         id: deploy
         run: |
           set -euo pipefail
-          npx wrangler@4 deploy | tee /tmp/wrangler.log
+          npx --yes wrangler@4.141.0 deploy | tee /tmp/wrangler.log
           DEPLOYMENT_URL="https://shaka.shakacode.com"
           echo "deployment_url=${DEPLOYMENT_URL:-unknown}" >> "$GITHUB_OUTPUT"
           {
             echo "### Cloudflare deployment"
             echo ""
-            echo "- Event: \`${{ github.event_name }}\`"
+            echo "- Event: \`$DEPLOY_EVENT\`"
             echo "- URL: ${DEPLOYMENT_URL:-unknown}"
           } >> "$GITHUB_STEP_SUMMARY"
         env:
+          DEPLOY_EVENT: ${{ github.event_name }}
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}

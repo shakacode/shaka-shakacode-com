@@ -1,0 +1,158 @@
+name: Build Branch Preview
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, closed]
+  workflow_dispatch:
+    inputs:
+      pull_request:
+        description: Pull request number to preview or clean up
+        required: true
+        type: number
+      operation:
+        description: Build a preview, or clean up a closed PR
+        required: true
+        default: publish
+        type: choice
+        options: [publish, delete]
+
+permissions:
+  contents: read
+  pull-requests: read
+
+jobs:
+  target:
+    if: >-
+      (github.event_name == 'pull_request' && github.event.action != 'closed' &&
+       github.event.pull_request.head.repo.full_name == github.repository) ||
+      (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main' &&
+       inputs.operation == 'publish')
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      head_sha: ${{ steps.target.outputs.head_sha }}
+    steps:
+      - name: Resolve current PR head
+        id: target
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PREVIEW_REQUESTED_PR: ${{ inputs.pull_request || github.event.pull_request.number }}
+          PREVIEW_EVENT_HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          set -euo pipefail
+          if [ "$GITHUB_EVENT_NAME" = pull_request ]; then
+            number="$PREVIEW_REQUESTED_PR"
+            sha="$PREVIEW_EVENT_HEAD_SHA"
+          else
+            pr="$(gh api "repos/$GITHUB_REPOSITORY/pulls/$PREVIEW_REQUESTED_PR")"
+            test "$(jq -r '.state' <<< "$pr")" = open
+            test "$(jq -r '.head.repo.full_name' <<< "$pr")" = "$GITHUB_REPOSITORY"
+            number="$(jq -r '.number' <<< "$pr")"
+            sha="$(jq -r '.head.sha' <<< "$pr")"
+          fi
+          [[ "$number" =~ ^[0-9]+$ && "$sha" =~ ^[a-f0-9]{40}$ ]]
+          echo "pr_number=$number" >> "$GITHUB_OUTPUT"
+          echo "head_sha=$sha" >> "$GITHUB_OUTPUT"
+
+      - name: Record preview request
+        env:
+          PREVIEW_PR_NUMBER: ${{ steps.target.outputs.pr_number }}
+          PREVIEW_HEAD_SHA: ${{ steps.target.outputs.head_sha }}
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/branch-preview"
+          jq -n --arg operation publish --argjson pr_number "$PREVIEW_PR_NUMBER" \
+            --arg head_sha "$PREVIEW_HEAD_SHA" \
+            '{operation: $operation, pr_number: $pr_number, head_sha: $head_sha}' \
+            > "$RUNNER_TEMP/branch-preview/request.json"
+
+      - name: Upload preview request
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: branch-preview-request
+          path: ${{ runner.temp }}/branch-preview/request.json
+          if-no-files-found: error
+          retention-days: 3
+
+  build:
+    needs: target
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout PR head without credentials
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ needs.target.outputs.head_sha }}
+          persist-credentials: false
+
+      - name: Setup Node
+        uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5.0.0
+        with:
+          node-version: 22
+
+      - name: Sync docs
+        run: npm run sync:docs
+        env:
+          SHAKA_REPO_URL: https://github.com/shakacode/shaka.git
+          SHAKA_REF: main
+
+      - name: Prepare docs
+        run: npm run prepare:docs
+
+      - name: Audit docs
+        run: npm run audit:docs -- --strict --output "$RUNNER_TEMP/docs-audit.md"
+
+      - name: Install site dependencies
+        run: npm --prefix prototypes/docusaurus install
+
+      - name: Build site
+        run: npm run build:site
+
+      - name: Upload built site
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: branch-preview-site
+          path: prototypes/docusaurus/build/
+          if-no-files-found: error
+          retention-days: 3
+
+  close:
+    if: >-
+      (github.event_name == 'pull_request' && github.event.action == 'closed' &&
+       github.event.pull_request.head.repo.full_name == github.repository) ||
+      (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main' &&
+       inputs.operation == 'delete')
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Record closed PR
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PREVIEW_REQUESTED_PR: ${{ inputs.pull_request || github.event.pull_request.number }}
+          PREVIEW_EVENT_HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          set -euo pipefail
+          if [ "$GITHUB_EVENT_NAME" = pull_request ]; then
+            number="$PREVIEW_REQUESTED_PR"
+            sha="$PREVIEW_EVENT_HEAD_SHA"
+          else
+            pr="$(gh api "repos/$GITHUB_REPOSITORY/pulls/$PREVIEW_REQUESTED_PR")"
+            test "$(jq -r '.state' <<< "$pr")" = closed
+            test "$(jq -r '.head.repo.full_name' <<< "$pr")" = "$GITHUB_REPOSITORY"
+            number="$(jq -r '.number' <<< "$pr")"
+            sha="$(jq -r '.head.sha' <<< "$pr")"
+          fi
+          [[ "$number" =~ ^[0-9]+$ && "$sha" =~ ^[a-f0-9]{40}$ ]]
+          mkdir -p "$RUNNER_TEMP/branch-preview"
+          jq -n --arg operation delete --argjson pr_number "$number" \
+            --arg head_sha "$sha" \
+            '{operation: $operation, pr_number: $pr_number, head_sha: $head_sha}' \
+            > "$RUNNER_TEMP/branch-preview/request.json"
+
+      - name: Upload preview request
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: branch-preview-request
+          path: ${{ runner.temp }}/branch-preview/request.json
+          if-no-files-found: error
+          retention-days: 3

@@ -14,9 +14,16 @@ Pages), configured in [`wrangler.toml`](wrangler.toml).
 
 - Pushes to `main`, `docs-updated` dispatches from `shakacode/shaka`, and manual runs on
   `main` run `wrangler deploy`.
-- Pull requests build the site but do not deploy: only code merged to `main` runs with
-  Cloudflare credentials, because wrangler can run a build command from a candidate
-  `wrangler.toml`. Preview a branch locally with `npm run dev`.
+- Same-repository pull requests build a branch preview at a stable `workers.dev` URL. The
+  **Build Branch Preview** workflow checks out the PR head and uploads only the static site.
+  After that build succeeds, **Publish Branch Preview** runs from trusted `main`, checks that
+  the PR head is still current, uploads the static assets with `wrangler preview`, probes the
+  URL, and posts it on the PR. The build never receives Cloudflare credentials or Algolia
+  secrets, so previews use bundled local search. The production route is unchanged.
+- Closing a PR deletes its preview and updates the preview comment. Existing or conflicted
+  PRs can be previewed by running **Build Branch Preview** from `main` with the PR number and
+  `publish`; use `delete` from `main` to retry cleanup for a closed PR.
+- Locally, preview a branch with `npm run dev`.
 - Locally: `npm run cloudflare:deploy`.
 
 ## GitHub secrets (maintainer)
@@ -26,6 +33,9 @@ Set in `shakacode/shaka-shakacode-com` → Settings → Secrets and variables �
 - `CLOUDFLARE_API_TOKEN` (Workers Scripts edit, plus Workers Routes and DNS edit on
   `shakacode.com` for the custom domain)
 - `CLOUDFLARE_ACCOUNT_ID`
+
+The same repository secrets are used by the trusted preview publisher. The token needs
+Workers Scripts edit permission for Worker Previews. Keep these secrets out of PR build jobs.
 
 Later, for hosted search: `ALGOLIA_APP_ID` and `ALGOLIA_SEARCH_API_KEY` secrets and the
 `ALGOLIA_INDEX_NAME` variable. Set all three together. With none set, the site uses its bundled

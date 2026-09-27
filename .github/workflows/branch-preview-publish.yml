@@ -1,0 +1,140 @@
+name: Publish Branch Preview
+
+on:
+  workflow_run:
+    workflows: [Build Branch Preview]
+    types: [completed]
+
+permissions:
+  contents: read
+  actions: read
+  pull-requests: write
+
+jobs:
+  preview:
+    if: >-
+      github.event.workflow_run.conclusion == 'success' &&
+      github.event.workflow_run.head_repository.full_name == github.repository &&
+      (github.event.workflow_run.event == 'pull_request' ||
+       (github.event.workflow_run.event == 'workflow_dispatch' &&
+        github.event.workflow_run.head_branch == 'main'))
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout trusted main
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: main
+          persist-credentials: false
+
+      - name: Setup Node
+        uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5.0.0
+        with:
+          node-version: 22
+
+      - name: Download request from completed build
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          name: branch-preview-request
+          path: ${{ runner.temp }}/branch-preview-request
+          run-id: ${{ github.event.workflow_run.id }}
+          github-token: ${{ github.token }}
+
+      - name: Verify current PR and request
+        id: request
+        run: node scripts/branch-preview.mjs verify
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PREVIEW_REQUEST_PATH: ${{ runner.temp }}/branch-preview-request/request.json
+          PREVIEW_RUN_EVENT: ${{ github.event.workflow_run.event }}
+          PREVIEW_RUN_HEAD_SHA: ${{ github.event.workflow_run.head_sha }}
+          PREVIEW_RUN_HEAD_BRANCH: ${{ github.event.workflow_run.head_branch }}
+          PREVIEW_RUN_HEAD_REPOSITORY: ${{ github.event.workflow_run.head_repository.full_name }}
+
+      - name: Download built site
+        if: steps.request.outputs.operation == 'publish'
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          name: branch-preview-site
+          path: ${{ runner.temp }}/branch-preview-site
+          run-id: ${{ github.event.workflow_run.id }}
+          github-token: ${{ github.token }}
+
+      - name: Validate and stage static assets
+        if: steps.request.outputs.operation == 'publish'
+        env:
+          PREVIEW_SITE_DIR: ${{ runner.temp }}/branch-preview-site
+        run: |
+          set -euo pipefail
+          test -f "$PREVIEW_SITE_DIR/index.html"
+          test -f "$PREVIEW_SITE_DIR/404.html"
+          if [ -n "$(find "$PREVIEW_SITE_DIR" -type l -print -quit)" ]; then
+            echo 'Preview artifact contains a symbolic link' >&2
+            exit 1
+          fi
+          mkdir -p prototypes/docusaurus/build
+          cp -R "$PREVIEW_SITE_DIR/." prototypes/docusaurus/build/
+
+      - name: Publish Cloudflare Preview
+        if: steps.request.outputs.operation == 'publish'
+        id: cloudflare
+        env:
+          PREVIEW_PR_NUMBER: ${{ steps.request.outputs.pr_number }}
+          PREVIEW_HEAD_SHA: ${{ steps.request.outputs.head_sha }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          set -euo pipefail
+          npx --yes wrangler@4.141.0 preview --name "pr-$PREVIEW_PR_NUMBER" \
+            --message "PR #$PREVIEW_PR_NUMBER $PREVIEW_HEAD_SHA" \
+            --ignore-base-config --json > "$RUNNER_TEMP/preview-result.json"
+          url="$(jq -er '.preview.urls[0]' "$RUNNER_TEMP/preview-result.json")"
+          echo "preview_url=$url" >> "$GITHUB_OUTPUT"
+
+      - name: Probe Preview
+        if: steps.request.outputs.operation == 'publish'
+        env:
+          PREVIEW_URL: ${{ steps.cloudflare.outputs.preview_url }}
+        run: |
+          set -euo pipefail
+          node scripts/branch-preview.mjs validate-url
+          curl --fail --show-error --silent --location --retry 3 --retry-delay 2 \
+            "$PREVIEW_URL" --output /dev/null
+
+      - name: Post Preview URL to PR
+        if: steps.request.outputs.operation == 'publish'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PREVIEW_PR_NUMBER: ${{ steps.request.outputs.pr_number }}
+          PREVIEW_HEAD_SHA: ${{ steps.request.outputs.head_sha }}
+          PREVIEW_URL: ${{ steps.cloudflare.outputs.preview_url }}
+        run: |
+          set -euo pipefail
+          node scripts/branch-preview.mjs comment-publish
+          echo "PR #$PREVIEW_PR_NUMBER preview: $PREVIEW_URL" >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Check for an existing Preview
+        if: steps.request.outputs.operation == 'delete'
+        id: existing
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PREVIEW_PR_NUMBER: ${{ steps.request.outputs.pr_number }}
+        run: node scripts/branch-preview.mjs has-comment
+
+      - name: Delete closed PR Preview
+        if: steps.request.outputs.operation == 'delete' && steps.existing.outputs.has_comment == 'true'
+        env:
+          PREVIEW_PR_NUMBER: ${{ steps.request.outputs.pr_number }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          set -euo pipefail
+          npx --yes wrangler@4.141.0 preview delete --name "pr-$PREVIEW_PR_NUMBER" \
+            --ignore-base-config --skip-confirmation
+
+      - name: Update PR comment after deletion
+        if: steps.request.outputs.operation == 'delete' && steps.existing.outputs.has_comment == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PREVIEW_PR_NUMBER: ${{ steps.request.outputs.pr_number }}
+        run: node scripts/branch-preview.mjs comment-delete
