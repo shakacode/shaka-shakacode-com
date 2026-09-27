@@ -148,6 +148,16 @@ async function main() {
     return;
   }
 
+  if (command === 'comment-failed') {
+    const sha = process.env.PREVIEW_HEAD_SHA;
+    if (!/^[a-f0-9]{40}$/.test(sha ?? '')) throw new Error('Invalid preview head SHA');
+    const previousUrl = existing?.body.match(/https:\/\/[-\w.]+\.workers\.dev\//)?.[0];
+    const previousPreview = previousUrl ? `\n\nPrevious preview: ${previousUrl}` : '';
+    await upsertComment(repository, number, existing,
+      `${marker}\nBranch preview deployment or verification failed for PR #${number} at \`${sha.slice(0, 7)}\`. Check the Publish Branch Preview workflow run.${previousPreview}`);
+    return;
+  }
+
   if (command === 'comment-publish') {
     const url = previewUrl(process.env.PREVIEW_URL);
     const sha = process.env.PREVIEW_HEAD_SHA;
