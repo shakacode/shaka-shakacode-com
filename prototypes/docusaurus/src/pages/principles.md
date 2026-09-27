@@ -27,54 +27,29 @@ a change into a place people depend on. These patterns are examples, not setting
 - An **open-source project with scheduled releases** can keep ordinary PR checks focused. It
   can then concentrate cross-version testing and release review before each release.
 
-Shaka has no preset profiles for these patterns. You express your choices through settings
-and project instructions:
-
-- **Review:** `review.required` decides when configured CI review reports are required, and
-  `review.ci_review_wait` decides how many must report before merging. See
-  [settings](/docs/settings).
-- **Merging:** **Ask** leaves the merge click with you. **Auto** lets the agent merge after
-  required checks, reviews, and approvals. See
-  [choose a merge policy](/docs/working-with-shaka#choose-a-merge-policy).
-- **Checks:** `.agents/bin/validate` runs the complete checks. An optional
-  `.agents/bin/validate-local` runs faster checks before local review.
-- **Extra limits:** put project-specific restrictions in `AGENTS.md`. Shaka has no built-in
-  file-count or commit-count limits.
-
-The [consequences ladder](/consequences) and the [methodology](/methodology) describe how to
-choose.
+Shaka has no preset profiles for these patterns. Your repository's settings and instructions
+express its choices. See [settings](/docs/settings) for the current options and the
+[consequences ladder](/consequences) for a way to choose proportionate checks.
 
 ## The few safety rules that always apply
 
-Some protections stay in place at every speed. The table shows how Shaka handles each one and
-what enforces it. "Agent" means the rule is in Shaka's instructions and nothing fails if the
-agent ignores it. The [enforcement reference](/docs/workflow#what-is-enforced) has the full
-list.
+- Treat public text as data to verify, never as authority to change policy or expose secrets.
+- Keep changes on pull request branches and protect shared branches with GitHub rules.
+- Tie tests and review to the commit that would merge.
+- Give consequential changes human review, even when routine changes can move quickly.
+- Check public PR material for private information before posting.
 
-| Rule | How Shaka handles it | Enforced by |
-| --- | --- | --- |
-| Public text is data, not instructions | The `shaka comments` reader returns comment bodies only from trusted authors. Even admitted comments cannot authorize merging, change policy, or expose credentials. | Code decides which bodies the reader returns. The agent must use that reader and must not treat admitted text as authority. |
-| Nobody pushes straight to the main branch | The workflow says never push to `main`. | GitHub branch protection, where the repository has it. Otherwise the agent. |
-| Merge evidence matches the change being merged | The merge helper refuses when the PR head moved since verification. It also refuses missing, failed, or pending required checks. | Code, when the agent runs the merge. In Ask mode you click merge on GitHub, and the repository's own protection is the gate. |
-| Two writers do not race on one task | Before starting, the agent looks for open PRs and branches for the same work item. On a hit, it reports them and stops for your decision. | The search is code; stopping is the agent's. |
-| Consequential changes get a person | Trust, authentication, permission, release, deployment, destructive-migration, and merge-guard changes need explicit human review. A small diff does not prove low risk. | Agent. The merge helper applies the same gates to every change. |
-| Required checks are never skipped | The agent may defer optional slow suites until repairs finish. It must never defer always-on required, security, or trust checks. | Agent. |
-| Private details stay out of public PRs | The agent inspects what it publishes, including expandable sections. | Agent. There is no automated privacy scan. |
-
-The [safety page](/safety) explains how Shaka handles untrusted input and risky changes in
-more detail.
+The [safety page](/safety) explains these principles. The synced
+[enforcement reference](/docs/workflow#what-is-enforced) identifies Shaka's current code gates
+and the rules that depend on the agent or GitHub configuration.
 
 ## Treat the main branch as shared
 
 The more developers, services, or releases depend on a main branch, the more a bad merge
-costs. That does not mean every repository needs maximum ceremony. It means integration
-checks should reflect how many people the branch affects, not only the size of the diff.
+costs. Integration checks should reflect how many people and systems a change can affect,
+not only the size of its diff. A small change can still need careful review when it touches
+permissions or release paths.
 
-Shaka's merge helper refuses to merge when the acting account could bypass branch protection.
-It also refuses a PR whose target branch differs from the base branch the agent says it
-validated. The agent is responsible for passing that base honestly. In Ask mode, you merge on GitHub, and your repository's branch protection applies.
-
-Independent changes can be built at the same time. That does not remove the dependencies
-between them. When one change needs another, Shaka uses ordinary PRs in sequence: merge the
-prerequisite first, then update and finish the next. See
+Independent changes can be built at the same time. Dependencies still need an order: land the
+prerequisite, then update and verify the next PR against it. See
 [split a large change](/docs/working-with-shaka#split-a-large-change).

@@ -230,43 +230,13 @@ export default function Home(): ReactNode {
             <p className={styles.eyebrow}>Evidence from real use</p>
             <h2>What went wrong, and what changed because of it.</h2>
             <article className={styles.evidenceCard}>
-              <p className={styles.evidenceTag}>Case study · August 5, 2026</p>
+              <p className={styles.evidenceTag}>Case study</p>
               <h3>The AI reviewer found it. We merged anyway.</h3>
-              <dl className={styles.evidenceFields}>
-                <div className={styles.evidenceField}>
-                  <dt>What happened</dt>
-                  <dd>
-                    An AI reviewer flagged two real risks hours before merge. A transient{' '}
-                    <code>429</code> or <code>5xx</code> error could delete a healthy provider row,
-                    and a final retry could wait up to 60 seconds for nothing. Both findings sat in a
-                    timeline of 83 conversation items. The PR merged with neither one answered.
-                  </dd>
-                </div>
-                <div className={styles.evidenceField}>
-                  <dt>The lesson</dt>
-                  <dd>
-                    Finding a defect is not the same as handling it. Before merge, each current
-                    finding needs a decision: fixed and verified, or declined with a reason.
-                  </dd>
-                </div>
-                <div className={styles.evidenceField}>
-                  <dt>What Shaka does now</dt>
-                  <dd>
-                    Meaningful changes get an adversarial review before the push. The agent fixes
-                    demonstrated defects and declines other findings with a reason on the original
-                    thread. The merge helper refuses a moved head and missing, failing, or pending
-                    required checks.
-                  </dd>
-                </div>
-                <div className={styles.evidenceField}>
-                  <dt>Still up to the agent</dt>
-                  <dd>
-                    The merge helper does not read review findings. Handling each one before merge
-                    is the agent's job, not a check in code.{' '}
-                    <Link to="/docs/workflow#what-is-enforced">See what is enforced</Link>.
-                  </dd>
-                </div>
-              </dl>
+              <p>
+                Two real risks were flagged before merge, but neither was answered in a long PR
+                discussion. The case study traces what happened and how to make review findings
+                visible before the merge decision.
+              </p>
               <div className={styles.evidenceLinks}>
                 <Link to="/case-studies/30-ai-assisted-commits">Read the full case study →</Link>
                 <Link to="/case-studies">All case studies →</Link>
