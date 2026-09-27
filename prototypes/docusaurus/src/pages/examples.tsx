@@ -43,6 +43,13 @@ export default function Examples(): ReactNode {
                 height="170"
               />
               <figcaption>Before · dashboard header</figcaption>
+              <a
+                className={styles.fullSize}
+                href="/img/examples/navigation-lab/dashboard-before.png"
+                target="_blank"
+                rel="noreferrer">
+                View full-size screenshot
+              </a>
             </figure>
             <figure>
               <img
@@ -52,6 +59,13 @@ export default function Examples(): ReactNode {
                 height="170"
               />
               <figcaption>After · Navigation lab link added</figcaption>
+              <a
+                className={styles.fullSize}
+                href="/img/examples/navigation-lab/dashboard-after.png"
+                target="_blank"
+                rel="noreferrer">
+                View full-size screenshot
+              </a>
             </figure>
           </div>
 
