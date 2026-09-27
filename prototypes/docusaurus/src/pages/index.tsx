@@ -3,7 +3,6 @@ import clsx from 'clsx';
 import Link from '@docusaurus/Link';
 import Layout from '@theme/Layout';
 import CodeBlock from '@theme/CodeBlock';
-import useBrokenLinks from '@docusaurus/useBrokenLinks';
 
 import styles from './index.module.css';
 
@@ -66,13 +65,6 @@ const prAnswers = [
   },
 ];
 
-// Copied verbatim from the old Agent Workflows site; not re-verified.
-const teamFacts = [
-  {value: 'Since 2011', label: 'Remote-first software consulting and delivery'},
-  {value: '23M+', label: 'Open-source package downloads'},
-  {value: 'Practical adoption', label: 'Assessment, rollout, guardrails, and team enablement'},
-];
-
 const steps = [
   {
     title: 'A shared workflow',
@@ -91,7 +83,6 @@ const steps = [
 ];
 
 export default function Home(): ReactNode {
-  useBrokenLinks().collectAnchor('consequences');
   return (
     <Layout
       title="Give your coding agent a task. Get a tested, reviewed PR."
@@ -255,8 +246,7 @@ export default function Home(): ReactNode {
                   <dt>The lesson</dt>
                   <dd>
                     Finding a defect is not the same as handling it. Before merge, each current
-                    finding needs a decision: fixed and verified, declined with a reason, or turned
-                    into an owned follow-up.
+                    finding needs a decision: fixed and verified, or declined with a reason.
                   </dd>
                 </div>
                 <div className={styles.evidenceField}>
@@ -311,14 +301,6 @@ export default function Home(): ReactNode {
               repeatable practice: choose the right tools, set review and verification rules that
               match the risk, and keep quality under control as agents take on more work.
             </p>
-            <div className={styles.facts}>
-              {teamFacts.map((fact) => (
-                <div key={fact.value} className={styles.fact}>
-                  <strong>{fact.value}</strong>
-                  <span>{fact.label}</span>
-                </div>
-              ))}
-            </div>
             <div className={styles.heroActions}>
               <Link className="button button--primary button--lg" href="https://www.shakacode.com/contact/">
                 Talk with ShakaCode

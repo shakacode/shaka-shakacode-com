@@ -41,7 +41,7 @@ and project instructions:
 - **Extra limits:** put project-specific restrictions in `AGENTS.md`. Shaka has no built-in
   file-count or commit-count limits.
 
-The [consequences ladder](/#consequences) and the [methodology](/methodology) describe how to
+The [consequences ladder](/consequences) and the [methodology](/methodology) describe how to
 choose.
 
 ## The few safety rules that always apply

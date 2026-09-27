@@ -5,10 +5,7 @@ description: How ShakaCode uses AI coding agents. Match checks to what could bre
 
 # Methodology
 
-<!-- confirm Robert is OK being named -->
-
-These principles come from a working session between Justin Gordon and Robert on how we
-use AI coding agents. The short version:
+These principles describe ShakaCode's approach to using AI coding agents. The short version:
 
 > **Use AI aggressively, verify the risky parts, document what was learned, and keep shipping.**
 
@@ -33,7 +30,7 @@ As more people depend on the result, add safeguards that match the consequences:
 These are examples, not user-count thresholds. A five-person payroll tool can carry more risk
 than a popular disposable toy. Sensitive data and irreversible actions raise the stakes, even
 for a personal app. Within one system, a button label and a permission change deserve
-different checks. [See the consequences ladder](/#consequences).
+different checks. [See the consequences ladder](/consequences).
 
 Weigh four costs together: development, verification, the expected cost of a failure, and the
 cost of delay. This is a decision aid, not a calculator. Ask which failure the next check could

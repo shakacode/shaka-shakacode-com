@@ -28,8 +28,8 @@ feature or fix usually starts on its own branch.
 ### Main branch
 
 The shared branch everyone builds on, usually named `main`. Other names are possible, such as
-`master` or `develop`. Shaka calls the repository's main line the **default branch**. Changes
-reach it through pull requests, not direct pushes.
+`master` or `develop`. Shaka calls the repository's main line the **default branch**. Shaka's
+workflow uses pull requests; GitHub branch protection determines whether direct pushes are blocked.
 
 ### Pull request (PR)
 
