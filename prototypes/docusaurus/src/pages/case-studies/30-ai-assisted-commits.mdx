@@ -14,7 +14,7 @@ description: An AI reviewer identified two real risks before merge. Both disappe
 
 *By Justin Gordon. Cross-published from the [ShakaCode blog](https://shakacode.com/blog/audit-30-ai-assisted-commits/), which is the canonical version.*
 
-*Editor's note: this study predates Shaka. Here is how its lessons map to what Shaka does today. Meaningful changes get an adversarial review in a fresh session before the push. The agent fixes demonstrated defects and declines other findings with a reason on the original thread. The merge helper refuses a moved head and missing, failing, or pending required checks, but it does not read review findings, so handling each finding remains the agent's job ([what is enforced](/docs/workflow#what-is-enforced)). The PR description leads with the outcome and evidence, a code walkthrough explains the implementation, and longer records sit in expandable sections ([PR verification](/docs/pr-verification), [writing preferences](/docs/writing-preferences)).*
+*Editor's note: this study predates Shaka. Its lesson is to make review findings visible and decide what to do with each one before merging. Shaka calls for independent review and records the evidence on the PR. Its current merge checks, and the decisions that still depend on an agent or maintainer, are described in [what is enforced](/docs/workflow#what-is-enforced). See [PR verification](/docs/pr-verification) and [writing preferences](/docs/writing-preferences) for how the PR presents that evidence.*
 
 <img src="/img/case-studies/ai-audit/cover.png" alt="Review signal collapsed from 83 conversation items to two actionable findings, neither dispositioned before merge" width="1600" height="900" style={{maxWidth: '100%', height: 'auto'}} />
 

@@ -58,10 +58,9 @@ If repair and review keep generating more work, pause and ask whether the next c
 real defect or expands the design. A pause does not permit shipping an unresolved defect. It
 also does not permit skipping a required security, review, or CI check.
 
-Shaka applies a version of this rule to review findings. The agent fixes demonstrated defects
-and declines nits with a reason. After two repair rounds, remaining nits do not start another
-cycle. Demonstrated defects still block until they are fixed, declined with evidence, or
-decided by a maintainer. See the Review step in the
+Shaka applies a version of this rule to review findings. Its Review step describes how the agent
+handles demonstrated defects, declines suggestions with a reason, and bounds repeated repair.
+See the current
 [workflow definition](https://github.com/shakacode/shaka/blob/main/skills/shaka/config/workflow.yml).
 
 ## Mindset
