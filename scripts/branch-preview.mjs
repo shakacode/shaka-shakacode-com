@@ -29,13 +29,12 @@ export function previewOperation(request, run, pullRequest, repository) {
     }
   } else if (run.event !== 'pull_request') {
     throw new Error('Unexpected preview build event');
+  } else if (run.headBranch !== pullRequest.head.ref) {
+    throw new Error('Preview build branch does not match the pull request');
   }
 
   if (request.operation === 'publish') {
     if (pullRequest.state !== 'open' || pullRequest.head.sha !== request.head_sha) {
-      return 'skip';
-    }
-    if (run.event === 'pull_request' && run.headSha !== request.head_sha) {
       return 'skip';
     }
     return 'publish';
@@ -84,6 +83,18 @@ async function ownComment(repository, number) {
   return all.findLast((comment) => comment.user?.login === botLogin && comment.body?.startsWith(marker));
 }
 
+async function upsertComment(repository, number, existing, body) {
+  if (existing) {
+    await github(`repos/${repository}/issues/comments/${existing.id}`, {
+      method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ body }),
+    });
+  } else {
+    await github(`repos/${repository}/issues/${number}/comments`, {
+      method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ body }),
+    });
+  }
+}
+
 function output(values) {
   appendFileSync(process.env.GITHUB_OUTPUT, Object.entries(values).map(([key, value]) => `${key}=${value}\n`).join(''));
 }
@@ -107,7 +118,6 @@ async function main() {
     const pullRequest = await github(`repos/${repository}/pulls/${request.pr_number}`);
     const operation = previewOperation(request, {
       event: process.env.PREVIEW_RUN_EVENT,
-      headSha: process.env.PREVIEW_RUN_HEAD_SHA,
       headBranch: process.env.PREVIEW_RUN_HEAD_BRANCH,
       headRepository: process.env.PREVIEW_RUN_HEAD_REPOSITORY,
     }, pullRequest, repository);
@@ -121,7 +131,15 @@ async function main() {
   const existing = await ownComment(repository, number);
 
   if (command === 'has-comment') {
-    output({ has_comment: Boolean(existing) });
+    output({ has_comment: Boolean(existing && !existing.body.includes('Branch preview removed after PR')) });
+    return;
+  }
+
+  if (command === 'comment-pending') {
+    const sha = process.env.PREVIEW_HEAD_SHA;
+    if (!/^[a-f0-9]{40}$/.test(sha ?? '')) throw new Error('Invalid preview head SHA');
+    await upsertComment(repository, number, existing,
+      `${marker}\nPublishing the branch preview for PR #${number} at \`${sha.slice(0, 7)}\`. The URL will appear here after the deployed site responds.`);
     return;
   }
 
@@ -130,15 +148,7 @@ async function main() {
     const sha = process.env.PREVIEW_HEAD_SHA;
     if (!/^[a-f0-9]{40}$/.test(sha ?? '')) throw new Error('Invalid preview head SHA');
     const body = `${marker}\nBranch preview for PR #${number} at \`${sha.slice(0, 7)}\`:\n\n${url}\n\nThis URL updates after each successful branch build.`;
-    if (existing) {
-      await github(`repos/${repository}/issues/comments/${existing.id}`, {
-        method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ body }),
-      });
-    } else {
-      await github(`repos/${repository}/issues/${number}/comments`, {
-        method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ body }),
-      });
-    }
+    await upsertComment(repository, number, existing, body);
     console.log(`Published preview URL on PR #${number}`);
     return;
   }

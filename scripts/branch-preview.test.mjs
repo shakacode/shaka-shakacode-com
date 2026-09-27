@@ -5,8 +5,8 @@ import { previewOperation, previewUrl } from './branch-preview.mjs';
 const sha = 'a'.repeat(40);
 const repository = 'shakacode/shaka-shakacode-com';
 const request = { operation: 'publish', pr_number: 12, head_sha: sha };
-const run = { event: 'pull_request', headSha: sha, headRepository: repository };
-const pullRequest = { number: 12, state: 'open', head: { sha, repo: { full_name: repository } } };
+const run = { event: 'pull_request', headBranch: 'feature', headRepository: repository };
+const pullRequest = { number: 12, state: 'open', head: { sha, ref: 'feature', repo: { full_name: repository } } };
 
 test('publishes only the current head of a same-repository PR', () => {
   assert.equal(previewOperation(request, run, pullRequest, repository), 'publish');
@@ -16,8 +16,8 @@ test('publishes only the current head of a same-repository PR', () => {
   }, repository), /this repository/);
 });
 
-test('a PR run cannot publish an artifact for another head', () => {
-  assert.equal(previewOperation(request, { ...run, headSha: 'b'.repeat(40) }, pullRequest, repository), 'skip');
+test('a PR run must come from the pull request branch', () => {
+  assert.throws(() => previewOperation(request, { ...run, headBranch: 'other' }, pullRequest, repository), /branch/);
   assert.throws(() => previewOperation(request, { ...run, headRepository: 'someone/fork' }, pullRequest, repository), /originate/);
 });
 
@@ -28,6 +28,10 @@ test('manual runs must come from main; deletion requires a closed PR', () => {
   const deletion = { ...request, operation: 'delete' };
   assert.equal(previewOperation(deletion, run, pullRequest, repository), 'skip');
   assert.equal(previewOperation(deletion, run, { ...pullRequest, state: 'closed' }, repository), 'delete');
+  assert.equal(previewOperation(deletion, run, {
+    ...pullRequest, state: 'closed', head: { ...pullRequest.head, sha: 'c'.repeat(40) },
+  }, repository), 'skip');
+  assert.throws(() => previewOperation(request, { ...run, event: 'push' }, pullRequest, repository), /Unexpected/);
 });
 
 test('rejects malformed metadata before using it as an API path', () => {
