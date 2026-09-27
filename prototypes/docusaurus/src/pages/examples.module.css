@@ -65,12 +65,6 @@
   height: auto;
 }
 
-.mobile img {
-  max-height: 42rem;
-  object-fit: contain;
-  object-position: top;
-}
-
 .comparison figcaption,
 .screens figcaption {
   padding: 0.75rem 1rem;
