@@ -142,7 +142,7 @@ async function main() {
     const sha = process.env.PREVIEW_HEAD_SHA;
     if (!/^[a-f0-9]{40}$/.test(sha ?? '')) throw new Error('Invalid preview head SHA');
     const previousUrl = existing?.body.match(/https:\/\/[-\w.]+\.workers\.dev\//)?.[0];
-    const previousPreview = previousUrl ? `\n\nPrevious preview: ${previousUrl}` : '';
+    const previousPreview = previousUrl ? `\n\nPreview URL (updates when deployment succeeds): ${previousUrl}` : '';
     await upsertComment(repository, number, existing,
       `${marker}\nPublishing the branch preview for PR #${number} at \`${sha.slice(0, 7)}\`. The URL will appear here after the deployed site responds.${previousPreview}`);
     return;
@@ -152,7 +152,7 @@ async function main() {
     const sha = process.env.PREVIEW_HEAD_SHA;
     if (!/^[a-f0-9]{40}$/.test(sha ?? '')) throw new Error('Invalid preview head SHA');
     const previousUrl = existing?.body.match(/https:\/\/[-\w.]+\.workers\.dev\//)?.[0];
-    const previousPreview = previousUrl ? `\n\nPrevious preview: ${previousUrl}` : '';
+    const previousPreview = previousUrl ? `\n\nPreview URL (this run may have updated its content): ${previousUrl}` : '';
     await upsertComment(repository, number, existing,
       `${marker}\nBranch preview deployment or verification failed for PR #${number} at \`${sha.slice(0, 7)}\`. Check the Publish Branch Preview workflow run.${previousPreview}`);
     return;

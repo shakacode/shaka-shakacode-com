@@ -100,6 +100,8 @@ jobs:
 
       - name: Request a fresh build after a stale run
         if: steps.recheck.outputs.operation == 'skip'
+        # GitHub concurrency can replace a pending current-head publisher with
+        # a late stale run; this guarantees a fresh build eventually follows it.
         env:
           GH_TOKEN: ${{ github.token }}
           PREVIEW_PR_NUMBER: ${{ steps.recheck.outputs.pr_number }}

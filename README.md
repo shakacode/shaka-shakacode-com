@@ -30,6 +30,6 @@ npm run dev
 See [ARCHITECTURE.md](ARCHITECTURE.md), [CLOUDFLARE_SETUP.md](CLOUDFLARE_SETUP.md), and the
 [migration plan](plans/docusaurus-migration.md).
 
-Same-repository pull requests get a Cloudflare branch preview after the site build passes.
+Same-repository pull requests get a Cloudflare branch preview after the preview build passes.
 The stable preview URL appears in a PR comment. To preview an older PR, run **Build Branch
 Preview** from `main` with its PR number.
