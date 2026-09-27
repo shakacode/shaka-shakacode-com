@@ -225,7 +225,32 @@ export default function Home(): ReactNode {
           </div>
         </section>
 
-        <section className={clsx(styles.section, styles.alt)} id="evidence">
+        <section className={clsx(styles.section, styles.alt)} id="examples">
+          <div className="container">
+            <p className={styles.eyebrow}>See the work</p>
+            <h2>A change you can inspect.</h2>
+            <p className={styles.sectionLead}>
+              This Instant Navigation Lab PR shows the result on desktop and mobile, records what
+              changed from the starting point, and links the screenshots to a manual UI check.
+            </p>
+            <Link className={styles.examplePreview} to="/examples">
+              <img
+                src="/img/examples/navigation-lab/list-desktop.png"
+                alt="Instant Navigation Lab showing a running timer, project list, and prefetch request log"
+                width="1280"
+                height="900"
+                loading="lazy"
+              />
+              <span>Explore the screenshots and verification →</span>
+            </Link>
+            <p className={styles.exampleFootnote}>
+              For more examples of Shaka itself in use, check the{' '}
+              <Link href="https://github.com/shakacode/shaka/commits/main/">recent Shaka commits</Link>.
+            </p>
+          </div>
+        </section>
+
+        <section className={styles.section} id="evidence">
           <div className="container">
             <p className={styles.eyebrow}>Evidence from real use</p>
             <h2>What went wrong, and what changed because of it.</h2>
@@ -245,7 +270,7 @@ export default function Home(): ReactNode {
           </div>
         </section>
 
-        <section className={styles.section} id="methodology">
+        <section className={clsx(styles.section, styles.alt)} id="methodology">
           <div className="container">
             <p className={styles.eyebrow}>Methodology</p>
             <blockquote className={styles.motto}>
@@ -262,7 +287,7 @@ export default function Home(): ReactNode {
           </div>
         </section>
 
-        <section className={clsx(styles.section, styles.alt)} id="help">
+        <section className={styles.section} id="help">
           <div className="container">
             <p className={styles.eyebrow}>For engineering teams</p>
             <h2>ShakaCode can help your team</h2>
