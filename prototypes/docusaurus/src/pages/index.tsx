@@ -107,10 +107,10 @@ export default function Home(): ReactNode {
         <section className={clsx(styles.section, styles.alt)} id="why">
           <div className="container">
             <p className={styles.eyebrow}>Why use it</p>
-            <h2>Less directing. Easier reviewing.</h2>
+            <h2>The hard part isn&apos;t the code. It&apos;s knowing what was checked.</h2>
             <p className={styles.sectionLead}>
-              Use your existing coding agent and repository scripts. Shaka supplies the workflow
-              from your first request to a pull request on GitHub.
+              An agent hands you something plausible, and you are left reconstructing what it read,
+              what it ran, and what that proves. Shaka makes those answers part of the pull request.
             </p>
             <div className={styles.benefits}>
               {benefits.map((benefit) => (
