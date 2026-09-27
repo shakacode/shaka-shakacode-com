@@ -12,9 +12,9 @@ description: An AI reviewer identified two real risks before merge. Both disappe
 # The AI Reviewer Found It. We Merged Anyway.
 
 
-*By Justin Gordon. Cross-published from the [ShakaCode blog](https://shakacode.com/blog/audit-30-ai-assisted-commits/), which is the canonical version.*
+*By Justin Gordon. Cross-published from the [ShakaCode blog](https://shakacode.com/blog/audit-30-ai-assisted-commits/), with links and workflow context adapted for this site.*
 
-*Editor's note: this study predates Shaka. Its lesson is to make review findings visible and decide what to do with each one before merging. Shaka calls for independent review and records the evidence on the PR. Its current merge checks, and the decisions that still depend on an agent or maintainer, are described in [what is enforced](/docs/workflow#what-is-enforced). See [PR verification](/docs/pr-verification) and [writing preferences](/docs/writing-preferences) for how the PR presents that evidence.*
+*The lesson: make review findings visible and decide what to do with each one before merging. Shaka calls for independent review and records the evidence on the PR. Its current merge checks, and the decisions that still depend on an agent or maintainer, are described in [what is enforced](/docs/workflow#what-is-enforced). See [PR verification](/docs/pr-verification) and [writing preferences](/docs/writing-preferences) for how the PR presents that evidence.*
 
 <img src="/img/case-studies/ai-audit/cover.png" alt="Review signal collapsed from 83 conversation items to two actionable findings, neither dispositioned before merge" width="1600" height="900" style={{maxWidth: '100%', height: 'auto'}} />
 
@@ -106,11 +106,7 @@ The answer is not to discard evidence. It is to give each artifact one job.
 | Commit message | Concise, durable rationale and issue linkage |
 | PR description | Change map, risk, and verification contract |
 | Review ledger | Current unresolved findings and their disposition |
-| Coordination record[^coordination-record] | Detailed transcripts, receipts, and replay evidence |
-
-[^coordination-record]: "Coordination record" is vocabulary from Shaka's predecessor, Agent Workflows, which kept task state in a separate coordination service. Shaka has no coordination record. It keeps longer evidence in expandable sections of the PR description and the state of unfinished work in the PR's **WIP Details**.
-
-At the time we tracked that change in [agent-workflows #318](https://github.com/shakacode/agent-workflows/issues/318), in Shaka's retired predecessor.
+| Expandable PR details | Evidence, receipts, and context for continuing the work |
 
 ## We almost blamed the wrong mechanism
 
@@ -165,13 +161,6 @@ This does **not** mean velocity excuses defects. Higher throughput crosses more 
 - Refuse release when repository state or current evidence is unknown.
 - Audit merged batches, not only their branches before merge.
 
-At the time, our open-source follow-ups in the retired predecessor, Agent Workflows, included:
-
-- [Fail closed on unsettled configured reviews](https://github.com/shakacode/agent-workflows/issues/249)
-- [Require coverage of the behavior that changed](https://github.com/shakacode/agent-workflows/issues/256)
-- [Block merge on unfulfilled test-plan claims](https://github.com/shakacode/agent-workflows/issues/257)
-- [Continuously detect downstream workflow drift](https://github.com/shakacode/agent-workflows/issues/319)
-
 ## What we believe now
 
 AI-assisted engineering can increase useful output dramatically. It can also generate weak tests, incorrect claims, overcomplicated patches, and mountains of plausible prose.
@@ -182,4 +171,4 @@ Our standard is becoming:
 
 > Move quickly, preserve the signal, and make the system prove that the risky parts are safe.
 
-The workflow that grew out of this work is now [Shaka](/), open source at [github.com/shakacode/shaka](https://github.com/shakacode/shaka). The issues linked above are in its predecessor, Agent Workflows. If your team is adopting coding agents faster than its review process can absorb them, [ShakaCode can help design the operating model](https://www.shakacode.com/contact/).
+[Shaka](/) puts these lessons into a task-to-PR workflow. It is open source at [github.com/shakacode/shaka](https://github.com/shakacode/shaka). If your team is adopting coding agents faster than its review process can absorb them, [ShakaCode can help design the operating model](https://www.shakacode.com/contact/).

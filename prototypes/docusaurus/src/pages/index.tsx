@@ -27,7 +27,7 @@ const benefits = [
   },
   {
     title: 'Control merging',
-    body: 'Choose Ask to merge yourself or Auto to let the agent merge after required checks and approvals. Consequential changes need human review.',
+    body: 'Choose Ask to merge yourself or Auto to let the agent merge within your configured limits after required checks, review, and approvals. Changes beyond those limits return to Ask.',
   },
   {
     title: 'Resume unfinished work easily',
@@ -60,8 +60,12 @@ const prAnswers = [
     answer: 'A code walkthrough explains the implementation choices, with links to the exact lines.',
   },
   {
-    question: 'What did it cost, and what is left?',
-    answer: 'Usage shows tokens and estimated cost, or marks them unknown. WIP Details say where unfinished work stopped.',
+    question: 'What did it cost?',
+    answer: 'Expand the Usage and cost section in the PR description for available token counts and estimated cost. Missing data is marked unknown.',
+  },
+  {
+    question: 'How can I resume unfinished work?',
+    answer: 'Expand WIP Details in the PR description to find the owning chat, where work stopped, and what comes next, so you or another agent can pick it up.',
   },
 ];
 

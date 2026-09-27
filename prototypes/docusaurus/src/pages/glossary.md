@@ -6,7 +6,8 @@ description: Plain-language definitions for newcomers. What a pull request, bran
 # Glossary
 
 New to building software with a coding agent? These definitions cover the words you will meet
-in Shaka's docs. The first section explains general terms. The second explains Shaka's own.
+in Shaka's docs. The first section explains general software terms. The second explains how
+Shaka presents its workflow on a pull request.
 
 ## General terms
 
@@ -25,16 +26,21 @@ a SHA, such as `a419e92`.
 A separate line of commits where you can work without changing anyone else's copy. A new
 feature or fix usually starts on its own branch.
 
-### Main branch
+### Default branch
 
-The shared branch everyone builds on, usually named `main`. Other names are possible, such as
-`master` or `develop`. Shaka calls the repository's main line the **default branch**. Shaka's
-workflow uses pull requests; GitHub branch protection determines whether direct pushes are blocked.
+The branch GitHub uses as the repository's starting point, often named `main`. Pull requests
+usually target it, though a project can use other branches for releases or ongoing work.
+
+### Worktree
+
+A separate checkout of the same repository in another folder. Worktrees let you work on
+different branches at the same time without mixing their files.
 
 ### Pull request (PR)
 
-A request to merge one branch into another, usually into the main branch. A PR shows the
-changes, a description, test results, and review comments in one place on GitHub.
+A request to merge a set of changes from one branch into another, usually the default branch.
+Pull requests let teams discuss and test changes before merging them. A squash merge makes
+the changes one commit on the target branch.
 
 ### Test
 
@@ -62,29 +68,13 @@ code.
 A bug that got past the checks and reached users or the environment it was released to. The
 [case study](/case-studies/30-ai-assisted-commits) uses this term.
 
-## Shaka terms
+## Shaka workflow terms
 
 ### Seam
 
-The connection between Shaka and your repository. It is a configuration file,
-`.agents/agent-workflow.yml`, plus standard scripts in `.agents/bin/` that run your existing
-setup, test, and validation commands. The agent prepares these files when you configure a
-repository. See [repository setup](/docs/configure-repository).
-
-Setup also prepares `AGENTS.md` for project instructions and constraints, and
-`.agents/trusted-github-actors.yml` for whose public comments the agent may read.
-
-### Default branch
-
-The repository's main branch as GitHub reports it. Shaka reads its settings and trusted-actor
-list from the default branch, so a pull request cannot change the rules that govern it. See
-[settings](/docs/settings).
-
-### Worktree
-
-A second checkout of the same repository in a separate folder, on its own branch. Shaka uses a
-new worktree when your checkout has uncommitted changes or another task is using it, so work
-does not collide.
+The connection between Shaka and your repository: settings and scripts that run your
+project's setup, tests, and validation. See [repository setup](/docs/configure-repository)
+for the current files and their locations.
 
 ### Merge policy: Ask and Auto
 
@@ -92,49 +82,41 @@ Who merges a ready PR.
 
 - **Ask** is the default. The agent brings you the reviewed PR. You merge it on GitHub, or tell
   the agent to merge that commit.
-- **Auto** lets the agent merge after required checks, reviews, and approvals.
+- **Auto** lets the agent merge when the configured checks, reviews, approvals, and
+  repository restrictions allow it. Customizable [merge limits](/docs/settings#mergelimits)
+  cap changed files, changed lines, and commits. Exceeding a limit returns the task to Ask;
+  failing required checks still blocks merging.
 
 Consequential changes, such as trust, authentication, or release changes, still need explicit
 human review. See [choose a merge policy](/docs/working-with-shaka#choose-a-merge-policy).
 
-### Independent review
-
-Review by someone who did not write the change. Shaka records review evidence for the commit
-under discussion; a green check alone does not describe the review. See
-[PR verification](/docs/pr-verification) for the current requirements.
-
 ### Adversarial review
 
-A review whose job is to find what is wrong. In Shaka, meaningful changes get a local
-adversarial review before the push. It runs in a fresh session that did not see the
-implementation conversation. What makes it adversarial is that fresh context, not the model:
-the same model in a new session is a valid reviewer. Shaka prefers a different provider when one
-is available. See [settings](/docs/settings).
+A review that looks for faults in a change. Shaka uses a fresh session so the reviewer can
+examine the work without the implementation conversation. See [settings](/docs/settings)
+for the current review options.
 
 ### Current head
 
-The latest commit on the PR's branch. Shaka ties evidence to it: test results, reviews, and the
-walkthrough must describe the current head. When a fix adds a commit, affected checks and
-reviews run again. The merge helper refuses to merge if the head moved since verification.
+The latest commit on a PR's branch. It identifies the version under review. When the code
+changes, Shaka refreshes the affected checks and review evidence before calling the PR ready. See
+[the workflow](/docs/workflow) for the current merge checks.
 
 ### Walkthrough
 
-A code walkthrough is a review comment the agent publishes on the PR before merge. It explains
-the implementation for someone reading the code: the purpose, the old and new behavior, key
-choices, validation, risks, and rollback, with links to the exact lines. The PR description
-links to it. See the [workflow](/docs/workflow) for the current merge requirements.
+A code walkthrough explains why the implementation works as it does. The agent publishes it
+on the PR with links to the relevant code and evidence. See [the workflow](/docs/workflow).
 
 ### PR description
 
-The top of the PR, written for someone deciding whether to merge without reading the diff. It
-leads with the outcome, then shows decisions and blockers, a table of checks, and links to the
-walkthrough and review result. Longer records sit in expandable sections, including model and
-effort details and usage. See [PR verification](/docs/pr-verification).
+The summary at the top of a PR. It tells a reader what changed, what needs a decision, and
+how the change was checked. The walkthrough gives more detail about implementation choices.
+See [PR verification](/docs/pr-verification).
 
 ### Usage
 
-The token counts and estimated dollar cost of the work, including local review, shown in an
-expandable section of the PR. Missing usage is marked `UNKNOWN`.
+The **Usage and cost** section in a PR description shows available token counts and estimated
+dollar cost, including local review. Missing usage is marked `UNKNOWN`.
 
 ### WIP Details
 
