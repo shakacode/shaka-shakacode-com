@@ -14,6 +14,8 @@ description: An AI reviewer identified two real risks before merge. Both disappe
 
 *By Justin Gordon. Cross-published from the [ShakaCode blog](https://shakacode.com/blog/audit-30-ai-assisted-commits/), which is the canonical version.*
 
+*Editor's note: this study predates Shaka. Here is how its lessons map to what Shaka does today. Meaningful changes get an adversarial review in a fresh session before the push. The agent fixes demonstrated defects and declines other findings with a reason on the original thread. The merge helper refuses a moved head and missing, failing, or pending required checks, but it does not read review findings, so handling each finding remains the agent's job ([what is enforced](/docs/workflow#what-is-enforced)). The PR description leads with the outcome and evidence, a code walkthrough explains the implementation, and longer records sit in expandable sections ([PR verification](/docs/pr-verification), [writing preferences](/docs/writing-preferences)).*
+
 <img src="/img/case-studies/ai-audit/cover.png" alt="Review signal collapsed from 83 conversation items to two actionable findings, neither dispositioned before merge" width="1600" height="900" style={{maxWidth: '100%', height: 'auto'}} />
 
 The most uncomfortable failure in our AI-assisted workflow was not that an agent wrote bad code.
@@ -104,7 +106,9 @@ The answer is not to discard evidence. It is to give each artifact one job.
 | Commit message | Concise, durable rationale and issue linkage |
 | PR description | Change map, risk, and verification contract |
 | Review ledger | Current unresolved findings and their disposition |
-| Coordination record | Detailed transcripts, receipts, and replay evidence |
+| Coordination record[^coordination-record] | Detailed transcripts, receipts, and replay evidence |
+
+[^coordination-record]: "Coordination record" is vocabulary from Shaka's predecessor, Agent Workflows, which kept task state in a separate coordination service. Shaka has no coordination record. It keeps longer evidence in expandable sections of the PR description and the state of unfinished work in the PR's **WIP Details**.
 
 At the time we tracked that change in [agent-workflows #318](https://github.com/shakacode/agent-workflows/issues/318), in Shaka's retired predecessor.
 
