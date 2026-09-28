@@ -251,8 +251,8 @@ export default function Home(): ReactNode {
               Let the agent do the work. Spend your attention on the decisions that matter.
             </blockquote>
             <p className={styles.sectionLead}>
-              Review adversarially before merge, treat CI logs as evidence, test by hand where
-              behavior can change, and judge review findings by their real impact.
+              Try the result, check more carefully where mistakes would cost more, and fix problems
+              locally before pushing. Spend review time on changes that matter.
             </p>
             <Link className="button button--secondary button--lg" to="/methodology">
               Read the methodology
