@@ -34,5 +34,7 @@ both secrets exist, so the variable alone changes nothing.
 
 ## Legacy hosts
 
-`workflows.shakacode.com` and `agents.shakacode.com` served the retired Agent Workflows
-site. At switchover, 301-redirect both to `https://shaka.shakacode.com`, keeping paths.
+`workflows.shakacode.com`, `agents.shakacode.com`, and `agents.shakaflow.com` served
+the retired Agent Workflows site. Its Pages project owns the 301 redirects to the
+relevant routes on `https://shaka.shakacode.com`, keeping query strings. See the
+[migration plan](plans/docusaurus-migration.md) for the route mapping.

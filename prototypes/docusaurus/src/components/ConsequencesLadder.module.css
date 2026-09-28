@@ -41,7 +41,7 @@
 
 .stages {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 1rem;
   margin: 0;
   padding: 0;
@@ -58,7 +58,7 @@
   border-radius: 0.75rem;
 }
 
-.stage h2 {
+.stageHeading {
   margin: 0.25rem 0 0;
   font-size: 1.2rem;
 }
@@ -107,12 +107,6 @@
   margin-top: 1.25rem;
   color: var(--ifm-color-emphasis-700);
   font-size: 0.95rem;
-}
-
-@media (max-width: 996px) {
-  .stages {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
 }
 
 @media (max-width: 560px) {

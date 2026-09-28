@@ -3,6 +3,7 @@ import clsx from 'clsx';
 import Link from '@docusaurus/Link';
 import Layout from '@theme/Layout';
 import CodeBlock from '@theme/CodeBlock';
+import ConsequencesLadder from '../components/ConsequencesLadder';
 
 import styles from './index.module.css';
 
@@ -135,6 +136,25 @@ export default function Home(): ReactNode {
       </header>
 
       <main>
+        <section className={styles.section} id="consequences">
+          <div className="container">
+            <span id="verification" />
+            <p className={styles.eyebrow}>Start with the consequences</p>
+            <h2>What happens if this breaks?</h2>
+            <p className={styles.sectionLead}>
+              For a disposable personal app, describe what you want, try it, and keep chatting.
+              As people depend on the result, add checks that protect their time, data, and trust.
+            </p>
+            <ConsequencesLadder />
+            <h3>Make the next check earn its cost.</h3>
+            <p className={styles.sectionLead}>
+              Count development time, verification effort, expected failure cost, and delayed delivery.
+              Add a check when it reduces a meaningful risk; stop when the required evidence is there.
+            </p>
+            <Link to="/consequences">Choose proportionate verification →</Link>
+          </div>
+        </section>
+
         <section className={clsx(styles.section, styles.alt)} id="why">
           <div className="container">
             <p className={styles.eyebrow}>Why use it</p>
@@ -190,10 +210,6 @@ export default function Home(): ReactNode {
             <p className={styles.sectionNote}>
               <strong>Public review safety.</strong> On public repositories, Shaka reads feedback
               from trusted contributors and reviewers. A maintainer checks comments from other people.
-            </p>
-            <p id="consequences" className={styles.sectionNote}>
-              New to building with AI?{' '}
-              <Link to="/consequences">Choose checks that fit the consequences →</Link>
             </p>
             <div className={styles.docLinks}>
               <Link to="/docs/configure-repository">Repository setup →</Link>
