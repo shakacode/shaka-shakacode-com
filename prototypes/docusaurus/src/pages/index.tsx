@@ -101,9 +101,8 @@ export default function Home(): ReactNode {
               and delivery on GitHub. You describe the outcome; Shaka supplies the workflow.
             </p>
             <p className={styles.heroLead}>
-              Shaka brings back a PR ready to merge, asks for a decision when needed, or merges
-              automatically when you authorize it, after required checks
-              and approvals pass.
+              The agent brings you a PR and the decisions it needs from you. If you choose Auto,
+              it can merge within your configured limits after required checks, reviews, and approvals.
             </p>
             <div className={styles.heroActions}>
               <Link className="button button--primary button--lg" to="/docs/getting-started">
@@ -208,8 +207,8 @@ export default function Home(): ReactNode {
             <p className={styles.eyebrow}>What you get</p>
             <h2>What a Shaka PR answers</h2>
             <p className={styles.sectionLead}>
-              You should not have to reconstruct what an agent did. Each Shaka PR answers these
-              questions in the description and the code walkthrough.
+              You should not have to reconstruct what an agent did. Use the description and
+              code walkthrough to answer these questions.
             </p>
             <div className={styles.grid}>
               {prAnswers.map((item) => (

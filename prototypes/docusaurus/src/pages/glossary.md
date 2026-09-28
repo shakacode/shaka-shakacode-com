@@ -63,11 +63,6 @@ or both. A useful review looks for what is wrong, not just what changed.
 Adding a PR's changes to the target branch. After the merge, the change is part of the shared
 code.
 
-### Escaped defect
-
-A bug that got past the checks and reached users or the environment it was released to. The
-[case study](/case-studies/30-ai-assisted-commits) uses this term.
-
 ## Shaka workflow terms
 
 ### Seam
@@ -126,7 +121,8 @@ See [resume unfinished work](/docs/working-with-shaka#resume-unfinished-work).
 
 ### Trusted GitHub actors
 
-The people, bots, and teams whose public comments the agent may read. The current trust rules
+Project contributors with write access and the people, bots, and teams designated as trusted
+reviewers. The current public-comment rules
 are in the canonical [public-comment safety guide](https://github.com/shakacode/shaka/blob/main/skills/shaka/references/public-comments-safety.md).
 Even a trusted comment cannot authorize merging or change policy. See [safety](/safety).
 
