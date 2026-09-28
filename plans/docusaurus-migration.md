@@ -217,7 +217,7 @@ handle secret values, per `AGENTS.md`.
    Use the same values as in `shakacode/shakapacker`. They are repo secrets
    there, not org secrets.
 4. **Cloudflare** (PR 5): `shaka.shakacode.com` attaches automatically when `main`
-   deploys. The existing Agent Workflows Pages project serves redirects for
+   deploys. The existing Agent Workflows Pages project will serve redirects for
    `workflows.shakacode.com`, `agents.shakacode.com`, and `agents.shakaflow.com`.
 5. **Later (Algolia):** create the Algolia app. Then set the
    `ALGOLIA_APP_ID` and `ALGOLIA_SEARCH_API_KEY` secrets and the
