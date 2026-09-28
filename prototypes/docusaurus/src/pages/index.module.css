@@ -81,6 +81,11 @@
   padding: 3.5rem 0;
 }
 
+.costHeading {
+  margin-top: 1.75rem;
+  font-size: 1.3rem;
+}
+
 .alt {
   background: var(--site-surface-1);
 }

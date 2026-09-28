@@ -147,7 +147,7 @@ export default function Home(): ReactNode {
               As people depend on the result, add checks that protect their time, data, and trust.
             </p>
             <ConsequencesLadder />
-            <h3>Make the next check earn its cost.</h3>
+            <h2 className={styles.costHeading}>Make the next check earn its cost.</h2>
             <p className={styles.sectionLead}>
               Count development time, verification effort, expected failure cost, and delayed delivery.
               Add a check when it reduces a meaningful risk; stop when the required evidence is there.
