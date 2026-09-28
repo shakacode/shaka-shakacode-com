@@ -27,11 +27,42 @@ const benefits = [
   },
   {
     title: 'Control merging',
-    body: 'Choose Ask to merge yourself or Auto to let the agent merge after required checks and approvals. Consequential changes need human review.',
+    body: 'Start with Ask: the agent prepares the PR and you decide whether to merge. Choose Auto for work you want the agent to merge after the configured checks and approvals, within your limits.',
   },
   {
     title: 'Resume unfinished work easily',
     body: 'WIP Details on the PR identify the owning agent chat, where it stopped, and what comes next. Supported chat links take you back to the owning conversation.',
+  },
+];
+
+const prAnswers = [
+  {
+    question: 'What changed, and why does it matter?',
+    answer: 'The description leads with the outcome a reader notices, in plain English.',
+  },
+  {
+    question: 'What needs my decision?',
+    answer: 'Blockers, delivery decisions, and any missing required review stay visible at the top.',
+  },
+  {
+    question: 'How was it checked?',
+    answer: 'A table of checks, with evidence labeled by the tested commit. Visible changes get before-and-after screenshots.',
+  },
+  {
+    question: 'Who reviewed it?',
+    answer: 'The review status names the reviewer and the commit it reviewed. A green check alone does not count as a review.',
+  },
+  {
+    question: 'Why does the code look this way?',
+    answer: 'A code walkthrough explains the implementation choices, with links to the exact lines.',
+  },
+  {
+    question: 'What did it cost?',
+    answer: 'Expand the Usage and cost section in the PR description for available token counts and estimated cost. Missing data is marked unknown.',
+  },
+  {
+    question: 'How can I resume unfinished work?',
+    answer: 'Expand WIP Details in the PR description to find the owning chat, where work stopped, and what comes next, so you or another agent can pick it up.',
   },
 ];
 
@@ -46,9 +77,9 @@ const steps = [
     link: {to: '/docs/pr-verification', label: 'PR verification'},
   },
   {
-    title: 'Enforcement',
-    body: 'Ruby and GitHub check configuration, comment trust, and merge conditions. The enforcement reference identifies which steps rely on the agent.',
-    link: {to: '/docs/workflow', label: 'What is enforced'},
+    title: 'Settings you can improve',
+    body: 'Choose reviewers, adapt their instructions, and use your project’s existing checks. Ask your agent to help change settings when the process wastes time.',
+    link: {to: '/docs/configure-repository', label: 'Configure your workflow'},
   },
 ];
 
@@ -66,13 +97,12 @@ export default function Home(): ReactNode {
               <span className={styles.accent}>Get a tested, reviewed PR</span> that's easy to understand.
             </h1>
             <p className={styles.heroLead}>
-              Shaka guides your agent through implementation, local testing, independent review,
+              The Shaka skill guides your agent through implementation, local testing, independent review,
               and delivery on GitHub. You describe the outcome; Shaka supplies the workflow.
             </p>
             <p className={styles.heroLead}>
-              Shaka brings back a PR ready to merge, asks for a decision when needed, or merges
-              automatically when repository policy and the task permit it, after required checks
-              and approvals pass.
+              The agent brings you a PR and the decisions it needs from you. If you choose Auto,
+              it can merge within your configured limits after required checks, reviews, and approvals.
             </p>
             <div className={styles.heroActions}>
               <Link className="button button--primary button--lg" to="/docs/getting-started">
@@ -158,8 +188,8 @@ export default function Home(): ReactNode {
               ))}
             </div>
             <p className={styles.sectionNote}>
-              <strong>Public review safety.</strong> Shaka reads feedback from trusted reviewers
-              and leaves other comments for maintainer triage.
+              <strong>Public review safety.</strong> On public repositories, Shaka reads feedback
+              from trusted contributors and reviewers. A maintainer checks comments from other people.
             </p>
             <p id="consequences" className={styles.sectionNote}>
               New to building with AI?{' '}
@@ -169,6 +199,80 @@ export default function Home(): ReactNode {
               <Link to="/docs/configure-repository">Repository setup →</Link>
               <Link to="/docs/settings">Settings →</Link>
               <Link to="/docs/">All documentation →</Link>
+            </div>
+          </div>
+        </section>
+        <section className={styles.section} id="pr-answers">
+          <div className="container">
+            <p className={styles.eyebrow}>What you get</p>
+            <h2>What a Shaka PR answers</h2>
+            <p className={styles.sectionLead}>
+              You should not have to reconstruct what an agent did. Use the description and
+              code walkthrough to answer these questions.
+            </p>
+            <div className={styles.grid}>
+              {prAnswers.map((item) => (
+                <div key={item.question} className={styles.card}>
+                  <h3>{item.question}</h3>
+                  <p>{item.answer}</p>
+                </div>
+              ))}
+            </div>
+            <p className={styles.caption}>
+              See <Link to="/docs/pr-verification">PR verification</Link> for the evidence each kind
+              of change needs.
+            </p>
+          </div>
+        </section>
+
+        <section className={clsx(styles.section, styles.alt)} id="evidence">
+          <div className="container">
+            <p className={styles.eyebrow}>Evidence from real use</p>
+            <h2>What went wrong, and what changed because of it.</h2>
+            <article className={styles.evidenceCard}>
+              <p className={styles.evidenceTag}>Case study</p>
+              <h3>An AI reviewer found two bugs. A developer merged anyway.</h3>
+              <p>
+                Two useful review comments went unanswered among 83 conversation items. See how
+                clearer summaries and follow-up can help a developer act on what matters.
+              </p>
+              <div className={styles.evidenceLinks}>
+                <Link to="/case-studies/30-ai-assisted-commits">Read the full case study →</Link>
+                <Link to="/case-studies">All case studies →</Link>
+              </div>
+            </article>
+          </div>
+        </section>
+
+        <section className={styles.section} id="methodology">
+          <div className="container">
+            <p className={styles.eyebrow}>Methodology</p>
+            <blockquote className={styles.motto}>
+              Let the agent do the work. Spend your attention on the decisions that matter.
+            </blockquote>
+            <p className={styles.sectionLead}>
+              Try the result, check more carefully where mistakes would cost more, and fix problems
+              locally before pushing. Spend review time on changes that matter.
+            </p>
+            <Link className="button button--secondary button--lg" to="/methodology">
+              Read the methodology
+            </Link>
+          </div>
+        </section>
+
+        <section className={clsx(styles.section, styles.alt)} id="help">
+          <div className="container">
+            <p className={styles.eyebrow}>For engineering teams</p>
+            <h2>ShakaCode can help your team</h2>
+            <p className={styles.sectionLead}>
+              Shaka is open source. ShakaCode helps engineering teams turn AI coding into a
+              repeatable practice: choose the right tools, set review and verification rules that
+              match the risk, and keep quality under control as agents take on more work.
+            </p>
+            <div className={styles.heroActions}>
+              <Link className="button button--primary button--lg" href="https://www.shakacode.com/contact/">
+                Talk with ShakaCode
+              </Link>
             </div>
           </div>
         </section>

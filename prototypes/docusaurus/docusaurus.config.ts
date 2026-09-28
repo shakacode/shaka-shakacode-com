@@ -168,6 +168,7 @@ const config: Config = {
         },
         {to: '/docs/getting-started', label: 'Get started', position: 'left'},
         {to: '/case-studies', label: 'Case studies', position: 'left'},
+        {to: '/methodology', label: 'Methodology', position: 'left'},
         {
           href: 'https://www.shakacode.com/contact/',
           label: 'Get expert help',
@@ -203,6 +204,10 @@ const config: Config = {
             {label: 'Repository', href: 'https://github.com/shakacode/shaka'},
             {label: 'Issues', href: 'https://github.com/shakacode/shaka/issues'},
             {label: 'Case studies', to: '/case-studies'},
+            {label: 'Methodology', to: '/methodology'},
+            {label: 'Principles', to: '/principles'},
+            {label: 'Safety', to: '/safety'},
+            {label: 'Glossary', to: '/glossary'},
           ],
         },
         {
