@@ -1,130 +1,63 @@
 ---
 title: Methodology
-description: How ShakaCode uses AI coding agents. Match checks to what could break, give verification a stopping rule, review adversarially before merge, and treat evidence as proof.
+description: Spend your attention on the decisions that matter. Let your coding agent do the work, then check that the result works for people.
 ---
 
 # Methodology
 
-These principles describe ShakaCode's approach to using AI coding agents. The short version:
+Your attention is the scarce resource. A coding agent can produce changes faster than you can
+read them. The useful measure is how much working software you get for the time you spend
+explaining, checking, and correcting it—and for the tokens the agents use along the way.
 
-> **Use AI aggressively, verify the risky parts, document what was learned, and keep shipping.**
+The Shaka skill gives the agent a repeatable way to do that work. These are the habits behind it.
 
-Shaka builds several of these habits into its workflow. The principles also apply when you
-work without it. For what Shaka does step by step, see the [workflow](/docs/workflow).
+## Start with a result you can try
 
-## Balance verification with delivery
+“Fix search” leaves a lot to guess. “Searching for O'Brien should return matching customers
+instead of an error” gives the agent something specific to build and check.
 
-Start with **what happens if this breaks?** A disposable app for yourself may need no formal
-process. Describe it, try it, and iterate. Using it is already a lightweight check. You do
-not need Shaka to find out whether an idea is useful.
+Decide how you will know the work is done. For that search fix, try the failing name and a few
+ordinary searches. For a page redesign, open it on a phone and a desktop. Ask the agent to do
+those checks too, and tell you what it tried and what it could not check.
 
-As more people depend on the result, add safeguards that match the consequences:
+If you are unsure what to do next, ask: **“Walk me through the next step in baby steps.”**
+You should not need to learn the whole development process to make one useful decision.
 
-- **Friends or coworkers:** check important user journeys, protect saved data, and have a
-  recovery path.
-- **Customers depend on it:** automate checks for critical behavior, review risky changes,
-  monitor failures, and prepare rollback.
-- **Critical service:** set reliability targets, stage releases, test failure modes, and
-  practice recovery.
+## Check more carefully when a mistake would cost more
 
-These are examples, not user-count thresholds. A five-person payroll tool can carry more risk
-than a popular disposable toy. Sensitive data and irreversible actions raise the stakes, even
-for a personal app. Within one system, a button label and a permission change deserve
-different checks. [See the consequences ladder](/consequences).
+A spelling change and a change to how customers are charged deserve different amounts of
+checking. For the spelling change, read the page. For billing, test examples such as a normal
+charge, a failed payment, and a refund before customers use the change.
 
-Weigh four costs together: development, verification, the expected cost of a failure, and the
-cost of delay. This is a decision aid, not a calculator. Ask which failure the next check could
-catch, how likely and costly that failure is, and whether the result would change the release
-decision. Count human attention, flaky tests, and repeated review rounds as costs too.
+An early prototype can be tried and changed quickly. A service people rely on also needs a way
+to notice problems after an update: error reports, useful logs, and alerts. That visibility is
+called **observability**. Have a way to restore the previous version if the update breaks
+something. The [consequences guide](/consequences) gives more examples.
 
-Reducing exposure also helps. Ship a smaller change, release to a limited audience, and make
-recovery easier. Tests before release cannot replace monitoring and recovery afterward.
-Google's [Embracing Risk](https://sre.google/sre-book/embracing-risk/) explains why reliability
-work should match a service's needs and account for what else the time could buy.
+## Fix problems locally before sending the PR
 
-## Give verification a stopping rule
+Ask the agent to run the project's tests, try the changed behavior, and get a fresh review
+before pushing to GitHub. A reviewer should look for mistakes: can a search return the wrong
+customer, can a save lose data, or can a page become unusable on a phone?
 
-Before work starts, name three things:
+Use automatic code checks such as ESLint for JavaScript or RuboCop for Ruby where they fit the
+project. Let tools catch routine mistakes so people can focus on whether the change makes sense.
 
-- the behavior to deliver;
-- the evidence needed to accept it;
-- the failures that must block release.
+Finding and fixing problems locally saves repeated waits for GitHub's automated checks and
+repeated requests for a person to review the PR. The Shaka skill instructs the agent to do this;
+it cannot guarantee that the agent tested thoroughly. Ask to see what was checked, rather than
+accepting “tested” as the whole answer.
 
-Finish when that evidence is sufficient, required checks pass, and each remaining risk has an
-explicit decision. An extra suggestion is an observation to evaluate. It is not an automatic
-requirement.
+## Finish without turning every suggestion into more work
 
-If repair and review keep generating more work, pause and ask whether the next change fixes a
-real defect or expands the design. A pause does not permit shipping an unresolved defect. It
-also does not permit skipping a required security, review, or CI check.
+Fix bugs that stop the requested behavior from working. Consider a reviewer's other suggestions
+on their merits. A better name or an unrelated cleanup does not always justify another round
+of edits, tests, and review.
 
-Shaka applies a version of this rule to review findings. Its Review step describes how the agent
-handles demonstrated defects, declines suggestions with a reason, and bounds repeated repair.
-See the current
-[workflow definition](https://github.com/shakacode/shaka/blob/main/skills/shaka/config/workflow.yml).
+Before accepting another round, ask: **“What problem will this fix for someone using the software?”**
+If the requested behavior works and the necessary checks pass, you can leave an optional
+improvement for another task. A failing required check still needs to be resolved.
 
-## Mindset
-
-Treat the agent as a partner for research, review, testing, and documentation. It is not an
-oracle, and it is not a replacement for your judgment.
-
-When you are blocked or unsure, ask one precise question that moves the task toward a concrete
-next action. A broad "explain everything" rarely helps.
-
-When the agent explains a confusing process in your repository, ask a follow-up question:
-*should this become documentation?* Documentation is high-leverage and usually low-risk, so
-merge it quickly.
-
-## Adversarial review before merge
-
-For anything beyond a trivial change, run a review whose job is to find what is *wrong*. Look
-for production risks, deployment risks, missing tests, and unsafe assumptions. A summary of
-the PR is not a review. Start with concrete blockers and file and line references.
-
-A change is ready to merge when:
-
-- tests pass;
-- manual verification is adequate for the risk;
-- adversarial review finds no serious issue;
-- the remaining risk is understood.
-
-In Shaka, meaningful changes get a local adversarial review before the push. The reviewer runs
-in a fresh session that did not write the change, and the agent fixes findings before pushing.
-GitHub reviewers then examine the published branch. See the Verify and Review steps in the
-[workflow](/docs/workflow) and the evidence guidance in [PR verification](/docs/pr-verification).
-
-## Verification habits
-
-Evidence comes before assertions. For CI, the question is not "is it green?" It is "did the
-step that proves *this change* actually run?"
-
-Ask the agent which manual testing a change needs, and in which environment. Never accept
-"the agent said it tested" as proof. Look for logs, commands, results, or screenshots tied to
-the commit being merged. [PR verification](/docs/pr-verification) describes the evidence a
-Shaka PR carries.
-
-## Convert confusion into issues and docs
-
-Do not let a vague blocker stay vague:
-
-1. Capture the symptom.
-2. Have the agent research likely causes from the repository's context.
-3. Decide whether it is a real bug, a documentation gap, or expected behavior.
-4. When the impact justifies more work, file a self-contained issue or open a docs PR.
-
-Keep optional observations in the original discussion unless there is a reason to schedule
-them.
-
-When the confusion is about Shaka itself, tell your agent what should work better. It helps
-refine the idea and asks before filing an issue. See
-[suggest improvements to Shaka](/docs/working-with-shaka#suggest-improvements-to-shaka).
-
-## Anti-patterns to avoid
-
-- Passing vague observations to teammates without first researching and packaging them.
-- Treating "AI said it tested" as proof, with no logs or screenshots.
-- Holding low-risk docs and comment PRs forever because review automation failed.
-- Merging high-risk deployment or secret changes without narrowing their effect on each
-  environment.
-- Letting a large migration reach reviewers without a map of what changed.
-- Asking broad questions when you need a specific next-step question.
+If the process repeatedly wastes time, ask the agent to explain why and suggest a change to
+Shaka's configuration. The [principles](/principles) explain what to optimize; the
+[repository setup guide](/docs/configure-repository) shows how to change the settings.

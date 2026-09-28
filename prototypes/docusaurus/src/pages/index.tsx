@@ -27,7 +27,7 @@ const benefits = [
   },
   {
     title: 'Control merging',
-    body: 'Choose Ask to merge yourself or Auto to let the agent merge within your configured limits after required checks, review, and approvals. Changes beyond those limits return to Ask. Consequential changes need human review.',
+    body: 'Start with Ask: the agent prepares the PR and you decide whether to merge. Choose Auto for work you want the agent to merge after the configured checks and approvals, within your limits.',
   },
   {
     title: 'Resume unfinished work easily',
@@ -35,9 +35,6 @@ const benefits = [
   },
 ];
 
-// Rewritten from the old site's five-question trust list around what a Shaka PR
-// actually contains. "What could it touch" was dropped: Shaka has no declared
-// file-ownership list for a PR.
 const prAnswers = [
   {
     question: 'What changed, and why does it matter?',
@@ -80,9 +77,9 @@ const steps = [
     link: {to: '/docs/pr-verification', label: 'PR verification'},
   },
   {
-    title: 'Enforcement',
-    body: 'Ruby and GitHub check configuration, comment trust, and merge conditions. The enforcement reference identifies which steps rely on the agent.',
-    link: {to: '/docs/workflow', label: 'What is enforced'},
+    title: 'Settings you can improve',
+    body: 'Choose reviewers, adapt their instructions, and use your project’s existing checks. Ask your agent to help change settings when the process wastes time.',
+    link: {to: '/docs/configure-repository', label: 'Configure your workflow'},
   },
 ];
 
@@ -100,12 +97,12 @@ export default function Home(): ReactNode {
               <span className={styles.accent}>Get a tested, reviewed PR</span> that's easy to understand.
             </h1>
             <p className={styles.heroLead}>
-              Shaka guides your agent through implementation, local testing, independent review,
+              The Shaka skill guides your agent through implementation, local testing, independent review,
               and delivery on GitHub. You describe the outcome; Shaka supplies the workflow.
             </p>
             <p className={styles.heroLead}>
               Shaka brings back a PR ready to merge, asks for a decision when needed, or merges
-              automatically when repository policy and the task permit it, after required checks
+              automatically when you authorize it, after required checks
               and approvals pass.
             </p>
             <div className={styles.heroActions}>
@@ -192,8 +189,8 @@ export default function Home(): ReactNode {
               ))}
             </div>
             <p className={styles.sectionNote}>
-              <strong>Public review safety.</strong> Shaka reads feedback from trusted reviewers
-              and leaves other comments for maintainer triage.
+              <strong>Public review safety.</strong> On public repositories, Shaka reads feedback
+              from trusted contributors and reviewers. A maintainer checks comments from other people.
             </p>
             <p id="consequences" className={styles.sectionNote}>
               New to building with AI?{' '}
@@ -235,11 +232,10 @@ export default function Home(): ReactNode {
             <h2>What went wrong, and what changed because of it.</h2>
             <article className={styles.evidenceCard}>
               <p className={styles.evidenceTag}>Case study</p>
-              <h3>The AI reviewer found it. We merged anyway.</h3>
+              <h3>An AI reviewer found two bugs. A developer merged anyway.</h3>
               <p>
-                Two real risks were flagged before merge, but neither was answered in a long PR
-                discussion. The case study traces what happened and how to make review findings
-                visible before the merge decision.
+                Two useful review comments went unanswered among 83 conversation items. See how
+                clearer summaries and follow-up can help a developer act on what matters.
               </p>
               <div className={styles.evidenceLinks}>
                 <Link to="/case-studies/30-ai-assisted-commits">Read the full case study →</Link>
@@ -253,8 +249,7 @@ export default function Home(): ReactNode {
           <div className="container">
             <p className={styles.eyebrow}>Methodology</p>
             <blockquote className={styles.motto}>
-              Use AI aggressively, verify the risky parts, document what was learned, and keep
-              shipping.
+              Let the agent do the work. Spend your attention on the decisions that matter.
             </blockquote>
             <p className={styles.sectionLead}>
               Review adversarially before merge, treat CI logs as evidence, test by hand where
@@ -271,7 +266,7 @@ export default function Home(): ReactNode {
             <p className={styles.eyebrow}>For engineering teams</p>
             <h2>ShakaCode can help your team</h2>
             <p className={styles.sectionLead}>
-              Shaka is open source. ShakaCode helps engineering teams turn ad hoc AI coding into a
+              Shaka is open source. ShakaCode helps engineering teams turn AI coding into a
               repeatable practice: choose the right tools, set review and verification rules that
               match the risk, and keep quality under control as agents take on more work.
             </p>
