@@ -3,7 +3,7 @@ import Link from '@docusaurus/Link';
 import Layout from '@theme/Layout';
 
 import ConsequencesLadder from '../components/ConsequencesLadder';
-import styles from '../components/ConsequencesLadder.module.css';
+import styles from './consequences.module.css';
 
 export default function Consequences(): ReactNode {
   return (

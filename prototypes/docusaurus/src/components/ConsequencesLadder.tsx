@@ -2,6 +2,7 @@ import clsx from 'clsx';
 
 import styles from './ConsequencesLadder.module.css';
 
+// Carried over from the Agent Workflows site: checks should fit the cost of failure.
 const stages = [
   {
     title: 'Just for me',

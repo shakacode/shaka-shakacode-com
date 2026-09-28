@@ -174,14 +174,18 @@ he approves.
 
 ### PR 5. Switchover and retirement
 
-- Move `shaka.shakacode.com` onto the new Cloudflare Pages project.
+- Confirm `shaka.shakacode.com` serves the new Cloudflare Worker before
+  activating old-site redirects.
 - Add 301 redirects for `workflows.shakacode.com`,
   `agents.shakacode.com`, and `agents.shakaflow.com`, keeping query strings.
   Map old pages to their actual successors: case studies and methodology retain
   their routes; Quickstart becomes Getting started; Terminology becomes Glossary;
   Throughput becomes Principles. Send retired docs to the new docs index and
   other retired routes to the homepage. Test both slash forms of collection
-  roots, representative deep links, and query strings before merging.
+  roots, representative deep links, and query strings before merging the redirect
+  PR in `agent-workflows-com`. Keep the old Pages project serving the redirects
+  after archiving its source repository. Preserve these destination routes on
+  the Shaka site if its navigation changes later.
 - Update Shaka's GitHub homepage field and every link to the site in Shaka's
   README and docs.
 - **Audit agent-workflows-com's unmerged PRs and open issues** (including

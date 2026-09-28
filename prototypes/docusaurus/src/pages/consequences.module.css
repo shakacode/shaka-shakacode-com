@@ -1,0 +1,21 @@
+.section {
+  padding: 3rem 0;
+}
+
+.sectionLead {
+  max-width: 68ch;
+  font-size: 1.15rem;
+}
+
+.eyebrow {
+  margin-bottom: 0.75rem;
+  color: var(--ifm-color-primary-darker);
+  font-family: var(--ifm-font-family-monospace);
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+[data-theme='dark'] .eyebrow {
+  color: var(--ifm-color-primary-lighter);
+}

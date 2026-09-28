@@ -138,6 +138,7 @@ export default function Home(): ReactNode {
       <main>
         <section className={styles.section} id="consequences">
           <div className="container">
+            {/* Preserve old Agent Workflows links to /#verification after the domain redirect. */}
             <span id="verification" />
             <p className={styles.eyebrow}>Start with the consequences</p>
             <h2>What happens if this breaks?</h2>
