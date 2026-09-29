@@ -89,7 +89,47 @@
 }
 
 @media (max-width: 560px) {
+  .direction {
+    gap: 0.5rem;
+    font-size: 0.72rem;
+  }
+
+  .direction > span:not(.directionLine) {
+    white-space: nowrap;
+  }
+
+  .directionLine {
+    min-width: 0;
+  }
+
   .stages {
     grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  .stage {
+    gap: 0.3rem;
+    padding: 0.85rem 0 0.9rem 1rem;
+    border: 0;
+    border-left: 3px solid var(--ifm-color-primary);
+    border-radius: 0;
+  }
+
+  .stage + .stage {
+    border-top: 1px solid var(--ifm-color-emphasis-300);
+  }
+
+  .stageHeading {
+    margin-top: 0.15rem;
+    font-size: 1.1rem;
+  }
+
+  .meter {
+    width: 6rem;
+  }
+
+  .practice {
+    margin-top: 0.25rem !important;
+    padding-top: 0.5rem;
   }
 }
