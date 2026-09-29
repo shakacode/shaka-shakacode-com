@@ -37,7 +37,7 @@ export default function ConsequencesLadder({headingLevel = 'h3'}: {headingLevel?
     <>
       <div className={styles.direction} aria-hidden="true">
         <span>Easy to recover</span>
-        <span className={styles.directionLine} />
+        <span className={styles.directionLine}>→</span>
         <span>Costly to fail</span>
       </div>
       <ol className={styles.stages}>
