@@ -152,7 +152,7 @@ export default function Home(): ReactNode {
               Count development time, verification effort, expected failure cost, and delayed delivery.
               Add a check when it reduces a meaningful risk; stop when the required evidence is there.
             </p>
-            <Link to="/consequences">Choose proportionate verification →</Link>
+            <Link to="/docs/pr-verification">See what to verify →</Link>
           </div>
         </section>
 

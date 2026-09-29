@@ -56,9 +56,9 @@ export default function ConsequencesLadder({headingLevel = 'h3'}: {headingLevel?
         ))}
       </ol>
       <p className={styles.caption}>
-        Illustrative situations, not mandatory levels. A five-person payroll tool can need
-        stronger safeguards than a popular disposable toy. Data sensitivity, recovery
-        difficulty, and the change itself matter as much as audience size.
+        These examples are only a guide. A payroll tool used by five people may need stronger
+        safeguards than a demo tried by thousands. Data sensitivity, recovery difficulty, and
+        the change itself matter alongside audience size.
       </p>
     </>
   );
