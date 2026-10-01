@@ -3,7 +3,8 @@
 ## Decision
 
 - Canonical docs stay in `shakacode/shaka` under `docs/`.
-- This repository is the site: homepage, site-only pages (case studies), navigation,
+- The docs sidebar lives with its pages in `shakacode/shaka/docs/sidebars.json`.
+- This repository is the site: homepage, site-only pages (case studies), global navigation,
   styling, and the transforms that prepare the synced docs.
 - The site copies the docs at build time. It follows shakapacker.com and reactonrails.com.
 
@@ -21,7 +22,10 @@ shaka/docs  -->  content/upstream/docs  -->  prototypes/docusaurus/docs  -->  bu
    `SHAKA_REPO` if set, then a sibling `../shaka` checkout, then a shallow clone of
    `SHAKA_REPO_URL` at `SHAKA_REF` (default `main`).
 2. `npm run prepare:docs` copies them into the Docusaurus docs directory and rewrites links
-   that leave `docs/` (for example into `skills/`) to GitHub URLs.
+   that leave `docs/` (for example into `skills/`) to GitHub URLs. It generates
+   `prototypes/docusaurus/sidebars.json` from the synced docs navigation and adds the
+   site-generated changelog. Missing or malformed source navigation fails preparation;
+   there is no committed sidebar fallback.
 3. `npm run build:site` builds static output at `prototypes/docusaurus/build`. Broken links
    fail the build.
 4. `site-build-deploy.yml` deploys the output to Cloudflare as a Worker with static assets

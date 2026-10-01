@@ -8,7 +8,8 @@ published at `shaka.shakacode.com`. The migration plan is in
 
 - Canonical docs are written in `shakacode/shaka` under `docs/`. This repository
   only presents them. Do not add canonical docs content here.
-- This repository owns the homepage, site-only pages, navigation and footer,
+- Docs sidebar order lives in `shakacode/shaka/docs/sidebars.json` and syncs with the pages.
+- This repository owns the homepage, site-only pages, global navigation and footer,
   styling, and the transforms that prepare the synced docs.
 
 ## Agent Workflow Configuration
