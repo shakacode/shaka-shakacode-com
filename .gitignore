@@ -6,6 +6,7 @@
 content/upstream/docs/
 content/upstream/CHANGELOG.md
 prototypes/docusaurus/docs/
+prototypes/docusaurus/sidebars.json
 
 .DS_Store
 npm-debug.log*
