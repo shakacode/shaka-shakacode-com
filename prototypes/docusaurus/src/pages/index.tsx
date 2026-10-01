@@ -153,6 +153,10 @@ export default function Home(): ReactNode {
                 </div>
               ))}
             </div>
+            <p className={styles.sectionNote}>
+              Optional: two AI reviewers from different providers read each commit before it’s pushed;
+              their findings are merged into one list, so each problem is fixed once.
+            </p>
           </div>
         </section>
 
