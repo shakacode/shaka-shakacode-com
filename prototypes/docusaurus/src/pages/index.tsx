@@ -3,11 +3,12 @@ import clsx from 'clsx';
 import Link from '@docusaurus/Link';
 import Layout from '@theme/Layout';
 import CodeBlock from '@theme/CodeBlock';
+import Heading from '@theme/Heading';
+import PrExamples from '../components/PrExamples';
 
 import styles from './index.module.css';
 
 const EXAMPLE_TASK = '$shaka Fix search when the query contains an apostrophe.';
-const EXAMPLE_PR = 'https://github.com/shakacode/shaka/pull/325';
 
 const prAnswers = [
   {
@@ -77,8 +78,8 @@ export default function Home(): ReactNode {
               <Link className="button button--primary button--lg" to="/docs/getting-started">
                 Get started
               </Link>
-              <Link className="button button--secondary button--lg" href={EXAMPLE_PR}>
-                See a real PR
+              <Link className="button button--secondary button--lg" to="#pr-examples">
+                See real PR examples
               </Link>
             </div>
           </div>
@@ -119,9 +120,21 @@ export default function Home(): ReactNode {
               ))}
             </div>
             <p className={styles.sectionNote}>
-              <Link href={EXAMPLE_PR}>Read a real Shaka PR →</Link> See its tests, review findings,
+              <Link to="#pr-examples">Explore real Shaka PRs →</Link> See their tests, review findings,
               code walkthrough, and reported verification gaps.
             </p>
+          </div>
+        </section>
+
+        <section className={clsx(styles.section, styles.alt)} aria-labelledby="pr-examples">
+          <div className="container">
+            <p className={styles.eyebrow}>Inside a Shaka PR</p>
+            <Heading as="h2" id="pr-examples">See the workflow in real pull requests.</Heading>
+            <p className={styles.sectionLead}>
+              Follow the numbered callouts to see verification, independent review, and code
+              walkthroughs in recent Shaka PRs. Open each source to read the full context.
+            </p>
+            <PrExamples />
           </div>
         </section>
 
