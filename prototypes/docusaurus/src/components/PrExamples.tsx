@@ -21,7 +21,7 @@ const examples = [
   {
     id: 'review-rounds',
     number: 350,
-    title: 'Follow the review and the fixes.',
+    title: 'Local adversarial review',
     source: 'https://github.com/shakacode/shaka/pull/350#issuecomment-5905445905',
     height: 855,
     alt: 'Shaka PR #350 local adversarial review showing four rounds, reviewer models, findings, fixes, and an outcome.',
