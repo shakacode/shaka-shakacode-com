@@ -106,17 +106,15 @@ export default function Home(): ReactNode {
             <p className={styles.eyebrow}>The sandwich model</p>
             <h2>Keep human judgment around the agent loop.</h2>
             <figure className={styles.workflowFigure}>
-              <a href={checkpointSwitchback} aria-label="Open the full-size sandwich model diagram">
-                <img
-                  className={styles.workflowImage}
-                  src={checkpointSwitchback}
-                  width="1536"
-                  height="1024"
-                  loading="lazy"
-                  decoding="async"
-                  alt="A sandwich surrounds an agent loop for building, testing, and review. A human checkpoint routes the result toward revision or proceeding."
-                />
-              </a>
+              <img
+                className={styles.workflowImage}
+                src={checkpointSwitchback}
+                width="1536"
+                height="1024"
+                loading="lazy"
+                decoding="async"
+                alt="A sandwich surrounds an agent loop for building, testing, and review. A human checkpoint routes the result toward revision or proceeding."
+              />
               <figcaption className={styles.workflowCaption}>
                 Humans steer the outer loop. Agents build, test, and review inside it.
                 At the checkpoint, evaluate the result and decide what happens next.
