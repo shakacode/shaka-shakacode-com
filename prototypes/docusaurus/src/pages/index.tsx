@@ -111,7 +111,7 @@ export default function Home(): ReactNode {
                 src={checkpointSwitchback}
                 width="1536"
                 height="1024"
-                loading="lazy"
+                loading="eager"
                 decoding="async"
                 alt="A sandwich surrounds an agent loop for building, testing, and review. A human checkpoint routes the result toward revision or proceeding."
               />
