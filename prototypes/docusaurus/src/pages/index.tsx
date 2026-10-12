@@ -3,6 +3,7 @@ import clsx from 'clsx';
 import Link from '@docusaurus/Link';
 import Layout from '@theme/Layout';
 import CodeBlock from '@theme/CodeBlock';
+import checkpointSwitchback from '@site/docs/img/checkpoint-switchback.webp';
 
 import styles from './index.module.css';
 
@@ -100,6 +101,34 @@ export default function Home(): ReactNode {
       </header>
 
       <main>
+        <section className={styles.section} id="human-agent-loops">
+          <div className="container">
+            <p className={styles.eyebrow}>The sandwich model</p>
+            <h2>Keep human judgment around the agent loop.</h2>
+            <figure className={styles.workflowFigure}>
+              <a href={checkpointSwitchback} aria-label="Open the full-size sandwich model diagram">
+                <img
+                  className={styles.workflowImage}
+                  src={checkpointSwitchback}
+                  width="1536"
+                  height="1024"
+                  loading="lazy"
+                  decoding="async"
+                  alt="A sandwich surrounds an agent loop for building, testing, and review. A human checkpoint routes the result toward revision or proceeding."
+                />
+              </a>
+              <figcaption className={styles.workflowCaption}>
+                Humans steer the outer loop. Agents build, test, and review inside it.
+                At the checkpoint, evaluate the result and decide what happens next.
+              </figcaption>
+            </figure>
+            <div className={styles.docLinks}>
+              <Link to="/docs/pr-verification#checkpoint">How checkpoints work →</Link>
+              <a href={checkpointSwitchback}>View the full-size diagram →</a>
+            </div>
+          </div>
+        </section>
+
         <section className={styles.section} id="pr-answers">
           <div className="container">
             {/* Keep legacy Agent Workflows verification links useful after the domain redirect. */}
