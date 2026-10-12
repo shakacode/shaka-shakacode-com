@@ -3,6 +3,7 @@ import clsx from 'clsx';
 import Link from '@docusaurus/Link';
 import Layout from '@theme/Layout';
 import CodeBlock from '@theme/CodeBlock';
+import Head from '@docusaurus/Head';
 import checkpointSwitchback from '@site/docs/img/checkpoint-switchback.webp';
 
 import styles from './index.module.css';
@@ -62,6 +63,15 @@ export default function Home(): ReactNode {
     <Layout
       title="Give your coding agent a task. Get a PR you can evaluate."
       description="Shaka guides coding agents through your repository’s checks, independent review, and a clear GitHub handoff. Open source, for developers and growing projects.">
+      <Head>
+        <link
+          rel="preload"
+          as="image"
+          href={checkpointSwitchback}
+          media="(min-width: 997px)"
+          fetchPriority="low"
+        />
+      </Head>
       <header className={styles.hero}>
         <div className={clsx('container', styles.heroGrid)}>
           <div>
@@ -111,7 +121,8 @@ export default function Home(): ReactNode {
                 src={checkpointSwitchback}
                 width="1536"
                 height="1024"
-                loading="eager"
+                loading="lazy"
+                fetchPriority="low"
                 decoding="async"
                 alt="A sandwich surrounds an agent loop for building, testing, and review. A human checkpoint routes the result toward revision or proceeding."
               />
