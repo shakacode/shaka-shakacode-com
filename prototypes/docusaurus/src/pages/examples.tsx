@@ -2,6 +2,11 @@ import type {ReactNode} from 'react';
 import Link from '@docusaurus/Link';
 import Layout from '@theme/Layout';
 
+import dashboardBefore from '@site/static/img/examples/navigation-lab/dashboard-before.png';
+import dashboardAfter from '@site/static/img/examples/navigation-lab/dashboard-after.png';
+import listDesktop from '@site/static/img/examples/navigation-lab/list-desktop.png';
+import listMobile from '@site/static/img/examples/navigation-lab/list-mobile.png';
+
 import styles from './examples.module.css';
 
 const PR = 'https://github.com/shakacode/react-on-rails-starter-tanstack/pull/235';
@@ -37,7 +42,7 @@ export default function Examples(): ReactNode {
           <div className={styles.comparison}>
             <figure>
               <img
-                src="/img/examples/navigation-lab/dashboard-before.png"
+                src={dashboardBefore}
                 alt="Dashboard header before the change, without a Navigation lab link"
                 width="1280"
                 height="170"
@@ -45,7 +50,7 @@ export default function Examples(): ReactNode {
               <figcaption>Before · dashboard header</figcaption>
               <a
                 className={styles.fullSize}
-                href="/img/examples/navigation-lab/dashboard-before.png"
+                href={dashboardBefore}
                 target="_blank"
                 rel="noreferrer">
                 View full-size screenshot
@@ -53,7 +58,7 @@ export default function Examples(): ReactNode {
             </figure>
             <figure>
               <img
-                src="/img/examples/navigation-lab/dashboard-after.png"
+                src={dashboardAfter}
                 alt="Dashboard header after the change, with a Navigation lab link"
                 width="1280"
                 height="170"
@@ -61,7 +66,7 @@ export default function Examples(): ReactNode {
               <figcaption>After · Navigation lab link added</figcaption>
               <a
                 className={styles.fullSize}
-                href="/img/examples/navigation-lab/dashboard-after.png"
+                href={dashboardAfter}
                 target="_blank"
                 rel="noreferrer">
                 View full-size screenshot
@@ -77,7 +82,7 @@ export default function Examples(): ReactNode {
           <div className={styles.screens}>
             <figure>
               <img
-                src="/img/examples/navigation-lab/list-desktop.png"
+                src={listDesktop}
                 alt="Desktop Navigation Lab with running timer, project list, and prefetch request log"
                 width="1280"
                 height="900"
@@ -87,7 +92,7 @@ export default function Examples(): ReactNode {
             </figure>
             <figure className={styles.mobile}>
               <img
-                src="/img/examples/navigation-lab/list-mobile.png"
+                src={listMobile}
                 alt="Mobile Navigation Lab with running timer, project list, and prefetch request log"
                 width="390"
                 height="1616"
@@ -100,10 +105,9 @@ export default function Examples(): ReactNode {
           <div className={styles.evidence}>
             <h3>Evidence alongside the images</h3>
             <p>
-              The screenshot comment reports 11 of 11 manual UI checks at commit <code>cc7f666</code>.
-              Its checks include server rendering, prefetch reuse with no new request on click,
-              navigation without a document reload, and no horizontal overflow on mobile. The PR
-              also links its code walkthrough and automated checks.
+              The historical screenshot comment records the manual UI checks alongside these captures.
+              Read the source comment and pull request for the tested revision, reported results,
+              code walkthrough, and automated checks.
             </p>
             <div className={styles.links}>
               <Link href={SCREENSHOTS}>View screenshots and UI checks →</Link>
