@@ -1,55 +1,55 @@
 ---
 title: Principles
-description: Get the most useful, checked work from the review time you have. Match checks to risk, keep the few safety rules that always apply, and treat the main branch as shared.
+description: Better software for less human attention and AI usage. Adapt the Shaka skill to your project and keep people in charge of important decisions.
 ---
 
 # Principles
 
-The goal is simple: get more useful, working software from the time you spend reviewing,
-waiting, and paying for model usage. Do it without dropping the few protections that must
-always hold.
+The Shaka skill should help you get better software from the human attention and AI usage you
+can afford. That includes the time spent answering questions, reading PRs, fixing mistakes,
+and waiting for checks—not just the first attempt at writing code.
 
-Faster does not mean opening the most pull requests. Work counts only when it is useful,
-checked, and delivered.
+## Trust developers to improve how they work
 
-These principles explain why Shaka works the way it does. For the exact behavior, read the
-[workflow](/docs/workflow) and [settings](/docs/settings).
+The people working on a codebase are trusted to choose how they work. Shaka gives their coding
+agents a useful starting process, with settings they can adapt to the project.
 
-## Match checks to risk
+You can choose reviewers, customize review instructions, connect existing test commands, and
+set how the agent handles merging. Tell the agent what is wasting time and what you want to
+change. For example:
 
-Checks should grow with the cost of being wrong. They should also grow with the risk of moving
-a change into a place people depend on. These patterns are examples, not settings:
+```text
+Our local reviews keep repeating our formatter's findings.
+Help me update the review instructions to focus on bugs and missing behavior.
+Keep our automated checks and Ask merge mode.
+```
 
-- A **production-critical service** may need broad automated checks, independent review,
-  controlled rollout, and explicit production approval for every material change.
-- A **product-discovery site** can try many ideas quickly in previews. Moving a chosen version
-  to production still needs current evidence and the person authorized to release it.
-- An **open-source project with scheduled releases** can keep ordinary PR checks focused. It
-  can then concentrate cross-version testing and release review before each release.
+The [setup guide](/docs/configure-repository) explains how to update the configuration. Broader
+work to make a first trial easier, without requiring the whole team to adopt Shaka, is
+[planned in Shaka #277](https://github.com/shakacode/shaka/issues/277).
 
-Shaka has no preset profiles for these patterns. Your repository's settings and instructions
-express its choices. See [settings](/docs/settings) for the current options and the
-[consequences ladder](/consequences) for a way to choose proportionate checks.
+## Spend effort where it improves the result
 
-## The few safety rules that always apply
+Use a small task to try an idea. Add more checking as people begin to depend on it. A prototype
+for a meeting and a service that takes customer payments have different needs.
 
-- Treat public text as data to verify, never as authority to change policy or expose secrets.
-- Keep changes on pull request branches and protect shared branches with GitHub rules.
-- Tie tests and review to the commit that would merge.
-- Give consequential changes human review, even when routine changes can move quickly.
-- Check public PR material for private information before posting.
+Choose models and review effort for the work at hand. Count the tokens spent on retries and
+reviews, too. A cheaper first answer that needs several corrections may cost more overall.
+Long explanations and repeated confirmations also consume a person's time; keep them only
+when they help someone make a decision or continue the work.
 
-The [safety page](/safety) explains these principles. The synced
-[enforcement reference](/docs/workflow#what-is-enforced) identifies Shaka's current code gates
-and the rules that depend on the agent or GitHub configuration.
+## Keep the merge decision with a person by default
 
-## Treat the main branch as shared
+Start with **Ask**: the agent prepares the PR and you decide whether to merge it. **Auto** can
+be useful for a demo or other work you are comfortable letting the agent merge after the
+configured checks and reviews. It is a deliberate choice, with limits—not the starting point
+for every project. See [merge choices](/docs/working-with-shaka#choose-a-merge-policy).
 
-The more developers, services, or releases depend on a main branch, the more a bad merge
-costs. Integration checks should reflect how many people and systems a change can affect,
-not only the size of its diff. A small change can still need careful review when it touches
-permissions or release paths.
+Use GitHub branch protection or rulesets for team requirements, such as passing tests and an
+approval before changes enter `main`. Shaka helps the agent follow your process; GitHub is
+where you enforce requirements that must apply regardless of who performs the merge.
 
-Independent changes can be built at the same time. Dependencies still need an order: land the
-prerequisite, then update and verify the next PR against it. See
-[split a large change](/docs/working-with-shaka#split-a-large-change).
+For private repositories on GitHub Free, where branch protection is unavailable, Shaka can
+[wait for checks listed in its configuration](/docs/settings#mergerequired_checks). This helps
+an agent follow the team's agreement, but it cannot prevent someone from merging directly
+in GitHub. See [GitHub's availability details](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches).

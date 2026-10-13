@@ -167,8 +167,8 @@ const config: Config = {
           label: 'Docs',
         },
         {to: '/docs/getting-started', label: 'Get started', position: 'left'},
-        {to: '/examples', label: 'Examples', position: 'left'},
         {to: '/case-studies', label: 'Case studies', position: 'left'},
+        {to: '/examples', label: 'Examples', position: 'left'},
         {to: '/methodology', label: 'Methodology', position: 'left'},
         {
           href: 'https://www.shakacode.com/contact/',

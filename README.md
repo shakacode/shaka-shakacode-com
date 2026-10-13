@@ -9,7 +9,8 @@ The docs site for [Shaka](https://github.com/shakacode/shaka), published at
 
 - Write docs in [`shakacode/shaka/docs`](https://github.com/shakacode/shaka/tree/main/docs).
   The site syncs them on every build; a docs change on Shaka's `main` triggers a rebuild.
-- This repository owns the homepage, case studies, navigation and footer, styling, and the
+- Docs sidebar order lives in `shakacode/shaka/docs/sidebars.json` and syncs with the pages.
+- This repository owns the homepage, case studies, global navigation and footer, styling, and the
   sync and prepare transforms. Do not add canonical docs content here.
 
 ## Develop

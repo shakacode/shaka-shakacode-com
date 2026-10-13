@@ -365,8 +365,25 @@ async function prepareDocusaurus() {
   await rewriteRelativeDocLinks(docsRoot);
   await normalizeCodeFences(docsRoot);
   await writeChangelog(docsRoot);
+  await prepareSidebars(sourceDocs, siteRoot);
 
   console.log(`Prepared docusaurus docs from ${sourceDocs}`);
+}
+
+// Navigation travels with the same synced tree as the pages. Never retain a
+// site-owned fallback when upstream navigation is missing or malformed.
+export async function prepareSidebars(sourceRoot, siteRoot) {
+  const destination = path.join(siteRoot, "sidebars.json");
+  await fs.rm(destination, { force: true });
+  const source = path.join(sourceRoot, "sidebars.json");
+  const sidebars = JSON.parse(await fs.readFile(source, "utf8"));
+  if (!sidebars || !Array.isArray(sidebars.docsSidebar)) {
+    throw new Error(`Expected docsSidebar array in ${source}`);
+  }
+  if (await exists(path.join(siteRoot, "docs", "changelog.md"))) {
+    sidebars.docsSidebar.push("changelog");
+  }
+  await fs.writeFile(destination, `${JSON.stringify(sidebars, null, 2)}\n`);
 }
 
 async function main() {

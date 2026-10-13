@@ -22,8 +22,9 @@ Done means:
   the site-only pages chosen in the content audit (§5, PR 2).
 - A docs-only PR merged in `shakacode/shaka` rebuilds and redeploys the site with
   no manual step.
-- `workflows.shakacode.com` and `agents.shakacode.com` 301-redirect to
-  `shaka.shakacode.com`, keeping paths.
+- `workflows.shakacode.com`, `agents.shakacode.com`, and
+  `agents.shakaflow.com` 301-redirect to relevant pages on
+  `shaka.shakacode.com`, keeping query strings.
 - `shakacode/agent-workflows-com` is archived after its open PRs and issues are
   audited for anything worth keeping.
 - Shaka's GitHub homepage field points to `shaka.shakacode.com`.
@@ -173,10 +174,18 @@ he approves.
 
 ### PR 5. Switchover and retirement
 
-- Move `shaka.shakacode.com` onto the new Cloudflare Pages project.
-- Add 301 redirects that keep paths and query strings:
-  `workflows.shakacode.com` → `shaka.shakacode.com` and
-  `agents.shakacode.com` → `shaka.shakacode.com`.
+- Confirm `shaka.shakacode.com` serves the new Cloudflare Worker before
+  activating old-site redirects.
+- Add 301 redirects for `workflows.shakacode.com`,
+  `agents.shakacode.com`, and `agents.shakaflow.com`, keeping query strings.
+  Map old pages to their actual successors: case studies and methodology retain
+  their routes; Quickstart becomes Getting started; Terminology becomes Glossary;
+  Throughput becomes Principles. Send retired docs to the new docs index and
+  other retired routes to the homepage. Test both slash forms of collection
+  roots, representative deep links, and query strings before merging the redirect
+  PR in `agent-workflows-com`. Keep the old Pages project serving the redirects
+  after archiving its source repository. Preserve these destination routes on
+  the Shaka site if its navigation changes later.
 - Update Shaka's GitHub homepage field and every link to the site in Shaka's
   README and docs.
 - **Audit agent-workflows-com's unmerged PRs and open issues** (including
@@ -208,7 +217,8 @@ handle secret values, per `AGENTS.md`.
    Use the same values as in `shakacode/shakapacker`. They are repo secrets
    there, not org secrets.
 4. **Cloudflare** (PR 5): `shaka.shakacode.com` attaches automatically when `main`
-   deploys. Redirect `workflows.` and `agents.shakacode.com` to it.
+   deploys. The existing Agent Workflows Pages project will serve redirects for
+   `workflows.shakacode.com`, `agents.shakacode.com`, and `agents.shakaflow.com`.
 5. **Later (Algolia):** create the Algolia app. Then set the
    `ALGOLIA_APP_ID` and `ALGOLIA_SEARCH_API_KEY` secrets and the
    `ALGOLIA_INDEX_NAME` variable on the site repo. The workflow already switches
