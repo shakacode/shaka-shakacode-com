@@ -95,6 +95,22 @@
   scroll-margin-top: calc(var(--ifm-navbar-height) + 1rem);
 }
 
+.workflowFigure {
+  margin: 1.5rem 0 0;
+}
+
+.workflowImage {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 0.75rem;
+}
+
+.workflowCaption {
+  max-width: 68ch;
+  margin-top: 1rem;
+}
+
 .alt {
   background: var(--site-surface-1);
 }
