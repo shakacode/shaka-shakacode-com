@@ -5,8 +5,6 @@ import Layout from '@theme/Layout';
 import CodeBlock from '@theme/CodeBlock';
 import Heading from '@theme/Heading';
 import PrExamples from '../components/PrExamples';
-import Head from '@docusaurus/Head';
-import checkpointSwitchback from '@site/docs/img/checkpoint-switchback.webp';
 
 import styles from './index.module.css';
 
@@ -64,15 +62,6 @@ export default function Home(): ReactNode {
     <Layout
       title="Give your coding agent a task. Get a PR you can evaluate."
       description="Shaka guides coding agents through your repository’s checks, independent review, and a clear GitHub handoff. Open source, for developers and growing projects.">
-      <Head>
-        <link
-          rel="preload"
-          as="image"
-          href={checkpointSwitchback}
-          media="(min-width: 997px)"
-          fetchPriority="low"
-        />
-      </Head>
       <header className={styles.hero}>
         <div className={clsx('container', styles.heroGrid)}>
           <div>
@@ -113,29 +102,39 @@ export default function Home(): ReactNode {
 
       <main>
         <section className={styles.section} id="human-agent-loops">
-          <div className="container">
-            <p className={styles.eyebrow}>The sandwich model</p>
-            <h2>Keep human judgment around the agent loop.</h2>
-            <figure className={styles.workflowFigure}>
-              <img
-                className={styles.workflowImage}
-                src={checkpointSwitchback}
-                width="1536"
-                height="1024"
-                loading="lazy"
-                fetchPriority="low"
-                decoding="async"
-                alt="A sandwich surrounds an agent loop for building, testing, and review. A human checkpoint routes the result toward revision or proceeding."
-              />
-              <figcaption className={styles.workflowCaption}>
-                Humans steer the outer loop. Agents build, test, and review inside it.
-                At the checkpoint, evaluate the result and decide what happens next.
-              </figcaption>
-            </figure>
-            <div className={styles.docLinks}>
-              <Link to="/docs/pr-verification#checkpoint">How checkpoints work →</Link>
-              <a href={checkpointSwitchback}>View the full-size diagram →</a>
+          <div className={clsx('container', styles.flowGrid)}>
+            <div>
+              <p className={styles.eyebrow}>From task to PR</p>
+              <h2>The agent works the loop. You review one clear PR.</h2>
+              <p className={styles.sectionLead}>
+                Your coding agent builds, verifies, and reviews until your checks pass. Then it hands
+                back a PR that shows what changed, how it was checked, and what needs your decision.
+              </p>
+              <div className={styles.docLinks}>
+                <Link to="/docs/pr-verification#checkpoint">How checkpoints work →</Link>
+              </div>
             </div>
+            <ol className={styles.flow} aria-label="How a task becomes a pull request">
+              <li className={styles.flowStep}>
+                <span className={styles.flowWho}>You</span>
+                <span className={styles.flowTitle}>Give a task</span>
+              </li>
+              <li className={styles.flowStep}>
+                <span className={styles.flowWho}>Agent</span>
+                <span className={styles.flowTitle}>Build, verify, review</span>
+                <span className={styles.flowNote}>↻ Repeats tests, screenshots, and review</span>
+              </li>
+              <li className={clsx(styles.flowStep, styles.flowPr)}>
+                <span className={styles.flowWho}>You</span>
+                <span className={styles.flowTitle}>Review one clear PR</span>
+                <ul className={styles.flowChecks}>
+                  <li>Walkthrough</li>
+                  <li>Checks passed</li>
+                  <li>Findings addressed</li>
+                </ul>
+                <span className={styles.flowNote}>Merge, or send it back</span>
+              </li>
+            </ol>
           </div>
         </section>
 

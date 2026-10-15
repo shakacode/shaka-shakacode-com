@@ -95,20 +95,85 @@
   scroll-margin-top: calc(var(--ifm-navbar-height) + 1rem);
 }
 
-.workflowFigure {
-  margin: 1.5rem 0 0;
+.flowGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+  gap: 3rem;
+  align-items: center;
 }
 
-.workflowImage {
-  display: block;
+.flow {
+  display: grid;
+  gap: 2rem;
   width: 100%;
-  height: auto;
-  border-radius: 0.75rem;
+  max-width: 22rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  justify-self: center;
 }
 
-.workflowCaption {
-  max-width: 68ch;
-  margin-top: 1rem;
+.flowStep {
+  position: relative;
+  display: grid;
+  gap: 0.25rem;
+  padding: 0.85rem 1.1rem;
+  border: 1px solid var(--site-border-color);
+  border-radius: 0.75rem;
+  background: var(--site-surface-0);
+}
+
+.flowStep:not(:last-child)::after {
+  content: '↓';
+  position: absolute;
+  bottom: -1.85rem;
+  left: 50%;
+  transform: translateX(-50%);
+  color: var(--ifm-color-emphasis-600);
+  line-height: 1.5rem;
+}
+
+.flowWho {
+  color: var(--ifm-color-emphasis-700);
+  font-family: var(--ifm-font-family-monospace);
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.flowTitle {
+  font-weight: 700;
+}
+
+.flowNote {
+  color: var(--ifm-color-content-secondary);
+  font-size: 0.9rem;
+}
+
+.flowPr {
+  border: 2px solid var(--ifm-color-primary);
+}
+
+.flowChecks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin: 0.35rem 0;
+  padding: 0;
+  list-style: none;
+}
+
+.flowChecks li {
+  padding: 0.1rem 0.6rem;
+  border-radius: 999px;
+  background: var(--site-surface-2);
+  font-size: 0.85rem;
+}
+
+.flowChecks li::before {
+  content: '✓ ';
+  color: var(--ifm-color-primary);
+  font-weight: 700;
 }
 
 .alt {
@@ -172,7 +237,8 @@
 }
 
 @media (max-width: 996px) {
-  .heroGrid {
+  .heroGrid,
+  .flowGrid {
     grid-template-columns: 1fr;
     gap: 2rem;
   }
