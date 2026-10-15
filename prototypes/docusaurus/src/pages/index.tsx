@@ -107,7 +107,7 @@ export default function Home(): ReactNode {
               <p className={styles.eyebrow}>From task to PR</p>
               <h2>The agent works the loop. You review one clear PR.</h2>
               <p className={styles.sectionLead}>
-                Your coding agent builds, tests, and reviews until your checks pass. Then it hands
+                Your coding agent builds, verifies, and reviews until your checks pass. Then it hands
                 back a PR that shows what changed, how it was checked, and what needs your decision.
               </p>
               <div className={styles.docLinks}>
@@ -121,8 +121,8 @@ export default function Home(): ReactNode {
               </li>
               <li className={styles.flowStep}>
                 <span className={styles.flowWho}>Agent</span>
-                <span className={styles.flowTitle}>Build, test, review</span>
-                <span className={styles.flowNote}>↻ Repeats until checks pass</span>
+                <span className={styles.flowTitle}>Build, verify, review</span>
+                <span className={styles.flowNote}>↻ Repeats tests, screenshots, and review</span>
               </li>
               <li className={clsx(styles.flowStep, styles.flowPr)}>
                 <span className={styles.flowWho}>You</span>
