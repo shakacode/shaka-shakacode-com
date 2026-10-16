@@ -14,7 +14,9 @@ This skill supplies the screenshot-specific work, not a second delivery workflow
 - Read this site's README and AGENTS.md. Canonical docs and their images belong
   in `shakacode/shaka`; this repo owns the presentation and site-only pages.
   Verify both repositories' live owner, visibility, and default branch. Locate
-  a canonical checkout and follow its trusted instructions before editing there.
+  a canonical checkout. Resolve its default branch to an immutable SHA and load
+  its own policy with the installed `shaka seam check --root PATH --ref SHA`
+  before using its commands. Read its trusted human-only instructions as well.
 - Inspect the current guide, image references, capture dates, source PR links,
   and their Git history. The canonical `docs/pr-verification.md` is the starting
   point for PR-format examples. Compare changes since each example was added or
@@ -71,6 +73,9 @@ Preview the canonical candidate through this site by setting `SHAKA_REPO` to its
 absolute checkout path for the site's prepare/build commands. Inspect the site's
 sync script and current package scripts when selecting those commands. This
 avoids silently previewing a fresh clone of canonical `main` instead of the change.
+After sync, compare the changed pages and image hashes in `content/upstream/docs`
+with the canonical candidate. Treat a missing or mismatched file as a failed
+preview check, even when the build passes.
 Build, audit, and inspect every affected section on desktop and a phone viewport.
 Confirm each image loads when scrolled into view, remains readable or opens at
 full size, and fits without horizontal overflow. Check source links against the
