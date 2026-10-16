@@ -84,7 +84,6 @@ body {
   border-bottom: 1px solid var(--site-border-color);
   background: var(--ifm-navbar-background-color);
   box-shadow: none;
-  backdrop-filter: saturate(160%) blur(8px);
 }
 
 .navbar__brand {
