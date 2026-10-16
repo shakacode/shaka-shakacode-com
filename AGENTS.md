@@ -12,6 +12,11 @@ published at `shaka.shakacode.com`. The migration plan is in
 - This repository owns the homepage, site-only pages, global navigation and footer,
   styling, and the transforms that prepare the synced docs.
 
+## Screenshot maintenance
+
+For recurring PR-format screenshot updates, use
+[refresh-pr-screenshots](.agents/skills/refresh-pr-screenshots/SKILL.md).
+
 ## Agent Workflow Configuration
 
 Verify this repository with `gh repo view --json owner,visibility,defaultBranchRef`.
