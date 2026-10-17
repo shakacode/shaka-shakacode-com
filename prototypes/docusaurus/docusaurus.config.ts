@@ -73,7 +73,7 @@ const structuredData = {
 
 const config: Config = {
   title: 'Shaka',
-  tagline: 'Give your coding agent a task. Get a tested, reviewed PR.',
+  tagline: 'PRs that are a delight to review.',
   favicon: 'img/brand/mark.svg',
 
   future: {
