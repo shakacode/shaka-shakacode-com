@@ -159,6 +159,7 @@ export default function Home(): ReactNode {
             <p className={styles.sectionNote}>
               <Link to="#pr-examples">Explore real Shaka PRs →</Link> See their tests, review findings,
               code walkthrough, and reported verification gaps.{ ' '}
+              <Link to="/examples#live">Browse live Shaka PRs →</Link>{' '}
               <Link to="/examples">See a before-and-after UI example →</Link>
             </p>
           </div>
