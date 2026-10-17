@@ -7,41 +7,41 @@ import styles from './PrExamples.module.css';
 const examples = [
   {
     id: 'verification',
-    number: 372,
-    title: 'See what was checked.',
-    source: 'https://github.com/shakacode/shaka/pull/372#issue-5657087959',
-    height: 705,
-    alt: 'Shaka PR #372 description with a verification table, commit links, and expandable usage and settings.',
+    number: 614,
+    title: 'Start with the recommendation.',
+    source: 'https://github.com/shakacode/shaka/pull/614#issue-5896740734',
+    height: 1000,
+    alt: 'Shaka PR #614 description with the recommendation and evidence links on one line, Intent, Verification, and expandable details.',
     annotations: [
-      {top: '45%', title: 'Evidence tied to a commit', text: 'The check table names the tests, assertions, and commit that passed.'},
-      {top: '70%', title: 'More than automated tests', text: 'Desktop and mobile captures, review results, and a product checkpoint appear alongside the checks.'},
-      {top: '91%', title: 'Details when you need them', text: 'Expand usage and cost, execution provenance, or repository settings without losing the summary.'},
+      {top: '6%', title: 'A recommendation with its evidence', text: 'The opening line links directly to the code walkthrough, independent review, and checkpoint.'},
+      {top: '40%', title: 'Know the scope and safety assumption', text: 'Intent explains why the change matters, what it covers, and how carefully to review it.'},
+      {top: '68%', title: 'See what was proved and what was not', text: 'Verification names the checks and results. Not verified keeps the remaining gap visible.'},
     ],
   },
   {
     id: 'review-rounds',
-    number: 350,
+    number: 614,
     title: 'Local adversarial review',
-    source: 'https://github.com/shakacode/shaka/pull/350#issuecomment-5905445905',
-    height: 855,
-    alt: 'Shaka PR #350 local adversarial review showing four rounds, reviewer models, findings, fixes, and an outcome.',
+    source: 'https://github.com/shakacode/shaka/pull/614#issuecomment-6232020497',
+    height: 590,
+    alt: 'Shaka PR #614 local adversarial review with the reviewed revision, coverage limits, two reviewed commits, and one fixed finding.',
     annotations: [
-      {top: '16%', title: 'Know who reviewed what', text: 'Each round names the commit, reviewer, model, effort, and review criteria.'},
-      {top: '39%', title: 'Track findings through repair', text: 'The first two rounds each record a fix. Later findings are documented, with the full reports available below.'},
-      {top: '64%', title: 'Read the outcome first', text: 'The summary says why the loop ended and what remains. Reported cost is labeled as an estimate.'},
+      {top: '34%', title: 'Read the coverage limits', text: 'The review names the revision and explains what each reviewer could inspect. Tests were outside their review coverage.'},
+      {top: '64%', title: 'Track a finding through repair', text: 'The first commit records one fixed finding. Both reviewers reported zero findings on the second commit.'},
+      {top: '83%', title: 'Keep the full reports available', text: 'Expand findings, assessments, execution metadata, or the reports for each reviewed commit.'},
     ],
   },
   {
     id: 'walkthrough',
-    number: 325,
+    number: 614,
     title: 'Understand the change and its limits.',
-    source: 'https://github.com/shakacode/shaka/pull/325#pullrequestreview-5348779668',
-    height: 745,
-    alt: 'Shaka PR #325 code walkthrough explaining before and after behavior, linked code and tests, rollback, and known test failures.',
+    source: 'https://github.com/shakacode/shaka/pull/614#pullrequestreview-5557127184',
+    height: 750,
+    alt: 'Shaka PR #614 code walkthrough with linked implementation, request cost, failure behavior, regression evidence, and rollback consequences.',
     annotations: [
-      {top: '49%', title: 'An explanation linked to code', text: 'The walkthrough connects the before-and-after behavior to the implementation and its regression test.'},
-      {top: '66%', title: 'Risks and rollback stay visible', text: 'The reviewer can see which installations change behavior and what reverting would restore.'},
-      {top: '87%', title: 'Verification gaps are explicit', text: 'The full-suite row reports three failures that also occurred on main locally. A passing focused test does not hide them.'},
+      {top: '40%', title: 'An explanation linked to code', text: 'The walkthrough connects the missing-check bug to the implementation that now blocks it.'},
+      {top: '64%', title: 'Costs and failure behavior stay visible', text: 'The change adds two GitHub requests. An unreadable rule set blocks the gate.'},
+      {top: '86%', title: 'Evidence and rollback are concrete', text: 'Linked tests reproduce the old failure. The walkthrough explains that reverting restores the unsafe behavior.'},
     ],
   },
 ];
@@ -53,8 +53,8 @@ function PrExample({example}: {example: (typeof examples)[number]}): ReactNode {
     <figure className={styles.example}>
       <div className={styles.capture}>
         <Link href={imageUrl} target="_blank" rel="noopener noreferrer"
-          aria-label={`Enlarge the screenshot from Shaka PR #${example.number}`}>
-          <img src={imageUrl} alt={example.alt} width={816} height={example.height}
+          aria-label={`Enlarge screenshot: ${example.title} Shaka PR #${example.number}`}>
+          <img src={imageUrl} alt={example.alt} width={799} height={example.height}
             loading="lazy" decoding="async" />
         </Link>
         {example.annotations.map((annotation, index) => (
@@ -87,7 +87,7 @@ export default function PrExamples(): ReactNode {
     <div className={styles.examples}>
       {examples.map((example) => <PrExample key={example.id} example={example} />)}
       <p className={styles.archiveNote}>
-        Cropped GitHub screenshots captured October 1, 2026. Callouts explain the recorded results;
+        Cropped GitHub screenshots from PR #614 captured October 16, 2026 (Hawaii time), for revision cf9014b. Callouts explain the recorded results;
         they are historical examples, not a claim about any PR’s current readiness.
       </p>
     </div>
