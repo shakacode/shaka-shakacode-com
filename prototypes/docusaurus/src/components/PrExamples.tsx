@@ -53,7 +53,7 @@ function PrExample({example}: {example: (typeof examples)[number]}): ReactNode {
     <figure className={styles.example}>
       <div className={styles.capture}>
         <Link href={imageUrl} target="_blank" rel="noopener noreferrer"
-          aria-label={`Enlarge the screenshot from Shaka PR #${example.number}`}>
+          aria-label={`Enlarge screenshot: ${example.title} Shaka PR #${example.number}`}>
           <img src={imageUrl} alt={example.alt} width={799} height={example.height}
             loading="lazy" decoding="async" />
         </Link>
