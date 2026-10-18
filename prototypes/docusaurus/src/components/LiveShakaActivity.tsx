@@ -50,11 +50,21 @@ async function fetchJson(url: string): Promise<any> {
   return response.json();
 }
 
-async function loadActivity(): Promise<Activity> {
+// A failed search still leaves each merged PR's number and title from its commit, so the
+// feed shows them without part links and skips the cache to try the search again next time.
+async function loadActivity(): Promise<{activity: Activity; complete: boolean}> {
   const commits = parseCommits(await fetchJson(COMMITS_API));
   const search = searchApi(commits);
-  const items = search ? (await fetchJson(search)).items : [];
-  return {pulls: mergedPulls(commits, items), commits};
+  let items: unknown[] = [];
+  let complete = true;
+  if (search) {
+    try {
+      items = (await fetchJson(search)).items;
+    } catch {
+      complete = false;
+    }
+  }
+  return {activity: {pulls: mergedPulls(commits, items), commits}, complete};
 }
 
 function PullList({pulls}: {pulls: Pull[]}): ReactNode {
@@ -106,8 +116,8 @@ export default function LiveShakaActivity(): ReactNode {
     }
     let active = true;
     loadActivity()
-      .then((loaded) => {
-        writeCache(loaded);
+      .then(({activity: loaded, complete}) => {
+        if (complete) writeCache(loaded);
         if (active) setActivity(loaded);
       })
       .catch(() => active && setFailed(true));
