@@ -3,6 +3,8 @@ import Link from '@docusaurus/Link';
 import Heading from '@theme/Heading';
 import Layout from '@theme/Layout';
 
+import LiveShakaActivity from '../components/LiveShakaActivity';
+
 import dashboardBefore from '@site/static/img/examples/navigation-lab/dashboard-before.png';
 import dashboardAfter from '@site/static/img/examples/navigation-lab/dashboard-after.png';
 import listDesktop from '@site/static/img/examples/navigation-lab/list-desktop.png';
@@ -17,12 +19,6 @@ const GITHUB = 'https://github.com/shakacode';
 // Shaka PR descriptions link a Code Walkthrough, so this search finds them in repos
 // where not every PR used Shaka.
 const SHAKA_PRS = '?q=is%3Apr+is%3Amerged+%22Code+Walkthrough%22+in%3Abody+sort%3Aupdated-desc';
-
-const shakaLinks = [
-  {label: 'Recently merged PRs', href: `${GITHUB}/shaka/pulls?q=is%3Apr+is%3Amerged+sort%3Aupdated-desc`},
-  {label: 'PRs in progress', href: `${GITHUB}/shaka/pulls`},
-  {label: 'Commits on main', href: `${GITHUB}/shaka/commits/main/`},
-];
 
 const stackRepos = [
   {
@@ -72,15 +68,10 @@ export default function Examples(): ReactNode {
           <p className={styles.eyebrow}>Live examples</p>
           <Heading as="h2" id="live">Watch Shaka build Shaka.</Heading>
           <p>
-            Shaka is developed with Shaka, in public. Its recent pull requests show the current
-            workflow: descriptions, code walkthroughs, local review rounds, and verification
-            evidence. Each commit on main links back to its PR.
+            Shaka is developed with Shaka, in public. The newest merged PRs and commits below load
+            live from GitHub. Each PR links straight to the four parts worth reading, in order.
           </p>
-          <div className={styles.links}>
-            {shakaLinks.map((link) => (
-              <Link key={link.href} href={link.href}>{link.label} →</Link>
-            ))}
-          </div>
+          <LiveShakaActivity />
 
           <h3>Across ShakaStack</h3>
           <p>
@@ -123,13 +114,6 @@ export default function Examples(): ReactNode {
                 height="170"
               />
               <figcaption>Before · dashboard header</figcaption>
-              <a
-                className={styles.fullSize}
-                href={dashboardBefore}
-                target="_blank"
-                rel="noreferrer">
-                View full-size screenshot
-              </a>
             </figure>
             <figure>
               <img
@@ -139,13 +123,6 @@ export default function Examples(): ReactNode {
                 height="170"
               />
               <figcaption>After · Navigation lab link added</figcaption>
-              <a
-                className={styles.fullSize}
-                href={dashboardAfter}
-                target="_blank"
-                rel="noreferrer">
-                View full-size screenshot
-              </a>
             </figure>
           </div>
 
