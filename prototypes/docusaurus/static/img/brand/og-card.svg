@@ -8,7 +8,7 @@
   </g>
   <text x="200" y="152" font-family="Helvetica, Arial, sans-serif" font-size="56" font-weight="700" fill="#edeae2">Shaka</text>
   <text x="80" y="300" font-family="Helvetica, Arial, sans-serif" font-size="58" font-weight="700" fill="#edeae2">Give your coding agent a task.</text>
-  <text x="80" y="380" font-family="Helvetica, Arial, sans-serif" font-size="58" font-weight="700" fill="#7cecbd">Get a tested, reviewed PR.</text>
+  <text x="80" y="380" font-family="Helvetica, Arial, sans-serif" font-size="58" font-weight="700" fill="#7cecbd">Get a PR that’s a delight to review.</text>
   <text x="80" y="470" font-family="Helvetica, Arial, sans-serif" font-size="30" fill="#a6b0bb">Local tests · independent review · an explained pull request</text>
   <text x="80" y="560" font-family="Menlo, monospace" font-size="26" fill="#78838f">shaka.shakacode.com · open source by ShakaCode</text>
 </svg>

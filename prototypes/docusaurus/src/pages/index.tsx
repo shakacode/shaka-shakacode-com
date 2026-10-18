@@ -60,7 +60,7 @@ const steps = [
 export default function Home(): ReactNode {
   return (
     <Layout
-      title="Give your coding agent a task. Get a PR you can evaluate."
+      title="Give your coding agent a task. Get a PR that’s a delight to review."
       description="Shaka guides coding agents through your repository’s checks, independent review, and a clear GitHub handoff. Open source, for developers and growing projects.">
       <header className={styles.hero}>
         <div className={clsx('container', styles.heroGrid)}>
@@ -68,7 +68,7 @@ export default function Home(): ReactNode {
             <p className={styles.eyebrow}>Open source · Codex, Claude Code, Cursor and more</p>
             <h1 className={styles.heroTitle}>
               Give your coding agent a task.{' '}
-              <span className={styles.accent}>Get a PR you can evaluate.</span>
+              <span className={styles.accent}>Get a PR that’s a delight to review.</span>
             </h1>
             <p className={styles.heroLead}>
               Shaka guides the work through your repository’s checks, independent review, and a clear
@@ -156,11 +156,16 @@ export default function Home(): ReactNode {
                 </div>
               ))}
             </div>
-            <p className={styles.sectionNote}>
-              <Link to="#pr-examples">Explore real Shaka PRs →</Link> See their tests, review findings,
-              code walkthrough, and reported verification gaps.{ ' '}
-              <Link to="/examples">See a before-and-after UI example →</Link>
-            </p>
+            <div className={clsx(styles.sectionNote, styles.nextLinks)}>
+              <Link to="/examples#live">
+                <strong>Browse live Shaka PRs →</strong>
+                <span>Open a PR merged today and read its walkthrough, review, and checkpoint.</span>
+              </Link>
+              <Link to="/examples">
+                <strong>See a before-and-after UI change →</strong>
+                <span>Desktop and mobile screenshots from a real Shaka PR.</span>
+              </Link>
+            </div>
           </div>
         </section>
 

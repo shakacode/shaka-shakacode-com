@@ -52,11 +52,8 @@ function PrExample({example}: {example: (typeof examples)[number]}): ReactNode {
   return (
     <figure className={styles.example}>
       <div className={styles.capture}>
-        <Link href={imageUrl} target="_blank" rel="noopener noreferrer"
-          aria-label={`Enlarge screenshot: ${example.title} Shaka PR #${example.number}`}>
-          <img src={imageUrl} alt={example.alt} width={799} height={example.height}
-            loading="lazy" decoding="async" />
-        </Link>
+        <img src={imageUrl} alt={example.alt} width={799} height={example.height}
+          loading="lazy" decoding="async" />
         {example.annotations.map((annotation, index) => (
           <span key={annotation.title} className={styles.marker}
             style={{top: annotation.top}} aria-hidden="true">{index + 1}</span>
@@ -75,7 +72,6 @@ function PrExample({example}: {example: (typeof examples)[number]}): ReactNode {
         </ol>
         <div className={styles.links}>
           <Link href={example.source}>Read this section in PR #{example.number} →</Link>
-          <Link href={imageUrl} target="_blank" rel="noopener noreferrer">Enlarge screenshot ↗</Link>
         </div>
       </figcaption>
     </figure>
