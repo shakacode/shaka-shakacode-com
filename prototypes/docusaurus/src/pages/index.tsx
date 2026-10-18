@@ -156,11 +156,16 @@ export default function Home(): ReactNode {
                 </div>
               ))}
             </div>
-            <p className={styles.sectionNote}>
-              <Link to="#pr-examples">Explore real Shaka PRs →</Link> See their tests, review findings,
-              code walkthrough, and reported verification gaps.{ ' '}
-              <Link to="/examples">See a before-and-after UI example →</Link>
-            </p>
+            <div className={clsx(styles.sectionNote, styles.nextLinks)}>
+              <Link to="/examples#live">
+                <strong>Browse live Shaka PRs →</strong>
+                <span>Open a PR merged today and read its walkthrough, review, and checkpoint.</span>
+              </Link>
+              <Link to="/examples">
+                <strong>See a before-and-after UI change →</strong>
+                <span>Desktop and mobile screenshots from a real Shaka PR.</span>
+              </Link>
+            </div>
           </div>
         </section>
 

@@ -21,11 +21,6 @@
   min-width: 0;
 }
 
-.capture a {
-  display: block;
-  border-radius: 0.5rem;
-}
-
 .capture img {
   display: block;
   width: 100%;
