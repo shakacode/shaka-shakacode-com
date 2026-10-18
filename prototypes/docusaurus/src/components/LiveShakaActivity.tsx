@@ -1,10 +1,10 @@
 import {useEffect, useState, type ReactNode} from 'react';
 import Link from '@docusaurus/Link';
 
-import {COMMITS_API, PULLS_API, parseCommits, parsePulls, timeAgo} from '../lib/shakaActivity.mjs';
+import {COMMITS_API, mergedPulls, parseCommits, searchApi, timeAgo} from '../lib/shakaActivity.mjs';
 import styles from './LiveShakaActivity.module.css';
 
-type Pull = ReturnType<typeof parsePulls>[number];
+type Pull = ReturnType<typeof mergedPulls>[number];
 type Commit = ReturnType<typeof parseCommits>[number];
 type Activity = {pulls: Pull[]; commits: Commit[]};
 type View = 'pulls' | 'commits';
@@ -44,10 +44,17 @@ function writeCache(activity: Activity): void {
   }
 }
 
-async function fetchJson(url: string): Promise<unknown[]> {
+async function fetchJson(url: string): Promise<any> {
   const response = await fetch(url, {headers: {Accept: 'application/vnd.github+json'}});
   if (!response.ok) throw new Error(`GitHub returned ${response.status}`);
   return response.json();
+}
+
+async function loadActivity(): Promise<Activity> {
+  const commits = parseCommits(await fetchJson(COMMITS_API));
+  const search = searchApi(commits);
+  const items = search ? (await fetchJson(search)).items : [];
+  return {pulls: mergedPulls(commits, items), commits};
 }
 
 function PullList({pulls}: {pulls: Pull[]}): ReactNode {
@@ -98,9 +105,8 @@ export default function LiveShakaActivity(): ReactNode {
       return;
     }
     let active = true;
-    Promise.all([fetchJson(PULLS_API), fetchJson(COMMITS_API)])
-      .then(([pulls, commits]) => {
-        const loaded = {pulls: parsePulls(pulls), commits: parseCommits(commits)};
+    loadActivity()
+      .then((loaded) => {
         writeCache(loaded);
         if (active) setActivity(loaded);
       })

@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 
-import {parseCommits, parsePulls, timeAgo} from '../prototypes/docusaurus/src/lib/shakaActivity.mjs';
+import {mergedPulls, parseCommits, searchApi, timeAgo} from '../prototypes/docusaurus/src/lib/shakaActivity.mjs';
 
 const body = [
   '**Recommendation: Merge** · [Code Walkthrough](https://github.com/shakacode/shaka/pull/635#pullrequestreview-1)',
@@ -9,23 +9,45 @@ const body = [
   ' · [Checkpoint](https://github.com/shakacode/shaka/pull/635#issuecomment-3)',
 ].join('');
 
-test('parsePulls keeps merged PRs, newest merge first, with their Shaka links', () => {
-  const pulls = parsePulls([
-    {number: 1, title: 'Old', html_url: 'u1', merged_at: '2026-10-01T00:00:00Z', body: ''},
-    {number: 2, title: 'Closed unmerged', html_url: 'u2', merged_at: null, body},
-    {number: 635, title: 'New', html_url: 'u635', merged_at: '2026-10-17T00:00:00Z', body},
+const commits = [
+  {sha: 'c3', url: 'c3', title: 'Newest', date: '2026-10-17T12:00:00Z', pr: 635},
+  {sha: 'c2', url: 'c2', title: 'Direct commit', date: '2026-10-17T11:00:00Z', pr: null},
+  {sha: 'c1', url: 'c1', title: 'Older from commit', date: '2026-10-17T10:00:00Z', pr: 1},
+];
+
+test("mergedPulls follows merge order on main and adds each PR's Shaka links", () => {
+  const pulls = mergedPulls(commits, [
+    {number: 1, title: 'Older', body: '', pull_request: {merged_at: '2026-10-17T10:00:00Z'}},
+    {number: 635, title: 'Newest PR', body, pull_request: {merged_at: '2026-10-17T12:00:00Z'}},
   ]);
 
   assert.deepEqual(pulls.map((pull) => pull.number), [635, 1]);
+  assert.equal(pulls[0].title, 'Newest PR');
+  assert.equal(pulls[0].url, 'https://github.com/shakacode/shaka/pull/635');
   assert.equal(pulls[0].recommendation, 'Merge');
   assert.deepEqual(pulls[0].links.map((link) => link.label), ['Code Walkthrough', 'Code Review', 'Checkpoint']);
   assert.deepEqual(pulls[1].links, []);
   assert.equal(pulls[1].recommendation, null);
 });
 
-test('parsePulls drops links that leave the Shaka repository', () => {
-  const [pull] = parsePulls([{
-    number: 3, title: 'T', html_url: 'u', merged_at: '2026-10-17T00:00:00Z',
+test('mergedPulls still lists a merge the search did not return', () => {
+  const [pull] = mergedPulls(commits.slice(0, 1), []);
+
+  assert.equal(pull.title, 'Newest');
+  assert.equal(pull.mergedAt, '2026-10-17T12:00:00Z');
+  assert.deepEqual(pull.links, []);
+});
+
+test('searchApi covers PRs merged into main since the oldest listed merge', () => {
+  const url = new URL(searchApi(commits));
+
+  assert.equal(url.searchParams.get('q'), 'repo:shakacode/shaka is:pr is:merged base:main merged:>=2026-10-17T10:00:00Z');
+  assert.equal(searchApi([commits[1]]), null);
+});
+
+test('mergedPulls drops links that leave the Shaka repository', () => {
+  const [pull] = mergedPulls(commits.slice(0, 1), [{
+    number: 635, title: 'T', pull_request: {merged_at: '2026-10-17T12:00:00Z'},
     body: '[Code Walkthrough](https://evil.example/pull/3#x) [Code Review](javascript:alert(1))',
   }]);
 

@@ -3,30 +3,41 @@
 // same repository's pull requests are kept.
 
 export const REPO = 'shakacode/shaka';
-export const PULLS_API = `https://api.github.com/repos/${REPO}/pulls?state=closed&sort=updated&direction=desc&per_page=10`;
 export const COMMITS_API = `https://api.github.com/repos/${REPO}/commits?sha=main&per_page=8`;
+
+// GitHub cannot list PRs by merge time, but squash commits on main arrive in merge order.
+// The search covers every PR merged into main since the oldest listed commit, so each
+// commit's PR, with its body, is in the result.
+export function searchApi(commits) {
+  const dates = commits.filter((commit) => commit.pr).map((commit) => commit.date);
+  if (dates.length === 0) return null;
+  const since = dates.reduce((oldest, date) => (date < oldest ? date : oldest));
+  const query = `repo:${REPO} is:pr is:merged base:main merged:>=${since}`;
+  return `https://api.github.com/search/issues?q=${encodeURIComponent(query)}&per_page=30`;
+}
 
 const PARTS = ['Code Walkthrough', 'Code Review', 'Checkpoint'];
 const LINK = /\[(Code Walkthrough|Code Review|Checkpoint)\]\((https:\/\/github\.com\/shakacode\/shaka\/pull\/\d+#[\w-]+)\)/g;
 const RECOMMENDATION = /\*\*Recommendation: ([A-Za-z ]{1,40})\*\*/;
 const PR_SUFFIX = /\(#(\d+)\)\s*$/;
 
-export function parsePulls(pulls, limit = 6) {
-  return pulls
-    .filter((pull) => pull.merged_at)
-    .sort((a, b) => b.merged_at.localeCompare(a.merged_at))
+export function mergedPulls(commits, searchItems, limit = 6) {
+  const items = new Map(searchItems.map((item) => [item.number, item]));
+  return commits
+    .filter((commit) => commit.pr)
     .slice(0, limit)
-    .map((pull) => {
-      const body = pull.body || '';
+    .map((commit) => {
+      const item = items.get(commit.pr);
+      const body = item?.body || '';
       const found = new Map();
       for (const [, label, url] of body.matchAll(LINK)) {
         if (!found.has(label)) found.set(label, url);
       }
       return {
-        number: pull.number,
-        title: pull.title,
-        url: pull.html_url,
-        mergedAt: pull.merged_at,
+        number: commit.pr,
+        title: item?.title ?? commit.title,
+        url: `https://github.com/${REPO}/pull/${commit.pr}`,
+        mergedAt: item?.pull_request?.merged_at ?? commit.date,
         recommendation: body.match(RECOMMENDATION)?.[1].trim() ?? null,
         links: PARTS.filter((label) => found.has(label)).map((label) => ({label, url: found.get(label)})),
       };
