@@ -67,6 +67,36 @@
   scroll-margin-top: calc(var(--ifm-navbar-height) + 1rem);
 }
 
+.nextLinks {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+  gap: 1rem;
+}
+
+.nextLinks a {
+  display: block;
+  padding: 1rem 1.25rem;
+  border: 1px solid var(--ifm-color-emphasis-300);
+  border-radius: 0.75rem;
+  color: inherit;
+  text-decoration: none;
+}
+
+.nextLinks a:hover {
+  border-color: var(--ifm-color-primary);
+}
+
+.nextLinks strong {
+  display: block;
+  color: var(--ifm-link-color);
+}
+
+.nextLinks span {
+  display: block;
+  margin-top: 0.25rem;
+  font-size: 0.95rem;
+}
+
 .panelHeading {
   margin-top: 1.5rem;
   font-size: 1.25rem;
