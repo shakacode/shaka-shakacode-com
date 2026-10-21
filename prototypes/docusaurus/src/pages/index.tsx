@@ -12,12 +12,12 @@ const EXAMPLE_TASK = '$shaka Fix search when the query contains an apostrophe.';
 
 const prAnswers = [
   {
-    question: 'What changed, and why?',
-    answer: 'A clear description of the result, with a code walkthrough that explains the implementation choices.',
+    question: 'Is this the right change?',
+    answer: 'Intent says why the change exists, what it covers and leaves out, and why it is safe. Review effort, from 1 to 5, says how closely to read the code. A walkthrough explains the implementation choices.',
   },
   {
-    question: 'How was it checked?',
-    answer: 'Tests, independent review, and evidence tied to the tested commit. UI changes include desktop and mobile before-and-after screenshots.',
+    question: 'What was proved, and what wasn’t?',
+    answer: 'Verification lists the checks run against this change, each linked to its result, and names what was not verified. UI changes include desktop and mobile before-and-after screenshots.',
   },
   {
     question: 'What needs my decision?',
@@ -60,7 +60,7 @@ const steps = [
 export default function Home(): ReactNode {
   return (
     <Layout
-      title="Give your coding agent a task. Get a PR that’s a delight to review."
+      title="Give your coding agent a task. Review the intent and the evidence, not every line."
       description="Shaka guides coding agents through your repository’s checks, independent review, and a clear GitHub handoff. Open source, for developers and growing projects.">
       <header className={styles.hero}>
         <div className={clsx('container', styles.heroGrid)}>
@@ -68,11 +68,13 @@ export default function Home(): ReactNode {
             <p className={styles.eyebrow}>Open source · Codex, Claude Code, Cursor and more</p>
             <h1 className={styles.heroTitle}>
               Give your coding agent a task.{' '}
-              <span className={styles.accent}>Get a PR that’s a delight to review.</span>
+              <span className={styles.accent}>Review the intent and the evidence, not every line.</span>
             </h1>
             <p className={styles.heroLead}>
-              Shaka guides the work through your repository’s checks, independent review, and a clear
-              handoff on GitHub. See the evidence, understand the decisions, and choose when to merge.
+              Each Shaka PR says why the change exists, what it leaves out, and why it’s safe. It
+              lists the checks that prove the change, linked to their results, and names what was not
+              verified. A review-effort rating tells you when the code needs reading too. You choose
+              when to merge.
             </p>
             <div className={styles.heroActions}>
               <Link className="button button--primary button--lg" to="/docs/getting-started">
@@ -88,8 +90,8 @@ export default function Home(): ReactNode {
             <CodeBlock language="text">{EXAMPLE_TASK}</CodeBlock>
             <h2 className={styles.panelHeading}>Bring back the result and its evidence.</h2>
             <ul className={styles.taskResults}>
-              <li>The change and why it matters</li>
-              <li>Checks run and review findings addressed</li>
+              <li>Why the change exists and what it leaves out</li>
+              <li>Checks that prove it, and what was not verified</li>
               <li>What needs your decision before merging</li>
             </ul>
             <p className={styles.caption}>
@@ -146,7 +148,7 @@ export default function Home(): ReactNode {
             <h2>Know what was checked before you merge.</h2>
             <p className={styles.sectionLead}>
               You should be able to assess the work without reconstructing an agent’s conversation.
-              A Shaka PR puts the result, verification, and decisions in front of you.
+              A Shaka PR puts the intent, the evidence, and your decisions in front of you.
             </p>
             <div className={styles.grid}>
               {prAnswers.map((item) => (
