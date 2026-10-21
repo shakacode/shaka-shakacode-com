@@ -95,9 +95,9 @@ PR 4 needs PR 2 and PR 3. PR 5 comes last.
 ### PR 0. Seam and plan (new repo, first PR)
 
 - Create `shakacode/shaka-shakacode-com` (public, starting with a README).
-- Configure it for Shaka: `.agents/agent-workflow.yml`, `.agents/bin/setup`,
-  `.agents/bin/test`, `.agents/bin/validate`,
-  `.agents/trusted-github-actors.yml` and `AGENTS.md`, with merge policy ask.
+- Configure it for Shaka: `.agents/shaka/config.yml`, `.agents/shaka/bin/setup`,
+  `.agents/shaka/bin/test`, `.agents/shaka/bin/validate`,
+  `.agents/shaka/trusted-github-actors.yml` and `AGENTS.md`, with merge policy ask.
   Until the Docusaurus copy lands, validation checks that every tracked text
   file ends with a newline, and tests that check. `shaka seam check --root .
   --local` checks the seam's syntax only; trusted policy is loaded with

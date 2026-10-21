@@ -24,8 +24,8 @@ npm run dev
 ## Checks
 
 ```bash
-.agents/bin/setup
-.agents/bin/validate   # text files, script tests, docs sync and site build, docs audit
+.agents/shaka/bin/setup
+.agents/shaka/bin/validate   # text files, script tests, docs sync and site build, docs audit
 ```
 
 See [ARCHITECTURE.md](ARCHITECTURE.md), [CLOUDFLARE_SETUP.md](CLOUDFLARE_SETUP.md), and the
