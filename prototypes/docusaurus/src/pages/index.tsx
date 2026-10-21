@@ -17,7 +17,7 @@ const prAnswers = [
   },
   {
     question: 'What was proved, and what wasn’t?',
-    answer: 'Verification lists the checks run against this change, each linked to its result, and names what was not verified. UI changes include desktop and mobile before-and-after screenshots.',
+    answer: 'Verification lists the checks run against this change, each with a link to its result or the command that ran, and names any claim left unproven. UI changes include desktop and mobile before-and-after screenshots.',
   },
   {
     question: 'What needs my decision?',
@@ -72,9 +72,8 @@ export default function Home(): ReactNode {
             </h1>
             <p className={styles.heroLead}>
               Each Shaka PR says why the change exists, what it leaves out, and why it’s safe. It
-              lists the checks that prove the change, linked to their results, and names what was not
-              verified. A review-effort rating tells you when the code needs reading too. You choose
-              when to merge.
+              lists the checks that prove the change and names any claim left unproven. A review-effort
+              rating tells you when the code needs reading too. You choose when to merge.
             </p>
             <div className={styles.heroActions}>
               <Link className="button button--primary button--lg" to="/docs/getting-started">
@@ -91,7 +90,7 @@ export default function Home(): ReactNode {
             <h2 className={styles.panelHeading}>Bring back the result and its evidence.</h2>
             <ul className={styles.taskResults}>
               <li>Why the change exists and what it leaves out</li>
-              <li>Checks that prove it, and what was not verified</li>
+              <li>Checks that prove it, and any claim left unproven</li>
               <li>What needs your decision before merging</li>
             </ul>
             <p className={styles.caption}>
