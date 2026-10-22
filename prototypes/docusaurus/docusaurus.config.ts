@@ -6,7 +6,7 @@ import {resolveDocsEditUrl} from '../../scripts/docs-edit-url.mjs';
 
 const siteUrl = 'https://shaka.shakacode.com';
 const siteDescription =
-  'Give your coding agent a task. Get a tested, reviewed pull request that is easy to understand.';
+  'Give your coding agent a task. Get a PR that makes the intent and evidence easy to review.';
 
 // Prefer hosted DocSearch when CI provides the complete public search
 // configuration. Local builds and fork previews keep the bundled local index.
@@ -73,7 +73,7 @@ const structuredData = {
 
 const config: Config = {
   title: 'Shaka',
-  tagline: 'PRs that are a delight to review.',
+  tagline: 'Get a PR that makes the intent and evidence easy to review.',
   favicon: 'img/brand/mark.svg',
 
   future: {
@@ -136,7 +136,7 @@ const config: Config = {
   ],
 
   themeConfig: {
-    image: 'img/brand/og-card-intent-evidence.png',
+    image: 'img/brand/og-card-pr-intent-evidence.png',
     metadata: [
       {name: 'description', content: siteDescription},
       {property: 'og:type', content: 'website'},
@@ -145,7 +145,7 @@ const config: Config = {
       {property: 'og:image:height', content: '630'},
       {
         property: 'og:image:alt',
-        content: 'Shaka: give your coding agent a task. Review the intent and the evidence, not every line.',
+        content: 'Shaka: give your coding agent a task. Get a PR that makes the intent and evidence easy to review.',
       },
     ],
     colorMode: {
