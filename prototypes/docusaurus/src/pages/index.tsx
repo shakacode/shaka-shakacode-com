@@ -13,11 +13,11 @@ const EXAMPLE_TASK = '$shaka Fix search when the query contains an apostrophe.';
 const prAnswers = [
   {
     question: 'Is this the right change?',
-    answer: 'Intent says why the change exists, what it covers and leaves out, and why it is safe. Review effort, from 1 to 5, says how closely to read the code. A walkthrough explains the implementation choices.',
+    answer: 'Intent says why the change exists, what it covers and leaves out, and why it is safe. Review effort, from 1 to 5, says how carefully to read the code. Walkthrough notes point out lines that need a closer look.',
   },
   {
     question: 'What was proved, and what wasn’t?',
-    answer: 'Verification lists the checks run against this change, each with a link to its result or the command that ran, and names any claim left unproven. UI changes include desktop and mobile before-and-after screenshots.',
+    answer: 'Verification lists the checks run against this change and any claim left unproven. Each check links to its result or names the command that ran. A UI change adds annotated before-and-after screenshots, plus a video when timing matters.',
   },
   {
     question: 'What needs my decision?',
@@ -73,7 +73,7 @@ export default function Home(): ReactNode {
             <p className={styles.heroLead}>
               Each Shaka PR says why the change exists, what it leaves out, and why it’s safe. It
               lists the checks that prove the change and names any claim left unproven. A review-effort
-              rating tells you when the code needs reading too. You choose when to merge.
+              rating says how carefully to read the code. You choose when to merge.
             </p>
             <div className={styles.heroActions}>
               <Link className="button button--primary button--lg" to="/docs/getting-started">
