@@ -13,7 +13,7 @@ const EXAMPLE_TASK = '$shaka Fix search when the query contains an apostrophe.';
 const prAnswers = [
   {
     question: 'Is this the right change?',
-    answer: 'Intent says why the change exists, what it covers and leaves out, and why it is safe. Review effort, from 1 to 5, says how carefully to read the code. Walkthrough notes point out lines that need a closer look.',
+    answer: 'Intent says why the change exists, what it covers and leaves out, and why it is safe. Review effort, from 1 to 5, says how carefully to read the code. When a few lines need a closer look, walkthrough notes can point them out.',
   },
   {
     question: 'What was proved, and what wasn’t?',
