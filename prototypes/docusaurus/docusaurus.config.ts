@@ -136,7 +136,7 @@ const config: Config = {
   ],
 
   themeConfig: {
-    image: 'img/brand/og-card.png',
+    image: 'img/brand/og-card-intent-evidence.png',
     metadata: [
       {name: 'description', content: siteDescription},
       {property: 'og:type', content: 'website'},
@@ -145,7 +145,7 @@ const config: Config = {
       {property: 'og:image:height', content: '630'},
       {
         property: 'og:image:alt',
-        content: 'Shaka: give your coding agent a task, get a tested, reviewed pull request.',
+        content: 'Shaka: give your coding agent a task. Review the intent and the evidence, not every line.',
       },
     ],
     colorMode: {
