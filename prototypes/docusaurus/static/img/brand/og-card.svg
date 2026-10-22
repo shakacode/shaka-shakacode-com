@@ -8,8 +8,8 @@
   </g>
   <text x="200" y="152" font-family="Helvetica, Arial, sans-serif" font-size="56" font-weight="700" fill="#edeae2">Shaka</text>
   <text x="80" y="270" font-family="Helvetica, Arial, sans-serif" font-size="58" font-weight="700" fill="#edeae2">Give your coding agent a task.</text>
-  <text x="80" y="350" font-family="Helvetica, Arial, sans-serif" font-size="58" font-weight="700" fill="#7cecbd">Review the intent and the evidence,</text>
-  <text x="80" y="420" font-family="Helvetica, Arial, sans-serif" font-size="58" font-weight="700" fill="#7cecbd">not every line.</text>
+  <text x="80" y="350" font-family="Helvetica, Arial, sans-serif" font-size="58" font-weight="700" fill="#7cecbd">Get a PR that makes the intent</text>
+  <text x="80" y="420" font-family="Helvetica, Arial, sans-serif" font-size="58" font-weight="700" fill="#7cecbd">and evidence easy to review.</text>
   <text x="80" y="490" font-family="Helvetica, Arial, sans-serif" font-size="30" fill="#a6b0bb">Local tests · independent review · an explained pull request</text>
   <text x="80" y="560" font-family="Menlo, monospace" font-size="26" fill="#78838f">shaka.shakacode.com · open source by ShakaCode</text>
 </svg>
