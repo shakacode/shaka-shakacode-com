@@ -11,7 +11,7 @@ import styles from './index.module.css';
 
 const EXAMPLE_TASK = '$shaka Fix search when the query contains an apostrophe.';
 
-const WALKTHROUGH_NOTE_URL = 'https://github.com/shakacode/shaka/pull/708#discussion_r4311276131';
+const PR_DESCRIPTION_URL = 'https://github.com/shakacode/shaka/pull/667#issue-5907900056';
 
 const prAnswers = [
   {
@@ -61,7 +61,7 @@ const steps = [
 ];
 
 export default function Home(): ReactNode {
-  const walkthroughNoteImage = useBaseUrl('/img/pr-examples/walkthrough-note.jpg');
+  const prDescriptionImage = useBaseUrl('/img/pr-examples/verification.jpg');
 
   return (
     <Layout
@@ -126,11 +126,11 @@ export default function Home(): ReactNode {
                 <span className={styles.flowTitle}>Give a task</span>
                 <ul className={styles.flowPrompts} aria-label="Example prompts">
                   <li>
-                    <span className={styles.flowPromptLabel}>Use an existing issue</span>
-                    <code>$shaka #482</code>
+                    <span className={styles.flowPromptLabel}>Use an issue ID or URL</span>
+                    <code>$shaka 482</code>
                     <p className={styles.flowPromptHint}>
-                      #482 is a GitHub issue number in your repository. For Linear or Jira,
-                      use the issue key or URL.
+                      From GitHub, Linear, Jira, or another tracker. Use the issue ID or,
+                      preferably, paste its URL.
                     </p>
                   </li>
                   <li>
@@ -148,25 +148,25 @@ export default function Home(): ReactNode {
                 <span className={styles.flowWho}>You</span>
                 <span className={styles.flowTitle}>Review one clear PR</span>
                 <figure className={styles.flowShot}>
-                  <Link href={WALKTHROUGH_NOTE_URL}>
+                  <Link href={PR_DESCRIPTION_URL}>
                     <img
-                      src={walkthroughNoteImage}
+                      src={prDescriptionImage}
                       width={800}
-                      height={565}
+                      height={1331}
                       loading="lazy"
-                      alt="A GitHub diff with an inline agent note on lines 30 to 35: “Read closely: this decides which user settings entry the installer may remove.”"
+                      alt="Shaka PR #667 description showing its recommendation, summary, intent, scope, and verification evidence."
                     />
                   </Link>
                   <figcaption>
-                    The agent’s notes point to the lines that matter. Reply on the diff, as you would
-                    to a senior developer. <Link href={WALKTHROUGH_NOTE_URL}>shaka#708</Link>, captured
-                    Oct 19, 2026.
+                    Start with the PR description: why the change matters, its scope, what was
+                    verified, and what needs your decision. Read the code walkthrough for more
+                    detail. <Link href={PR_DESCRIPTION_URL}>See shaka#667 →</Link>
                   </figcaption>
                 </figure>
                 <ul className={styles.flowChecks}>
-                  <li>Walkthrough</li>
-                  <li>Checks passed</li>
-                  <li>Findings addressed</li>
+                  <li>Intent and scope</li>
+                  <li>Verification</li>
+                  <li>Decisions</li>
                 </ul>
                 <span className={styles.flowNote}>Merge, or send it back</span>
               </li>

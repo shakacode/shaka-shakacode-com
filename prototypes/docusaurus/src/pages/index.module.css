@@ -225,6 +225,9 @@
   display: block;
   width: 100%;
   height: auto;
+  aspect-ratio: 800 / 790;
+  object-fit: cover;
+  object-position: top;
   border: 1px solid var(--site-border-color);
   border-radius: 0.5rem;
 }
