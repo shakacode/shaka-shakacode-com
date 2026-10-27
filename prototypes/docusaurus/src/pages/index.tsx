@@ -4,7 +4,6 @@ import Link from '@docusaurus/Link';
 import Layout from '@theme/Layout';
 import CodeBlock from '@theme/CodeBlock';
 import Heading from '@theme/Heading';
-import useBaseUrl from '@docusaurus/useBaseUrl';
 import PrExamples from '../components/PrExamples';
 
 import styles from './index.module.css';
@@ -61,8 +60,6 @@ const steps = [
 ];
 
 export default function Home(): ReactNode {
-  const prDescriptionImage = useBaseUrl('/img/pr-examples/verification.jpg');
-
   return (
     <Layout
       title="Give your coding agent a task. Get a PR that makes the intent and evidence easy to review."
@@ -147,27 +144,13 @@ export default function Home(): ReactNode {
               <li className={clsx(styles.flowStep, styles.flowPr)}>
                 <span className={styles.flowWho}>You</span>
                 <span className={styles.flowTitle}>Review one clear PR</span>
-                <figure className={styles.flowShot}>
-                  <Link href={PR_DESCRIPTION_URL}>
-                    <img
-                      src={prDescriptionImage}
-                      width={800}
-                      height={1331}
-                      loading="lazy"
-                      alt="Shaka PR #667 description showing its recommendation, summary, intent, scope, and verification evidence."
-                    />
-                  </Link>
-                  <figcaption>
-                    Start with the PR description: why the change matters, its scope, what was
-                    verified, and what needs your decision. Read the code walkthrough for more
-                    detail. <Link href={PR_DESCRIPTION_URL}>See shaka#667 →</Link>
-                  </figcaption>
-                </figure>
+                <span className={styles.flowNote}>Start with the description.</span>
                 <ul className={styles.flowChecks}>
                   <li>Intent and scope</li>
                   <li>Verification</li>
                   <li>Decisions</li>
                 </ul>
+                <Link href={PR_DESCRIPTION_URL}>Read a real PR description →</Link>
                 <span className={styles.flowNote}>Merge, or send it back</span>
               </li>
             </ol>

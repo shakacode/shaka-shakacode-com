@@ -217,27 +217,6 @@
   overflow-wrap: anywhere;
 }
 
-.flowShot {
-  margin: 0.4rem 0 0.2rem;
-}
-
-.flowShot img {
-  display: block;
-  width: 100%;
-  height: auto;
-  aspect-ratio: 800 / 790;
-  object-fit: cover;
-  object-position: top;
-  border: 1px solid var(--site-border-color);
-  border-radius: 0.5rem;
-}
-
-.flowShot figcaption {
-  margin-top: 0.4rem;
-  color: var(--ifm-color-content-secondary);
-  font-size: 0.85rem;
-}
-
 .flowPr {
   border: 2px solid var(--ifm-color-primary);
 }
