@@ -182,35 +182,39 @@
 
 .flowPrompts {
   display: grid;
-  gap: 0.3rem;
-  margin: 0.35rem 0 0;
+  gap: 1rem;
+  margin: 0.75rem 0 0.25rem;
   padding: 0;
   list-style: none;
 }
 
-.flowPrompts code {
-  display: block;
-  padding: 0.2rem 0.5rem;
-  font-size: 0.8rem;
-  overflow-wrap: anywhere;
+.flowPrompts li {
+  display: grid;
+  gap: 0.45rem;
 }
 
-.flowShot {
-  margin: 0.4rem 0 0.2rem;
+.flowPrompts li + li {
+  padding-top: 1rem;
+  border-top: 1px solid var(--site-border-color);
 }
 
-.flowShot img {
-  display: block;
-  width: 100%;
-  height: auto;
-  border: 1px solid var(--site-border-color);
-  border-radius: 0.5rem;
+.flowPromptLabel {
+  font-size: 0.9rem;
+  font-weight: 600;
 }
 
-.flowShot figcaption {
-  margin-top: 0.4rem;
+.flowPromptHint {
+  margin: 0;
   color: var(--ifm-color-content-secondary);
   font-size: 0.85rem;
+  line-height: 1.5;
+}
+
+.flowPrompts code {
+  display: block;
+  padding: 0.45rem 0.6rem;
+  font-size: 0.8rem;
+  overflow-wrap: anywhere;
 }
 
 .flowPr {

@@ -4,20 +4,13 @@ import Link from '@docusaurus/Link';
 import Layout from '@theme/Layout';
 import CodeBlock from '@theme/CodeBlock';
 import Heading from '@theme/Heading';
-import useBaseUrl from '@docusaurus/useBaseUrl';
 import PrExamples from '../components/PrExamples';
 
 import styles from './index.module.css';
 
 const EXAMPLE_TASK = '$shaka Fix search when the query contains an apostrophe.';
 
-const EXAMPLE_PROMPTS = [
-  '$shaka #482',
-  '$shaka Add CSV export to the orders page.',
-  '$shaka Make the signup form usable on phones.',
-];
-
-const WALKTHROUGH_NOTE_URL = 'https://github.com/shakacode/shaka/pull/708#discussion_r4311276131';
+const PR_DESCRIPTION_URL = 'https://github.com/shakacode/shaka/pull/667#issue-5907900056';
 
 const prAnswers = [
   {
@@ -67,8 +60,6 @@ const steps = [
 ];
 
 export default function Home(): ReactNode {
-  const walkthroughNoteImage = useBaseUrl('/img/pr-examples/walkthrough-note.jpg');
-
   return (
     <Layout
       title="Give your coding agent a task. Get a PR that makes the intent and evidence easy to review."
@@ -131,11 +122,18 @@ export default function Home(): ReactNode {
                 <span className={styles.flowWho}>You</span>
                 <span className={styles.flowTitle}>Give a task</span>
                 <ul className={styles.flowPrompts} aria-label="Example prompts">
-                  {EXAMPLE_PROMPTS.map((prompt) => (
-                    <li key={prompt}>
-                      <code>{prompt}</code>
-                    </li>
-                  ))}
+                  <li>
+                    <span className={styles.flowPromptLabel}>Use an issue ID or URL</span>
+                    <code>$shaka 482</code>
+                    <p className={styles.flowPromptHint}>
+                      From GitHub, Linear, Jira, or another tracker. Use the issue ID or,
+                      preferably, paste its URL.
+                    </p>
+                  </li>
+                  <li>
+                    <span className={styles.flowPromptLabel}>Or describe the task</span>
+                    <code>$shaka Add CSV export to the orders page.</code>
+                  </li>
                 </ul>
               </li>
               <li className={styles.flowStep}>
@@ -146,27 +144,13 @@ export default function Home(): ReactNode {
               <li className={clsx(styles.flowStep, styles.flowPr)}>
                 <span className={styles.flowWho}>You</span>
                 <span className={styles.flowTitle}>Review one clear PR</span>
-                <figure className={styles.flowShot}>
-                  <Link href={WALKTHROUGH_NOTE_URL}>
-                    <img
-                      src={walkthroughNoteImage}
-                      width={800}
-                      height={565}
-                      loading="lazy"
-                      alt="A GitHub diff with an inline agent note on lines 30 to 35: “Read closely: this decides which user settings entry the installer may remove.”"
-                    />
-                  </Link>
-                  <figcaption>
-                    The agent’s notes point to the lines that matter. Reply on the diff, as you would
-                    to a senior developer. <Link href={WALKTHROUGH_NOTE_URL}>shaka#708</Link>, captured
-                    Oct 19, 2026.
-                  </figcaption>
-                </figure>
+                <span className={styles.flowNote}>Start with the description.</span>
                 <ul className={styles.flowChecks}>
-                  <li>Walkthrough</li>
-                  <li>Checks passed</li>
-                  <li>Findings addressed</li>
+                  <li>Intent and scope</li>
+                  <li>Verification</li>
+                  <li>Decisions</li>
                 </ul>
+                <Link href={PR_DESCRIPTION_URL}>Read a real PR description →</Link>
                 <span className={styles.flowNote}>Merge, or send it back</span>
               </li>
             </ol>
