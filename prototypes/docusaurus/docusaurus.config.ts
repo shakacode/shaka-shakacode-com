@@ -167,8 +167,15 @@ const config: Config = {
           label: 'Docs',
         },
         {to: '/docs/getting-started', label: 'Get started', position: 'left'},
-        {to: '/case-studies', label: 'Case studies', position: 'left'},
-        {to: '/examples', label: 'Examples', position: 'left'},
+        {
+          type: 'dropdown',
+          label: 'Examples',
+          position: 'left',
+          items: [
+            {to: '/examples', label: 'Live PR examples'},
+            {to: '/case-studies', label: 'Articles & case studies'},
+          ],
+        },
         {to: '/methodology', label: 'Methodology', position: 'left'},
         {
           href: 'https://www.shakacode.com/contact/',
