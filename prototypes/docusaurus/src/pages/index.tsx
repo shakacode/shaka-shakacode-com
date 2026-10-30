@@ -49,6 +49,11 @@ export default function Home(): ReactNode {
                 See real PR examples
               </Link>
             </div>
+            <p>
+              <Link href="https://www.youtube.com/watch?v=T6Fstx2fGJI">
+                Watch the 52-second demo →
+              </Link>
+            </p>
           </div>
           <ol className={styles.flow} aria-label="How a task becomes a pull request">
             <li className={styles.flowStep}>
