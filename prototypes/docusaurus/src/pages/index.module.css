@@ -41,25 +41,11 @@
   font-size: 1.1rem;
 }
 
-.heroActions,
-.docLinks {
+.heroActions {
   display: flex;
   flex-wrap: wrap;
   gap: 1rem;
   margin-top: 1.5rem;
-}
-
-.taskPanel {
-  min-width: 0;
-  padding: 1.75rem;
-  border: 1px solid var(--site-border-color);
-  border-radius: 0.75rem;
-  background: var(--site-surface-0);
-}
-
-.taskPanel pre {
-  white-space: pre-wrap;
-  overflow-wrap: anywhere;
 }
 
 .sectionNote {
@@ -97,24 +83,6 @@
   font-size: 0.95rem;
 }
 
-.panelHeading {
-  margin-top: 1.5rem;
-  font-size: 1.25rem;
-}
-
-.taskResults {
-  padding-left: 1.25rem;
-}
-
-.taskResults li {
-  margin-bottom: 0.75rem;
-}
-
-.caption {
-  color: var(--ifm-color-content-secondary);
-  font-size: 0.9rem;
-}
-
 .section {
   padding: 3.5rem 0;
   scroll-margin-top: calc(var(--ifm-navbar-height) + 1rem);
@@ -123,13 +91,6 @@
 .verificationAnchor {
   display: block;
   scroll-margin-top: calc(var(--ifm-navbar-height) + 1rem);
-}
-
-.flowGrid {
-  display: grid;
-  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
-  gap: 3rem;
-  align-items: center;
 }
 
 .flow {
@@ -203,13 +164,6 @@
   font-weight: 600;
 }
 
-.flowPromptHint {
-  margin: 0;
-  color: var(--ifm-color-content-secondary);
-  font-size: 0.85rem;
-  line-height: 1.5;
-}
-
 .flowPrompts code {
   display: block;
   padding: 0.45rem 0.6rem;
@@ -219,28 +173,6 @@
 
 .flowPr {
   border: 2px solid var(--ifm-color-primary);
-}
-
-.flowChecks {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.4rem;
-  margin: 0.35rem 0;
-  padding: 0;
-  list-style: none;
-}
-
-.flowChecks li {
-  padding: 0.1rem 0.6rem;
-  border-radius: 999px;
-  background: var(--site-surface-2);
-  font-size: 0.85rem;
-}
-
-.flowChecks li::before {
-  content: '✓ ';
-  color: var(--ifm-color-primary);
-  font-weight: 700;
 }
 
 .alt {
@@ -304,8 +236,7 @@
 }
 
 @media (max-width: 996px) {
-  .heroGrid,
-  .flowGrid {
+  .heroGrid {
     grid-template-columns: 1fr;
     gap: 2rem;
   }
@@ -324,9 +255,4 @@
   .section {
     padding: 2.5rem 0;
   }
-
-  .taskPanel {
-    padding: 1.25rem;
-  }
-
 }
