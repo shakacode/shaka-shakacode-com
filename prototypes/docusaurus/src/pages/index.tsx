@@ -2,13 +2,10 @@ import type {ReactNode} from 'react';
 import clsx from 'clsx';
 import Link from '@docusaurus/Link';
 import Layout from '@theme/Layout';
-import CodeBlock from '@theme/CodeBlock';
 import Heading from '@theme/Heading';
 import PrExamples from '../components/PrExamples';
 
 import styles from './index.module.css';
-
-const EXAMPLE_TASK = '$shaka Fix search when the query contains an apostrophe.';
 
 const PR_DESCRIPTION_URL = 'https://github.com/shakacode/shaka/pull/667#issue-5907900056';
 
@@ -27,38 +24,6 @@ const prAnswers = [
   },
 ];
 
-const projects = [
-  {
-    title: 'Open-source projects',
-    body: 'Give maintainers contributions they can assess: a focused change, its verification evidence, and answers to important review findings.',
-  },
-  {
-    title: 'Company repositories',
-    body: 'Use your existing checks and review rules. Start with the agent preparing a PR for your decision; configure automatic merging within your limits when appropriate.',
-  },
-  {
-    title: 'Independent projects',
-    body: 'Spend less time directing the process. Try one task, use the checks your project needs, and improve the workflow as you go.',
-  },
-];
-
-const steps = [
-  {
-    title: 'Describe the outcome',
-    body: 'Give Shaka a task or issue. The skill guides your coding agent through planning, implementation, verification, review, and delivery.',
-  },
-  {
-    title: 'Use your repository’s checks',
-    body: 'Repository settings supply the commands and reviewers. The agent tests and reviews locally, fixes problems, and then pushes the PR.',
-    link: {to: '/docs/configure-repository', label: 'Configure your repository'},
-  },
-  {
-    title: 'Review the result',
-    body: 'The PR brings back the evidence and decisions. With Ask, you decide when to merge. With Auto, the agent merges after required checks and approvals, within your configured limits.',
-    link: {to: '/docs/working-with-shaka', label: 'Working with Shaka'},
-  },
-];
-
 export default function Home(): ReactNode {
   return (
     <Layout
@@ -73,9 +38,8 @@ export default function Home(): ReactNode {
               <span className={styles.accent}>Get a PR that makes the intent and evidence easy to review.</span>
             </h1>
             <p className={styles.heroLead}>
-              Each Shaka PR says why the change exists, what it leaves out, and why it’s safe. It
-              lists the checks that prove the change and names any claim left unproven. A review-effort
-              rating says how carefully to read the code. You choose when to merge.
+              Your agent builds, verifies, and reviews until your checks pass. You read one
+              description and decide.
             </p>
             <div className={styles.heroActions}>
               <Link className="button button--primary button--lg" to="/docs/getting-started">
@@ -86,77 +50,37 @@ export default function Home(): ReactNode {
               </Link>
             </div>
           </div>
-          <div className={styles.taskPanel}>
-            <p className={styles.eyebrow}>Start with a task</p>
-            <CodeBlock language="text">{EXAMPLE_TASK}</CodeBlock>
-            <h2 className={styles.panelHeading}>Bring back the result and its evidence.</h2>
-            <ul className={styles.taskResults}>
-              <li>Why the change exists and what it leaves out</li>
-              <li>Checks that prove it, and any claim left unproven</li>
-              <li>What needs your decision before merging</li>
-            </ul>
-            <p className={styles.caption}>
-              Shaka supplies the workflow. Your coding agent does the work with your existing tools.
-            </p>
-            <Link to="/docs/pr-verification">See what a PR should show →</Link>
-          </div>
+          <ol className={styles.flow} aria-label="How a task becomes a pull request">
+            <li className={styles.flowStep}>
+              <span className={styles.flowWho}>You</span>
+              <span className={styles.flowTitle}>Give a task</span>
+              <ul className={styles.flowPrompts} aria-label="Example prompts">
+                <li>
+                  <span className={styles.flowPromptLabel}>An issue number or URL</span>
+                  <code>$shaka 482</code>
+                </li>
+                <li>
+                  <span className={styles.flowPromptLabel}>Or a sentence</span>
+                  <code>$shaka Add CSV export to the orders page.</code>
+                </li>
+              </ul>
+            </li>
+            <li className={styles.flowStep}>
+              <span className={styles.flowWho}>Agent</span>
+              <span className={styles.flowTitle}>Build, verify, review</span>
+              <span className={styles.flowNote}>↻ Repeats tests, screenshots, and review</span>
+            </li>
+            <li className={clsx(styles.flowStep, styles.flowPr)}>
+              <span className={styles.flowWho}>You</span>
+              <span className={styles.flowTitle}>Review one clear PR</span>
+              <Link href={PR_DESCRIPTION_URL}>Read a real PR description →</Link>
+              <span className={styles.flowNote}>Merge, or send it back</span>
+            </li>
+          </ol>
         </div>
       </header>
 
       <main>
-        <section className={styles.section} id="human-agent-loops">
-          <div className={clsx('container', styles.flowGrid)}>
-            <div>
-              <p className={styles.eyebrow}>From task to PR</p>
-              <h2>The agent works the loop. You review one clear PR.</h2>
-              <p className={styles.sectionLead}>
-                Your coding agent builds, verifies, and reviews until your checks pass. Then it hands
-                back a PR that shows what changed, how it was checked, and what needs your decision.
-              </p>
-              <div className={styles.docLinks}>
-                <Link to="/docs/pr-verification#checkpoint">How checkpoints work →</Link>
-              </div>
-            </div>
-            <ol className={styles.flow} aria-label="How a task becomes a pull request">
-              <li className={styles.flowStep}>
-                <span className={styles.flowWho}>You</span>
-                <span className={styles.flowTitle}>Give a task</span>
-                <ul className={styles.flowPrompts} aria-label="Example prompts">
-                  <li>
-                    <span className={styles.flowPromptLabel}>Use an issue ID or URL</span>
-                    <code>$shaka 482</code>
-                    <p className={styles.flowPromptHint}>
-                      From GitHub, Linear, Jira, or another tracker. Use the issue ID or,
-                      preferably, paste its URL.
-                    </p>
-                  </li>
-                  <li>
-                    <span className={styles.flowPromptLabel}>Or describe the task</span>
-                    <code>$shaka Add CSV export to the orders page.</code>
-                  </li>
-                </ul>
-              </li>
-              <li className={styles.flowStep}>
-                <span className={styles.flowWho}>Agent</span>
-                <span className={styles.flowTitle}>Build, verify, review</span>
-                <span className={styles.flowNote}>↻ Repeats tests, screenshots, and review</span>
-              </li>
-              <li className={clsx(styles.flowStep, styles.flowPr)}>
-                <span className={styles.flowWho}>You</span>
-                <span className={styles.flowTitle}>Review one clear PR</span>
-                <span className={styles.flowNote}>Start with the description.</span>
-                <ul className={styles.flowChecks}>
-                  <li>Intent and scope</li>
-                  <li>Verification</li>
-                  <li>Decisions</li>
-                </ul>
-                <Link href={PR_DESCRIPTION_URL}>Read a real PR description →</Link>
-                <span className={styles.flowNote}>Merge, or send it back</span>
-              </li>
-            </ol>
-          </div>
-        </section>
-
         <section className={styles.section} id="pr-answers">
           <div className="container">
             {/* Keep legacy Agent Workflows verification links useful after the domain redirect. */}
@@ -164,8 +88,7 @@ export default function Home(): ReactNode {
             <p className={styles.eyebrow}>What you get</p>
             <h2>Know what was checked before you merge.</h2>
             <p className={styles.sectionLead}>
-              You should be able to assess the work without reconstructing an agent’s conversation.
-              A Shaka PR puts the intent, the evidence, and your decisions in front of you.
+              Assess the work without reconstructing an agent’s conversation.
             </p>
             <div className={styles.grid}>
               {prAnswers.map((item) => (
@@ -200,62 +123,6 @@ export default function Home(): ReactNode {
           </div>
         </section>
 
-        <section className={clsx(styles.section, styles.alt)} id="why">
-          <div className="container">
-            <p className={styles.eyebrow}>For developers</p>
-            <h2>One workflow, adapted to your project.</h2>
-            <div className={styles.grid}>
-              {projects.map((project) => (
-                <div key={project.title} className={styles.card}>
-                  <h3>{project.title}</h3>
-                  <p>{project.body}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        <section className={styles.section} id="how">
-          <div className="container">
-            <p className={styles.eyebrow}>How it works</p>
-            <h2>Describe the task. Shaka supplies the steps.</h2>
-            <div className={styles.grid}>
-              {steps.map((step) => (
-                <div key={step.title} className={styles.card}>
-                  <h3>{step.title}</h3>
-                  <p>{step.body}</p>
-                  {step.link && <Link to={step.link.to}>{step.link.label} →</Link>}
-                </div>
-              ))}
-            </div>
-            <p className={styles.sectionNote}>
-              Optional: two AI reviewers from different providers read each commit before it’s pushed;
-              their findings are merged into one list, so each problem is fixed once.
-            </p>
-          </div>
-        </section>
-
-        <section className={clsx(styles.section, styles.alt)} id="consequences">
-          <div className="container">
-            <p className={styles.eyebrow}>Your project is growing</p>
-            <h2>Built something with AI? Take the next step.</h2>
-            <p className={styles.sectionLead}>
-              A personal experiment can become a tool other people rely on. As users and saved data
-              become part of the picture, add checks that protect their time, data, and trust.
-            </p>
-            <p className={styles.sectionLead}>
-              Start with one change in a GitHub repository. Use Shaka to prepare a PR, try the result,
-              and understand the checks and review before you merge.
-            </p>
-            <div className={styles.docLinks}>
-              <Link to="/docs/getting-started">Make your first Shaka PR →</Link>
-              <Link href="https://www.shakacode.com/blog/audit-30-ai-assisted-commits/">
-                How ShakaCode approaches verification →
-              </Link>
-            </div>
-          </div>
-        </section>
-
         <section className={styles.section} id="evidence">
           <div className="container">
             <p className={styles.eyebrow}>Evidence from real use</p>
@@ -280,9 +147,12 @@ export default function Home(): ReactNode {
             <p className={styles.eyebrow}>Get started</p>
             <h2>Install. Configure. Give it a task.</h2>
             <p className={styles.sectionLead}>
-              Shaka needs Ruby 3.4 or later, Git, an authenticated GitHub CLI, and a coding agent
-              that can load skills and run commands. The guide gives you prompts for installing
-              Shaka and configuring your repository.
+              Shaka runs your repository’s own checks and reviewers. You merge, or let the agent
+              merge within limits you set.
+            </p>
+            <p className={styles.sectionLead}>
+              You need Ruby 3.4 or later, Git, an authenticated GitHub CLI, and a coding agent that
+              can load skills and run commands.
             </p>
             <div className={styles.heroActions}>
               <Link className="button button--primary button--lg" to="/docs/getting-started">
@@ -292,23 +162,10 @@ export default function Home(): ReactNode {
                 View on GitHub
               </Link>
             </div>
-          </div>
-        </section>
-
-        <section className={styles.section} id="help">
-          <div className="container">
-            <p className={styles.eyebrow}>For engineering teams</p>
-            <h2>ShakaCode can help your team</h2>
-            <p className={styles.sectionLead}>
-              Shaka is open source. ShakaCode helps engineering teams choose AI coding tools,
-              set review and verification rules that match their projects, and improve how
-              developers work with agents.
+            <p className={styles.sectionNote}>
+              Rolling this out to a team?{' '}
+              <Link href="https://www.shakacode.com/contact/">Talk with ShakaCode →</Link>
             </p>
-            <div className={styles.heroActions}>
-              <Link className="button button--primary button--lg" href="https://www.shakacode.com/contact/">
-                Talk with ShakaCode
-              </Link>
-            </div>
           </div>
         </section>
       </main>
