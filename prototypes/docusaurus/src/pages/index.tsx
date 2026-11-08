@@ -150,9 +150,9 @@ export default function Home(): ReactNode {
         <section className={clsx(styles.section, styles.alt)} id="start">
           <div className="container">
             <p className={styles.eyebrow}>Get started</p>
-            <h2>Install. Configure. Give it a task.</h2>
+            <h2>Install. Give it a task.</h2>
             <p className={styles.sectionLead}>
-              Shaka runs your repository’s own checks and reviewers. You merge, or let the agent
+              Ask your coding agent for help whenever you need it. You merge, or let the agent
               merge within limits you set.
             </p>
             <p className={styles.sectionLead}>

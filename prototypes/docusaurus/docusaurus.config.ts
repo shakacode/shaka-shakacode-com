@@ -2,6 +2,7 @@ import type {Config} from '@docusaurus/types';
 import type * as Preset from '@docusaurus/preset-classic';
 import {GlobExcludeDefault} from '@docusaurus/utils';
 import {accessibleGithubLight, accessibleVsDark} from './src/prismThemes';
+import llmsTxtPlugin from '../../scripts/llms-txt.mjs';
 import {resolveDocsEditUrl} from '../../scripts/docs-edit-url.mjs';
 
 const siteUrl = 'https://shaka.shakacode.com';
@@ -111,6 +112,8 @@ const config: Config = {
 
   themes: useAlgolia ? [] : [localSearchTheme],
 
+  plugins: [llmsTxtPlugin],
+
   presets: [
     [
       'classic',
@@ -196,14 +199,8 @@ const config: Config = {
         {
           title: 'Docs',
           items: [
-            {label: 'Getting started', to: '/docs/getting-started'},
-            {label: 'Working with Shaka', to: '/docs/working-with-shaka'},
-            {label: 'PR verification', to: '/docs/pr-verification'},
-            {label: 'Settings', to: '/docs/settings'},
-            {
-              label: 'Skill references',
-              href: 'https://github.com/shakacode/shaka/tree/main/skills/shaka/references',
-            },
+            {label: 'Start here', to: '/docs/getting-started'},
+            {label: 'Reference', to: '/docs#reference'},
           ],
         },
         {
