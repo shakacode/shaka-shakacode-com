@@ -1,0 +1,13 @@
+# ShakaCode Documentation & Agent Reference
+
+> Official engineering documentation, React on Rails guides, and agent reference for ShakaCode (shakacode.com).
+
+## Key Documentation
+
+- [ShakaCode Website](https://www.shakacode.com/): Official site and consulting engineering articles.
+- [Repository](https://github.com/shakacode/shaka-shakacode-com): Source repository and agent documentation.
+
+## AI Agent Reference
+
+- Structured per the /llms.txt standard for coding agents and RAG indexing.
+- Validated via [AccessGuard AI-Readiness Suite](https://ronanchnlps-bit.github.io/).
