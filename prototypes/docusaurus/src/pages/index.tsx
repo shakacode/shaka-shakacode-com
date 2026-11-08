@@ -39,7 +39,8 @@ export default function Home(): ReactNode {
             </h1>
             <p className={styles.heroLead}>
               Your agent builds, verifies, and reviews until your checks pass. You read one
-              description and decide.
+              description to decide what to do next. Use the PR record in regular retrospectives
+              to improve how future work gets done.
             </p>
             <div className={styles.heroActions}>
               <Link className="button button--primary button--lg" to="/docs/getting-started">
