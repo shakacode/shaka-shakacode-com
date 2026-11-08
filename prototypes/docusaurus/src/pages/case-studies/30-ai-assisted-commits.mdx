@@ -29,9 +29,9 @@ Hours before the merge, the Claude reviewer reported two problems:
 2. After the last failed attempt to contact the service, the code could wait another
    60 seconds even though it would not try again.
 
-<img src="/img/case-studies/ai-audit/review-finding-transient-failure.png" alt="Review comment showing how a temporary service failure could delete a valid provider record" width="800" height="545" loading="lazy" style={{maxWidth: '100%', height: 'auto'}} />
+<img src="/img/case-studies/ai-audit/review-finding-transient-failure.webp" alt="Review comment showing how a temporary service failure could delete a valid provider record" width="800" height="545" loading="lazy" style={{maxWidth: '100%', height: 'auto'}} />
 
-<img src="/img/case-studies/ai-audit/review-finding-final-retry.png" alt="Review comment showing an unnecessary wait after the last retry" width="800" height="235" loading="lazy" style={{maxWidth: '100%', height: 'auto'}} />
+<img src="/img/case-studies/ai-audit/review-finding-final-retry.webp" alt="Review comment showing an unnecessary wait after the last retry" width="800" height="235" loading="lazy" style={{maxWidth: '100%', height: 'auto'}} />
 
 The reviewer had done something useful. But the PR was merged without either finding being
 addressed. The problem was following through on the review.
@@ -56,7 +56,7 @@ The separate audit found another drain on attention: a six-line code change with
 **154-line commit message**. It included a decision log, test results, and review records.
 All of that text would remain in the project's history for future readers.
 
-<img src="/img/case-studies/ai-audit/commit-noise.png" alt="A six-line code change accompanied by a 154-line commit message" width="1200" height="675" loading="lazy" style={{maxWidth: '100%', height: 'auto'}} />
+<img src="/img/case-studies/ai-audit/commit-noise.webp" alt="A six-line code change accompanied by a 154-line commit message" width="1200" height="675" loading="lazy" style={{maxWidth: '100%', height: 'auto'}} />
 
 Keep the explanation where it helps the reader:
 
