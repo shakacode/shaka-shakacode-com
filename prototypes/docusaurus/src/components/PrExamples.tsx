@@ -54,7 +54,7 @@ function PrExample({example}: {example: (typeof examples)[number]}): ReactNode {
   return (
     <figure className={styles.example}>
       <div className={styles.capture}>
-        <a href={imageUrl} aria-label={`View full-size screenshot of PR #${example.number}`}>
+        <a href={imageUrl}>
           <img src={imageUrl} alt={example.alt} width={799} height={example.height}
             loading="lazy" decoding="async" />
         </a>
@@ -88,8 +88,8 @@ export default function PrExamples(): ReactNode {
       {examples.map((example) => <PrExample key={example.id} example={example} />)}
       <p className={styles.archiveNote}>
         PR #1151 was captured November 12, 2026 (Hawaii time), at acf0df6. The review and
-        walkthrough from PR #667 were captured October 17, 2026, at da20327. Each capture
-        records what reviewers saw at that revision.
+        walkthrough from PR #667 were captured October 17, 2026, at da20327.
+        The recommendations shown apply to those historical revisions.
       </p>
     </div>
   );

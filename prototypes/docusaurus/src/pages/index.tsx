@@ -14,7 +14,7 @@ const prAnswers = [
   },
   {
     question: 'What was proved, and what wasn’t?',
-    answer: 'Verification links to check results or names the commands that ran. It shows what remains unverified. UI changes include annotated before-and-after screenshots.',
+    answer: 'Verification links to check results or names the commands that ran. It shows what remains unverified. UI changes include annotated screenshots and video when timing matters.',
   },
   {
     question: 'What needs my decision?',
@@ -123,6 +123,7 @@ export default function Home(): ReactNode {
                 Two useful review comments went unanswered among 83 conversation items. See how
                 clearer summaries and follow-up can help a developer act on what matters.
               </p>
+              <p>Review completed PRs for patterns that can improve future work.</p>
               <div className={styles.evidenceLinks}>
                 <Link to="/case-studies/30-ai-assisted-commits">Read the case study →</Link>
                 <Link to="/case-studies">All case studies →</Link>
