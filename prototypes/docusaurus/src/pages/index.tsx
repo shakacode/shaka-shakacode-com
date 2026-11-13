@@ -3,20 +3,18 @@ import clsx from 'clsx';
 import Link from '@docusaurus/Link';
 import Layout from '@theme/Layout';
 import Heading from '@theme/Heading';
-import PrExamples from '../components/PrExamples';
+import PrExamples, {SAMPLE_PR_URL} from '../components/PrExamples';
 
 import styles from './index.module.css';
-
-const PR_DESCRIPTION_URL = 'https://github.com/shakacode/shaka/pull/667#issue-5907900056';
 
 const prAnswers = [
   {
     question: 'Is this the right change?',
-    answer: 'Intent explains why the change is needed. The walkthrough points you to the code that needs a closer look.',
+    answer: 'Intent explains why the change is needed, what it covers, and why it is safe. The walkthrough points you to the relevant code.',
   },
   {
     question: 'What was proved, and what wasn’t?',
-    answer: 'Verification shows which checks ran and what remains unverified. UI changes include before-and-after screenshots.',
+    answer: 'Verification links to check results or names the commands that ran. It shows what remains unverified. UI changes include annotated before-and-after screenshots.',
   },
   {
     question: 'What needs my decision?',
@@ -77,7 +75,7 @@ export default function Home(): ReactNode {
             <li className={clsx(styles.flowStep, styles.flowPr)}>
               <span className={styles.flowWho}>You</span>
               <span className={styles.flowTitle}>Review one clear PR</span>
-              <Link href={PR_DESCRIPTION_URL}>Read a real PR description →</Link>
+              <Link href={SAMPLE_PR_URL}>Read a real PR description →</Link>
               <span className={styles.flowNote}>Merge, or send it back</span>
             </li>
           </ol>
@@ -108,6 +106,9 @@ export default function Home(): ReactNode {
             <p className={styles.sectionNote}>
               <Link to="/examples#live">Browse live Shaka PRs →</Link>
             </p>
+            <p>
+              <Link to="/examples#navigation-lab">See a before-and-after UI change →</Link>
+            </p>
           </div>
         </section>
 
@@ -125,6 +126,7 @@ export default function Home(): ReactNode {
               <div className={styles.evidenceLinks}>
                 <Link to="/case-studies/30-ai-assisted-commits">Read the case study →</Link>
                 <Link to="/case-studies">All case studies →</Link>
+                <Link to="/docs/pr-verification#improve-the-process-over-time">Use PRs to improve future work →</Link>
               </div>
             </article>
           </div>

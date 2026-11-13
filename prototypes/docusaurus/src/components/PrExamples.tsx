@@ -4,18 +4,20 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 
 import styles from './PrExamples.module.css';
 
+export const SAMPLE_PR_URL = 'https://github.com/shakacode/shaka/pull/1151#issue-6345019520';
+
 const examples = [
   {
     id: 'verification',
-    number: 667,
+    number: 1151,
     title: 'Start with the recommendation.',
-    source: 'https://github.com/shakacode/shaka/pull/667#issue-5907900056',
-    height: 1331,
-    alt: 'Shaka PR #667 description with a configured-model attribution note, recommendation and evidence links, Intent, Verification, and expandable details.',
+    source: SAMPLE_PR_URL,
+    height: 701,
+    alt: 'Shaka PR #1151 fixes two links in the installed gem. Its description shows a merge recommendation, medium risk, scope, and verification at acf0df6.',
     annotations: [
-      {top: '8%', title: 'A recommendation with its evidence', text: 'The recommendation links to the walkthrough, review, and checkpoint. The attribution note distinguishes configured and served models.'},
-      {top: '30%', title: 'Know the scope and safety assumption', text: 'Intent explains why the change matters, what it covers, and how carefully to review it.'},
-      {top: '51%', title: 'See what was proved and what was not', text: 'Verification names the checks and results. Not verified keeps the remaining gap visible.'},
+      {top: '9%', title: 'Start with the recommendation and risk', text: 'See the suggested next step, how closely to review, and links to the walkthrough, review, and checkpoint.'},
+      {top: '29%', title: 'See why the links broke', text: 'Intent explains why the two links fail in the installed gem and why the replacement is safe.'},
+      {top: '90%', title: 'Check which revision was verified', text: 'Verification reports the checks and links to the review for revision acf0df6.'},
     ],
   },
   {
@@ -52,8 +54,10 @@ function PrExample({example}: {example: (typeof examples)[number]}): ReactNode {
   return (
     <figure className={styles.example}>
       <div className={styles.capture}>
-        <img src={imageUrl} alt={example.alt} width={799} height={example.height}
-          loading="lazy" decoding="async" />
+        <a href={imageUrl} aria-label={`View full-size screenshot of PR #${example.number}`}>
+          <img src={imageUrl} alt={example.alt} width={799} height={example.height}
+            loading="lazy" decoding="async" />
+        </a>
         {example.annotations.map((annotation, index) => (
           <span key={annotation.title} className={styles.marker}
             style={{top: annotation.top}} aria-hidden="true">{index + 1}</span>
@@ -83,8 +87,9 @@ export default function PrExamples(): ReactNode {
     <div className={styles.examples}>
       {examples.map((example) => <PrExample key={example.id} example={example} />)}
       <p className={styles.archiveNote}>
-        Cropped GitHub screenshots from PR #667 captured October 17, 2026 (Hawaii time), for revision da20327. Callouts explain the recorded results;
-        they are historical examples, not a claim about any PR’s current readiness.
+        PR #1151 was captured November 12, 2026 (Hawaii time), at acf0df6. The review and
+        walkthrough from PR #667 were captured October 17, 2026, at da20327. Each capture
+        records what reviewers saw at that revision.
       </p>
     </div>
   );
