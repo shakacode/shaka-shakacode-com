@@ -10,7 +10,7 @@ import styles from './index.module.css';
 const prAnswers = [
   {
     question: 'Is this the right change?',
-    answer: 'Intent explains why the change is needed, what it covers, and why it is safe. The walkthrough points you to the relevant code.',
+    answer: 'Intent explains why the change is needed, what it covers, and why it is safe. A risk level says how carefully to review and which code to read first. The walkthrough points you to the relevant code.',
   },
   {
     question: 'What was proved, and what wasn’t?',
@@ -18,7 +18,7 @@ const prAnswers = [
   },
   {
     question: 'What needs my decision?',
-    answer: 'Open review findings and decisions are visible in the PR. By default, you decide whether to merge.',
+    answer: 'Open review findings and decisions are visible in the PR. By default, you merge. You can also let the agent merge low-risk PRs within limits you set.',
   },
 ];
 
@@ -37,7 +37,8 @@ export default function Home(): ReactNode {
             </h1>
             <p className={styles.heroLead}>
               Shaka is a skill for your coding agent. The PR shows what changed, which checks
-              ran, and what still needs your attention.
+              ran, and what still needs your attention. In regular retrospectives, review completed
+              PRs, token use, and timing to improve future work.
             </p>
             <div className={styles.heroActions}>
               <Link className="button button--primary button--lg" to="/docs/getting-started">
@@ -71,6 +72,7 @@ export default function Home(): ReactNode {
             <li className={styles.flowStep}>
               <span className={styles.flowWho}>Agent</span>
               <span className={styles.flowTitle}>Build, verify, review</span>
+              <span className={styles.flowNote}>↻ Keeps going without repeated reminders</span>
             </li>
             <li className={clsx(styles.flowStep, styles.flowPr)}>
               <span className={styles.flowWho}>You</span>
@@ -88,6 +90,9 @@ export default function Home(): ReactNode {
             {/* Keep legacy Agent Workflows verification links useful after the domain redirect. */}
             <span id="verification" className={styles.verificationAnchor} />
             <h2>What’s in a Shaka PR?</h2>
+            <p className={styles.sectionLead}>
+              Assess the work without reconstructing an agent’s conversation.
+            </p>
             <div className={styles.grid}>
               {prAnswers.map((item) => (
                 <div key={item.question} className={styles.card}>
@@ -123,7 +128,6 @@ export default function Home(): ReactNode {
                 Two useful review comments went unanswered among 83 conversation items. See how
                 clearer summaries and follow-up can help a developer act on what matters.
               </p>
-              <p>Review completed PRs for patterns that can improve future work.</p>
               <div className={styles.evidenceLinks}>
                 <Link to="/case-studies/30-ai-assisted-commits">Read the case study →</Link>
                 <Link to="/case-studies">All case studies →</Link>

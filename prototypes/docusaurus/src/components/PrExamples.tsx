@@ -4,20 +4,20 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 
 import styles from './PrExamples.module.css';
 
-export const SAMPLE_PR_URL = 'https://github.com/shakacode/shaka/pull/1151#issue-6345019520';
+export const SAMPLE_PR_URL = 'https://github.com/shakacode/shaka/pull/1149#issue-6336962841';
 
 const examples = [
   {
     id: 'verification',
-    number: 1151,
+    number: 1149,
     title: 'Start with the recommendation.',
     source: SAMPLE_PR_URL,
-    height: 701,
-    alt: 'Shaka PR #1151 fixes two links in the installed gem. Its description shows a merge recommendation, medium risk, scope, and verification at acf0df6.',
+    height: 894,
+    alt: 'Shaka PR #1149 updates the guide for annotated before-and-after images. Its description shows a merge recommendation, medium risk, intent, scope, verification at 480bc69, and what was not verified.',
     annotations: [
-      {top: '9%', title: 'Start with the recommendation and risk', text: 'See the suggested next step, how closely to review, and links to the walkthrough, review, and checkpoint.'},
-      {top: '29%', title: 'See why the links broke', text: 'Intent explains why the two links fail in the installed gem and why the replacement is safe.'},
-      {top: '90%', title: 'Check which revision was verified', text: 'Verification reports the checks and links to the review for revision acf0df6.'},
+      {top: '7%', title: 'Start with the recommendation and risk', text: 'See the suggested next step, how closely to review, and links to the walkthrough, review, and checkpoint.'},
+      {top: '31%', title: 'Know why the change exists', text: 'Intent explains the problem, what the change covers, and why it is safe.'},
+      {top: '95%', title: 'See what was not proved', text: 'Verification links the evidence for revision 480bc69. Not verified names the claim still untested.'},
     ],
   },
   {
@@ -87,7 +87,7 @@ export default function PrExamples(): ReactNode {
     <div className={styles.examples}>
       {examples.map((example) => <PrExample key={example.id} example={example} />)}
       <p className={styles.archiveNote}>
-        PR #1151 was captured November 12, 2026 (Hawaii time), at acf0df6. The review and
+        PR #1149 was captured November 13, 2026 (Hawaii time), at 480bc69. The review and
         walkthrough from PR #667 were captured October 17, 2026, at da20327.
         The recommendations shown apply to those historical revisions.
       </p>
