@@ -94,7 +94,7 @@ export default function Examples(): ReactNode {
 
         <section className={styles.section} aria-labelledby="navigation-lab">
           <p className={styles.eyebrow}>Real pull request</p>
-          <h2 id="navigation-lab">Instant Navigation Lab</h2>
+          <Heading as="h2" id="navigation-lab">Instant Navigation Lab</Heading>
           <p className={styles.lead}>
             The task added a signed-in navigation lab with a project list, a persistent focus timer,
             and prefetching on hover or focus. It comes from the React on Rails + TanStack starter
