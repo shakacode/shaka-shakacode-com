@@ -12,6 +12,19 @@ published at `shaka.shakacode.com`. The migration plan is in
 - This repository owns the homepage, site-only pages, global navigation and footer,
   styling, and the transforms that prepare the synced docs.
 
+## Homepage copy
+
+The homepage (`prototypes/docusaurus/src/pages/index.tsx` and the components it
+renders) restates upstream Shaka. Keep it in step:
+
+- Check each claim against `shakacode/shaka` `main`: `README.md`,
+  `docs/pr-verification.md`, and the merge policy in `docs/working-with-shaka.md`.
+- When cutting copy, list each removed line in the PR. Before calling a line
+  redundant, read the site PR that added it and check whether upstream still makes
+  that point.
+- A sample screenshot shows what the copy beside it promises. Recheck the pair
+  whenever either one changes.
+
 ## Screenshot maintenance
 
 For recurring PR-format screenshot updates, use
