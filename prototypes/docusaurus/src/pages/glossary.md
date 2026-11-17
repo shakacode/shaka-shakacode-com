@@ -78,7 +78,9 @@ Who merges a ready PR.
 - **Ask** is the default. The agent brings you the reviewed PR. You merge it on GitHub, or tell
   the agent to merge that commit.
 - **Auto** lets the agent merge when the configured checks, reviews, approvals, and
-  repository restrictions allow it. Customizable [merge limits](/docs/settings#mergelimits)
+  repository restrictions allow it. It merges only PRs rated at or below
+  [`merge.auto_merge_max_risk`](/docs/settings#mergeauto_merge_max_risk), which defaults to
+  `low`, and returns higher-risk PRs to you. Customizable [merge limits](/docs/settings#mergelimits)
   cap changed files, changed lines, and commits. Exceeding a limit returns the task to Ask;
   failing required checks still blocks merging.
 
