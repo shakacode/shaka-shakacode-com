@@ -61,11 +61,11 @@ export default function Home(): ReactNode {
               <ul className={styles.flowPrompts} aria-label="Example prompts">
                 <li>
                   <span className={styles.flowPromptLabel}>An issue number or URL</span>
-                  <code>$shaka 482</code>
+                  <code>/shaka 482</code>
                 </li>
                 <li>
                   <span className={styles.flowPromptLabel}>Or a sentence</span>
-                  <code>$shaka Add CSV export to the orders page.</code>
+                  <code>/shaka Add CSV export to the orders page.</code>
                 </li>
               </ul>
             </li>
