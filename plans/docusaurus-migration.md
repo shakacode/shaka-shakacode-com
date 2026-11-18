@@ -243,5 +243,5 @@ handle secret values, per `AGENTS.md`.
 
 ## 9. Execution
 
-Every PR runs through `/shaka`, with merge policy ask.
+Every PR runs through `/shaka` (`$shaka` in Codex), with merge policy ask.
 Start with PR 0, so the new repo has its seam before any other work lands.
