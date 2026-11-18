@@ -131,7 +131,7 @@ Repo: `shakacode/shaka-shakacode-com`.
   writing-preferences, and control-towers under an "Advanced" heading. Add a
   prominent link to the skill references on GitHub (D2).
 - Homepage: built from Shaka's README pitch ("Give your coding agent a task. Get
-  a tested, reviewed PR that's easy to understand."), the `$shaka` example, the
+  a tested, reviewed PR that's easy to understand."), the `/shaka` example, the
   benefits list, and a "Get started" link.
 - **Content audit of the old site (do this before copying anything).** Go
   through every page and component of agent-workflows-com and sort each into
@@ -243,5 +243,5 @@ handle secret values, per `AGENTS.md`.
 
 ## 9. Execution
 
-Every PR runs through `/shaka` (`$shaka` in Codex), with merge policy ask.
+Every PR runs through `/shaka`, with merge policy ask.
 Start with PR 0, so the new repo has its seam before any other work lands.
