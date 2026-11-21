@@ -23,7 +23,7 @@ const examples = [
   {
     id: 'review-rounds',
     number: 1149,
-    title: 'Local adversarial review',
+    title: 'Check what the review covered.',
     source: 'https://github.com/shakacode/shaka/pull/1149#issuecomment-6819508032',
     height: 649,
     alt: 'Shaka PR #1149 local adversarial review with reviewed revision 480bc69, coverage limits for two reviewers, three reviewed commits with fixed and documented findings, and expandable reports.',
@@ -41,9 +41,9 @@ const examples = [
     height: 528,
     alt: 'Shaka PR #1149 code walkthrough with links to the changed guides, the size change in agent instructions, what Ruby does not enforce, validation, and what reverting does.',
     annotations: [
-      {top: '48%', title: 'An explanation linked to code', text: 'Links lead to the guide lines that set the default, publish the comparison, and show readers what to expect.'},
-      {top: '73%', title: 'See what the code does not do', text: 'The agent applies the guidance. Ruby does not compose the images or enforce the layout.'},
-      {top: '86%', title: 'Validation and rollback are stated', text: 'Local validation passed after a rebase. Reverting the guide edit restores the previous default.'},
+      {top: '48%', title: 'An explanation linked to the guides', text: 'Each link opens the guide lines that set the default, publish the comparison, or show readers what to expect.'},
+      {top: '70%', title: 'See what the code does not do', text: 'The agent applies the guidance. Ruby does not compose the images or enforce the layout.'},
+      {top: '87%', title: 'Validation and rollback are stated', text: 'Local validation passed after a rebase. Reverting the guide edit restores the previous default.'},
     ],
   },
 ];
