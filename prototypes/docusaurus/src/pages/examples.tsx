@@ -69,7 +69,7 @@ export default function Examples(): ReactNode {
           <Heading as="h2" id="live">Watch Shaka build Shaka.</Heading>
           <p>
             Shaka is developed with Shaka, in public. The newest merged PRs and commits below load
-            live from GitHub. Each PR links straight to the four parts worth reading, in order.
+            live from GitHub. Each PR links straight to the parts worth reading, in order.
           </p>
           <LiveShakaActivity />
 
