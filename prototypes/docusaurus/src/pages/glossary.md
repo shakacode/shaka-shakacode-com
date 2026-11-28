@@ -101,13 +101,15 @@ changes, Shaka refreshes the affected checks and review evidence before calling 
 
 ### Walkthrough
 
-A code walkthrough explains why the implementation works as it does. The agent publishes it
-on the PR with links to the relevant code and evidence. See [the workflow](/docs/workflow).
+A code walkthrough explains why the implementation works as it does. When you ask for one,
+the agent publishes it on the PR with links to the relevant code and evidence. See
+[the workflow](/docs/workflow).
 
 ### PR description
 
 The summary at the top of a PR. It tells a reader what changed, what needs a decision, and
-how the change was checked. The walkthrough gives more detail about implementation choices.
+how the change was checked. A walkthrough, when requested, gives more detail about
+implementation choices.
 See [PR verification](/docs/pr-verification).
 
 ### Usage

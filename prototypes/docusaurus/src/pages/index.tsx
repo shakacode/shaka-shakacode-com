@@ -10,7 +10,7 @@ import styles from './index.module.css';
 const prAnswers = [
   {
     question: 'Is this the right change?',
-    answer: 'Intent explains why the change is needed, what it covers, and why it is safe. A risk level says how carefully to review and which code to read first. The walkthrough points you to the relevant code.',
+    answer: 'Intent explains why the change is needed, what it covers, and why it is safe. A risk level says how carefully to review and which code to read first. Ask the agent for a code walkthrough when you want the explanation linked to the code.',
   },
   {
     question: 'What was proved, and what wasn’t?',

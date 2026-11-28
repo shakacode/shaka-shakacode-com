@@ -15,7 +15,7 @@ const examples = [
     height: 894,
     alt: 'Shaka PR #1149 updates the guide for annotated before-and-after images. Its description shows a merge recommendation, medium risk, intent, scope, verification at 480bc69, and what was not verified.',
     annotations: [
-      {top: '7%', title: 'Start with the recommendation and risk', text: 'See the suggested next step, how closely to review, and links to the walkthrough, review, and checkpoint.'},
+      {top: '7%', title: 'Start with the recommendation and risk', text: 'See the suggested next step, how closely to review, and links to the review, checkpoint, and any walkthrough you asked for.'},
       {top: '31%', title: 'Know why the change exists', text: 'Intent explains the problem, what the change covers, and why it is safe.'},
       {top: '95%', title: 'See what was not proved', text: 'Verification links the evidence for revision 480bc69. Not verified names the claim still untested.'},
     ],
@@ -41,7 +41,7 @@ const examples = [
     height: 528,
     alt: 'Shaka PR #1149 code walkthrough with links to the changed guides, the size change in agent instructions, what Ruby does not enforce, validation, and what reverting does.',
     annotations: [
-      {top: '48%', title: 'An explanation linked to the guides', text: 'Each link opens the guide lines that set the default, publish the comparison, or show readers what to expect.'},
+      {top: '48%', title: 'An explanation linked to the guides', text: 'Ask the agent for a walkthrough like this one. Each link opens the guide lines that set the default, publish the comparison, or show readers what to expect.'},
       {top: '70%', title: 'See what the code does not do', text: 'The agent applies the guidance. Ruby does not compose the images or enforce the layout.'},
       {top: '87%', title: 'Validation and rollback are stated', text: 'Local validation passed after a rebase. Reverting the guide edit restores the previous default.'},
     ],

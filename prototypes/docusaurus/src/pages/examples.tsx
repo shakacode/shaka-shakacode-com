@@ -16,9 +16,9 @@ const PR = 'https://github.com/shakacode/react-on-rails-starter-tanstack/pull/23
 const SCREENSHOTS = `${PR}#issuecomment-5824630888`;
 
 const GITHUB = 'https://github.com/shakacode';
-// Shaka PR descriptions link a Code Walkthrough, so this search finds them in repos
-// where not every PR used Shaka.
-const SHAKA_PRS = '?q=is%3Apr+is%3Amerged+%22Code+Walkthrough%22+in%3Abody+sort%3Aupdated-desc';
+// Shaka PR descriptions report AI spend, and older ones link a Code Walkthrough, so this
+// search finds them in repos where not every PR used Shaka.
+const SHAKA_PRS = '?q=is%3Apr+is%3Amerged+%22AI+spend%22+OR+%22Code+Walkthrough%22+in%3Abody+sort%3Aupdated-desc';
 
 const stackRepos = [
   {
@@ -69,7 +69,7 @@ export default function Examples(): ReactNode {
           <Heading as="h2" id="live">Watch Shaka build Shaka.</Heading>
           <p>
             Shaka is developed with Shaka, in public. The newest merged PRs and commits below load
-            live from GitHub. Each PR links straight to the four parts worth reading, in order.
+            live from GitHub. Each PR links straight to the parts worth reading, in order.
           </p>
           <LiveShakaActivity />
 

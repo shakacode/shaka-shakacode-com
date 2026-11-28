@@ -16,7 +16,7 @@ const CACHE_MS = 10 * 60 * 1000;
 
 const readingSteps = [
   {label: 'Description', text: 'The recommendation, intent, and what was verified.'},
-  {label: 'Code Walkthrough', text: 'The change explained, with links to the lines.'},
+  {label: 'Code Walkthrough', text: 'When you ask for one, the change explained with links to the lines.'},
   {label: 'Code Review', text: 'Independent review rounds and what they fixed.'},
   {label: 'Checkpoint', text: 'Whether this was the right thing to build.'},
 ];
